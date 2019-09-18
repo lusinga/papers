@@ -173,6 +173,46 @@ The n-gram model has been a widely used sequence-based model, most commonly used
 
 n-gram模型是一种应用广泛的基于序列的模型，最常用作语言模型。它是一种有效和实用的LM，用于捕获序列中局部和简单的统计依赖关系。n-gram模型假定标记是按顺序从左到右生成的，并且只能使用前面的n- 1个标记来预测下一个标记。捕获短上下文的结果是，n-gram模型不能处理长期依赖关系，尤其是范围信息。在形式上，令牌tm的概率取决于上下文C(C)(如果有的话)和到目前为止t1生成的序列……tm - 1，假定它只依赖于前面的n - 1令牌。在这个假设下，我们写
 
+To use this equation, we need to know the conditional probabilities P(tm|tm−1 . . . tm−n+1, C(c)) for each possible n-gram and context. This is a table of |V |n numbers for each context C(c). These are the parameters of the model that we learn from the training corpus. The simplest way to estimate the model parameters is to set P(tm|tm−1 . . . tm−n+1) to the proportion of times that tm follows tm−1 . . . tm−n+1. In practice, this simple estimator does not work well, because it assigns zero probability to n-grams that do not occur in the training corpus. Instead, n-gram models use smoothing methods [40] as a principled way for assigning probability to unseen n-grams by extrapolating information from m-grams (m < n). Furthermore, considering n-gram models with non-empty contexts C(c) exacerbates sparsity rendering these models impractical. Because of this, n-grams are predominantly used as language models. The use of n-gram LMs in software engineering originated with the pioneering work of Hindle et al. [88] who used an n-gram LM with Kneser-Ney [104] smoothing. Most subsequent research has followed this practice.
+
+要使用这个方程，我们需要知道每个可能的 n 克和上下文的条件概率 P (tm | tm-1。这是每个上下文 C (c) 的 | V | n 数字表。这些是我们从训练语料库中学习的模型的参数。估计模型参数的最简单方法是将 P (tm | tm-1) 设置为 tm 遵循 tm-1 的时间比例。tmn + 1。在实践中，这种简单的估计器不能很好地工作，因为它将零概率分配给训练语料库中没有出现的 n-克。相反，n-gram 模型使用平滑方法 [40] 作为一种原则方式，通过从 m-gram (m < n) 中推断信息，将概率分配给看不见的 n-gram。此外，考虑具有非空上下文 C (c) 的 n-gram 模型会加剧稀疏性，从而使这些模型不切实际。正因为如此，n-克主要用作语言模型。N-gram LMs 在软件工程中的使用源于 Hindle 等人的开创性工作，[88] 使用了 n-gram LM 和 Kneser-Ney [104] 平滑。随后的大部分研究都遵循了这种做法。
+
+[104] Reinhard Kneser and Hermann Ney. 1995. Improved backing-off for m-gram language modeling. InAcoustics, Speech, and Signal Processing, 1995. ICASSP-95., 1995 International Conference on
+
+In contrast to text, code tends to be more verbose [88] and much information is lost within the n − 1 tokens of the context. To tackle this problem, Nguyen et al. [144] extended the standard n-gram model by annotating the code tokens with parse information that can be extracted from the currently generated sequence. This increases the available context information allowing the n-gram model to achieve better predictive performance. Following this trend, but using concrete and abstract semantics of code, Raychev et al. [166] create a token-level model that treats code generation as a combined synthesis and probabilistic modeling task.
+
+与文本相比，代码往往更冗长[88]，而且在上下文的n - 1标记中丢失了许多信息。为了解决这个问题，Nguyen等人[144]扩展了标准的n-gram模型，用可以从当前生成的序列中提取的解析信息来注释代码标记。这增加了可用的上下文信息，允许n-gram模型获得更好的预测性能。遵循这一趋势，但使用具体和抽象的代码语义，Raychev等人[166]创建了一个令牌级模型，该模型将代码生成视为综合和概率建模任务的组合。
+
+[166] Veselin Raychev, Martin Vechev, and Eran Yahav. 2014. Code completion with statistical language models. In Proceedings of the Symposium on Programming Language Design and Implementation (PLDI).
+
+Tu et al. [180] and later, Hellendoorn and Devanbu [84] noticed that code has a high degree of localness, where identifiers (e.g. variable names) are repeated often within close distance. In their work, they adapted work in speech and natural language processing [109] adding a cache mechanism that assigns higher probability to tokens that have been observed most recently, achieving significantly better performance compared to other n-gram models. Modeling identifiers in code is challenging [6, 11, 29, 126]. The agglutinations of multiple subtokens (e.g. in getFinalResults) when creating identifiers is one reason. Following recent NLP work that models subword structure (e.g. morphology) [174], explicitly modeling subtoken in identifiers may improve the performance of generative models. Existing token-level code-generating models do not produce syntactically valid code. Raychev et al. [166] added additional context in the form of constraints — derived from program analysis — to avoid generating some incorrect code.
+
+Tu等[180]以及后来的Hellendoorn和Devanbu[84]注意到代码具有高度的本地化，其中标识符(例如变量名)经常在很近的距离内重复。在他们的工作中，他们调整了语音和自然语言处理方面的工作[109]，添加了缓存机制，该机制为最近观察到的标记分配了更高的概率，与其他n-gram模型相比，取得了显著更好的性能。在代码中对标识符建模是一个挑战[6,11,29,126]。创建标识符时多个子标记(例如在getFinalResults中)的凝集是一个原因。随着最近NLP对子单词结构(如形态学)建模的工作[174]，在标识符中显式地对子标记建模可能会提高生成模型的性能。现有的令牌级代码生成模型不能生成语法上有效的代码。Raychev等人[166]以约束的形式添加了额外的上下文(来自程序分析)，以避免生成一些不正确的代码。
+
+[180] Zhaopeng Tu, Zhendong Su, and Premkumar Devanbu. 2014. On the localness of software. In Proceedings of the International Symposium on Foundations of Software Engineering (FSE).
+
+[84] Vincent J Hellendoorn and Premkumar Devanbu. 2017. Are deep neural networks the best choice for modeling source code?. In Proceedings of the International Symposium on Foundations of Software Engineering (FSE).
+
+[109] Roland Kuhn and Renato De Mori. 1990. A cache-based natural language model for speech recognition. Pattern Analysis and Machine Intelligence, IEEE Transactions on (1990).
+
+[6] Miltiadis Allamanis, Earl T Barr, Christian Bird, and Charles Sutton. 2015. Suggesting accurate method and class names. In Proceedings of the Joint Meeting of the European Software Engineering Conference and the Symposium on the Foundations of Software Engineering (ESEC/FSE).
+
+[11] Miltiadis Allamanis and Charles Sutton. 2013. Mining source code repositories at massive scale using language modeling. In Proceedings of the Working Conference on Mining Software Repositories (MSR).
+
+[29] Pavol Bielik, Veselin Raychev, and Martin Vechev. 2016. PHOG: Probabilistic Model for Code. In Proceedings of the International Conference on Machine Learning (ICML).
+
+[126] Chris Maddison and Daniel Tarlow. 2014. Structured Generative Models of Natural Source Code. In Proceedings of the International Conference on Machine Learning (ICML).
+
+[174] Rico Sennrich, Barry Haddow, and Alexandra Birch. 2016. Neural machine translation of rare words with subword units. In Proceedings of the Annual Meeting of the Association for Computational Linguistics (ACL).
+
+More recently, sequence-based code models have turned to deep recurrent neural network (RNN) models to out perform n-grams. These models predict each token sequentially, but loosen the fixed context-size assumption, instead representing the context using a distributed vector representation (Section 4.2). Following this trend, Karpathy et al. [103] and Cummins et al. [48] use character level LSTMs [91]. Similarly, White et al. [188] and Dam et al. [49] use token-level RNNs. Recently, Bhoopchand et al. [26] used a token sparse pointer-based neural model of Python that learns to copy recently declared identifiers to capture very long-range dependencies of identifiers, outperforming standard LSTM models.
+
+最近，基于序列的代码模型已转向深度递归神经网络（RNN）模型以执行n-gram。 这些模型按顺序预测每个标记，但放松固定的上下文大小假设，而是使用分布式矢量表示来表示上下文（第4.2节）。 遵循这一趋势，Karpathy等人。 [103]和康明斯等人。 [48]使用角色等级LSTM [91]。 同样，怀特等人。 [188]和Dam等人。 [49]使用令牌级RNN。 最近，Bhoopchand等人。 [26]使用基于令牌稀疏指针的Python神经模型，学习复制最近声明的标识符以捕获标识符的远程依赖性，优于标准LSTM模型5。
+
+
+
+
+
 
 
 
