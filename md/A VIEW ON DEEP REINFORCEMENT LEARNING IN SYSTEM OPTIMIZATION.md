@@ -26,12 +26,14 @@ Multiple prior works have proposed to use non-deep neural network approximation 
 
 多个先前的工作已经提出在系统优化中使用非深度神经网络近似方法来实现 RL。这些工作包括可靠性和监控 (Das 等人，2014; 朱等人，2007; Zeppenfeld 等人，2008)，内存管理 (Ipek 等人，2008; Andreasson 等人, 2002; Peled 等人，2015; Diegues 等人，2014) 在多核系统中，拥塞控制莉等人，2016; 席尔瓦等人，2016)，分组路由 (崔等人，1996; Littman 等人，2013; Boyan 等人，1994), 算法选择 (lagoudais 等人，2000) 、云缓存 (Sadeghi 等人，2017) 、能效 (Farahnakian 等人,2014) 和性能 (彭等人，2015; Jamshidi 等人，2015; Barrett 等人，2013; 阿拉贝纳贾德等人，2017; Mostafavi 等人，2018)。这些工作使用表格、线性近似和其他近似方法来训练和表示策略，而不是使用神经网络来近似策略。表通常用于存储 q值，即每个操作的一个值，状态对，用于训练，此表成为最终策略。一般来说，深度神经网络允许更复杂的策略和 Q 函数形式 (林，1993)，并且可以更好地近似新状态下的良好行为。
 
-3 RL IN SYSTEM OPTIMIZATION 
+## 3 RL IN SYSTEM OPTIMIZATION
+
 In this section, we discuss the different system challenges tackled using RL and divide them into two categories: Episodic Tasks, in which the agent-environment interaction naturally breaks down into a sequence of separate terminating episodes, and Continuing Tasks, in which it does not. For example, when optimizing resources in the cloud, the jobs arrive continuously and there is not a clear termination state. But when optimizing the order of SQL joins, the query has a finite number of joins, and thus after enough steps the agent arrives at a terminating state.
 
 在本节中，我们讨论了使用 RL 解决的不同系统挑战，并将它们分为两类: 情节任务, 其中，代理-环境交互自然分解为一系列单独的终止集和持续任务，其中它没有。例如，在优化云中的资源时，作业会持续到达，并且没有明确的终止状态。但是当优化 SQL 连接的顺序时，查询有有限数量的连接，因此经过足够多的步骤，代理到达终止状态。
 
-3.1 Continuing Tasks 
+### 3.1 Continuing Tasks
+
 An important feature of RL is that it can learn from sparse reward signals, does not need expert labels, and the ability to learn direction from its own interaction with the world. Jobs in the cloud arrive in an unpredictable and continuous manner. This might explain why many system optimization challenges tackled with RL are in the cloud (Mao et al., 2016; He et al., 2017a;b; Tesauro et al., 2006; Xu et al., 2017; Liu et al., 2017; Xu et al., 2012; Rao et al., 2009). A good job scheduler in the cloud should make decisions that are good in the long term. Such a scheduler should sometimes forgoz short term gains in an effort to realize greater long term benefits. For example, it might be better to delay a long running job if a short running job is expected to arrive soon. The scheduler should also adapt to variations in the underlying resource performance and scale in the presence of new or unseen workloads combined with large numbers of resources.
 RL 的一个重要特征是它可以从稀疏的奖励信号中学习，不需要专家标签，并且能够从自己与世界的互动中学习方向。云中的作业以不可预测和持续的方式到达。这可能解释了为什么用 RL 解决的许多系统优化挑战都在云中 (Mao 等人，2016; He 等人，2017a; b; Tesauro 等人，2006; 徐等人, 2017; 柳等人，2017; 徐等人，2012; 饒等人，2009)。云中好的作业调度程序应该做出长期良好的决策。这样的调度程序有时应该放弃短期收益，以实现更大的长期收益。例如，如果一个短期运行的作业预计很快就会到达，那么最好推迟一个长期运行的作业。调度程序还应该适应底层资源性能的变化，并在新的或看不见的工作负载与大量资源相结合的情况下进行扩展。
 
@@ -43,7 +45,8 @@ Interestingly, for cloud challenges most works are driven by Q-learning (or the 
 
 有趣的是，对于云挑战，大多数工作都是由Q学习（或非常类似的SARSA）驱动的。 在缺乏完整的环境模型的情况下，可以使用无模型Q-Learning来生成最优策略。 它能够通过用先前的估计引导当前估计来递增地进行预测，并提供良好的样本效率（Jin等，2018）。 Q-Learning的特征还在于固有的连续时间差异行为，其中策略可以在每个步骤之后立即更新（而不是轨迹的结束）; 对于在线改编可能非常有用的东西。
 
-3.2 Episodic Tasks 
+### 3.2 Episodic Tasks
+
 Due to the sequential nature of decision making in RL, the order of the actions taken has a major impact on the rewards the RL agent collects. The agent can thus learn these patterns and select more rewarding actions. Previous works took advantage of this behavior in RL to optimize congestion control (Jay et al., 2019; Ruffy et al., 2018), decision trees for packet classification (Liang et al., 2019), sequence to SQL/program translation (Zhong et al., 2017; Guu et al., 2017; Liang et al., 2016), ordering of SQL joins (Krishnan et al., 2018; Ortiz et al., 2018; Marcus et al., 2018; 2019), compiler phase ordering (Huang et al., 2019; Kulkarni et al., 2012) and device placement (Addanki et al., 2019; Paliwal et al., 2019).
 
 由于RL中决策的顺序性，所采取行动的顺序对RL代理收集的奖励有重要影响。因此，代理可以学习这些模式并选择更有价值的行为。以前的工作利用RL中的这种行为来优化拥塞控制(Jay等，2019;Ruffy等，2018)，分组分类决策树(Liang等，2019)，序列到SQL/程序翻译(Zhong等，2017);Guu等，2017;Liang等，2016)，SQL join的排序(Krishnan等，2018;Ortiz等，2018;马库斯等人，2018;、编译器相位排序(Huang等，2019;Kulkarni等，2012)和设备放置(Addanki等，2019;Paliwal等，2019)。
@@ -56,7 +59,8 @@ To improve the performance of PG methods, it is possible to take advantage of th
 
 为了提高PG方法的性能，可以利用梯度计算的方法。如果不需要环境来生成观察，则可以保存许多环境步骤。实现这一点的方法是，从只与策略交互开始展开整个事件，并在最后执行一个环境步骤。奖励的总和将与此环境步骤所获得的奖励相同。例如，在查询优化中，由于观察值直接由操作编码，并且环境主要用于生成奖励，因此可以重复执行一个操作，直接从该操作生成观察值，并将其提供给策略网络。在本集结束后，可以触发环境得到最终的奖励，也就是中间奖励的总和。这可以大大减少培训时间。
 
-3.3 Discussion: Continuous vs. Episodic 
+### 3.3 Discussion: Continuous vs. Episodic
+
 Continuous policies can handle both continuous and episodic tasks, while episodic policies cannot. So, for example, Q-Learning can handle all the tasks mentioned in this work, while PG based methods cannot directly handle it without modification. For example, in (Mao et al., 2016), the authors limited the the scheduler window of jobs to M, allowing the agent in every time step to schedule up to M jobs out of all arrived jobs. The authors also discussed this issue of ”bounded time horizon” and hoped to overcome it by using a value network to replace the time dependent baseline. It is interesting to note that prior work on continuous system optimization tasks using non deep RL approaches (Choi et al., 1996; Littman et al., 2013; Boyan et al., 1994; Peng et al., 2015; Jamshidi et al., 2015; Barrett et al., 2013; Arabnejad et al., 2017; Sadeghi et al., 2017; Farahnakian et al., 2014) used Q-Learning.
 
 连续策略可以同时处理连续和情景任务，而情景策略不能。例如，Q-Learning可以处理这项工作中提到的所有任务，而基于PG的方法不需要修改就不能直接处理。例如，在(Mao et al.， 2016)中，作者将作业的调度程序窗口限制为M，允许代理在每个时间步骤中调度所有到达作业中的至多M个作业。作者还讨论了“有界时间范围”的问题，并希望通过使用一个值网络来代替依赖于时间的基线来克服这一问题。值得注意的是，之前使用非深度RL方法进行连续系统优化任务的工作(Choi et al.， 1996;Littman等，2013;Boyan等，1994;彭等，2015;Jamshidi等，2015;Barrett等，2013;Arabnejad等，2017;Sadeghi等，2017;Farahnakian等，2014)使用Q-Learning。
@@ -65,7 +69,8 @@ One solution for handling continuing problems without episode boundaries with PG
 
 使用基于PG的方法处理没有情节边界的持续问题的一个解决方案是根据每一步的平均奖励率来定义性能(Sutton et al.， 2018)(第13.6章)。这种方法可以更好地将连续问题与情景RL算法相适应。
 
-5 CONSIDERATIONS FOR EVALUATING DEEP RL IN SYSTEM OPTIMIZATION 
+## 5 CONSIDERATIONS FOR EVALUATING DEEP RL IN SYSTEM OPTIMIZATION
+
 In this section, we propose a set of questions that can help system optimization researchers determine whether deep RL could be an effective tool in solving their systems optimization challenges.
 
 在本节中，我们提出了一组问题，可以帮助系统优化研究人员确定deep RL是否可以成为解决他们的系统优化挑战的有效工具。
@@ -80,7 +85,7 @@ Is It a Reinforcement Learning Problem?
 What distinguishes RL from other machine learning approaches is the presence of self exploration and exploitation, and the tradeoff between them. For example, RL is different from supervised learning. The latter is learning from a training set with labels provided by an external supervisor that is knowledgeable. For each example the label is the correct action the system should take. The objective of this kind of learning is to act correctly in new situations not present in the training set. However, supervised learning is not suitable for learning from interaction, as it is often impractical to obtain examples representative of all the cases in which the agent has to act.
 RL与其他机器学习方法的区别在于自我探索和利用的存在，以及它们之间的权衡。例如，RL不同于监督学习。后者是从由一位知识渊博的外部主管提供的带有标签的培训集中学习的。对于每个示例，标签都是系统应该采取的正确操作。这种学习的目标是采取正确的新情况没有出现在训练集。然而,监督学习不适合学习互动,因为它通常是不切实际的获取例子代表所有的情况下,代理已经采取行动。
 
-9 FUTURE DIRECTIONS 
+## 9 FUTURE DIRECTIONS
 
 We see multiple future directions for the deployment of deep RL in system optimization tasks. The general assumption is that deep RL may be useful in every system problem where the problem can be formulated as a sequential decision making process, and where meaningful action, state, and reward definitions can be provided. The objective of deep RL in such systems may span a wide range of options, such as energy efficiency, power, reliability, monitoring, revenue, performance, and utilization. At the processor level, deep RL could be used in branch prediction, memory prefetching, caching, data alignment, garbage collection, thread/task scheduling, power management, reliability, and monitoring. Compilers may also benefit from using deep RL to optimize the order of passes (optimizations), knobs/pragmas, unrolling factors, memory expansion, function inlining, vectorizing multiple instructions, tiling and instruction selection. With advancement of in- and near-memory processing, deep RL can be used to determine which portions of a workload should be performed in/near memory and which outside the memory.
 
@@ -96,9 +101,8 @@ RL算法也有改进的余地。某些动作和状态空间可以随时间动态
 
 
 
-10 CONCLUSION 
+## 10 CONCLUSION
+
 In this work, we reviewed and discussed multiple challenges in applying deep reinforcement learning to system optimization problems and proposed a set of metrics that can help evaluate the effectiveness of these solutions. Recent applications of deep RL in system optimization are mainly in packet classification, congestion control, compiler optimization, scheduling, query optimization and cloud computing. The growing complexity in systems demands learning based approaches. Deep RL presents unique opportunity to address the dynamic behavior of systems. Applying deep RL to systems proposes new set of challenges on how to frame and evaluate deep RL techniques. We anticipate that solving these challenges will enable system optimization with deep RL to grow.
 
 在这项工作中，我们回顾和讨论了将深度强化学习应用于系统优化问题的多重挑战，并提出了一组指标，可以帮助评估这些解决方案的有效性。最近 deep RL 在系统优化中的应用主要有分组分类、拥塞控制、编译器优化、调度、查询优化和云计算。系统日益复杂，需要基于学习的方法。Deep RL 提供了解决系统动态行为的独特机会。将 deep RL 应用于系统对如何构建和评估 deep RL 技术提出了新的挑战。我们预计，解决这些挑战将使 deep RL 的系统优化得以发展。
-
-
