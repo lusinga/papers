@@ -207,9 +207,47 @@ Tu等[180]以及后来的Hellendoorn和Devanbu[84]注意到代码具有高度的
 
 More recently, sequence-based code models have turned to deep recurrent neural network (RNN) models to out perform n-grams. These models predict each token sequentially, but loosen the fixed context-size assumption, instead representing the context using a distributed vector representation (Section 4.2). Following this trend, Karpathy et al. [103] and Cummins et al. [48] use character level LSTMs [91]. Similarly, White et al. [188] and Dam et al. [49] use token-level RNNs. Recently, Bhoopchand et al. [26] used a token sparse pointer-based neural model of Python that learns to copy recently declared identifiers to capture very long-range dependencies of identifiers, outperforming standard LSTM models.
 
-最近，基于序列的代码模型已转向深度递归神经网络（RNN）模型以执行n-gram。 这些模型按顺序预测每个标记，但放松固定的上下文大小假设，而是使用分布式矢量表示来表示上下文（第4.2节）。 遵循这一趋势，Karpathy等人。 [103]和康明斯等人。 [48]使用角色等级LSTM [91]。 同样，怀特等人。 [188]和Dam等人。 [49]使用令牌级RNN。 最近，Bhoopchand等人。 [26]使用基于令牌稀疏指针的Python神经模型，学习复制最近声明的标识符以捕获标识符的远程依赖性，优于标准LSTM模型5。
+最近，基于序列的代码模型已转向深度递归神经网络（RNN）模型以执行n-gram。 这些模型按顺序预测每个标记，但放松固定的上下文大小假设，而是使用分布式矢量表示来表示上下文（第4.2节）。 遵循这一趋势，Karpathy等人。 [103]和康明斯等人。 [48]使用角色等级LSTM [91]。 同样，怀特等人。 [188]和Dam等人。 [49]使用令牌级RNN。 最近，Bhoopchand等人。 [26]使用基于令牌稀疏指针的Python神经模型，学习复制最近声明的标识符以捕获标识符的远程依赖性，优于标准LSTM模型。
 
+RNN基础论文：
+[103] Andrej Karpathy, Justin Johnson, and Fei-Fei Li. 2015. Visualizing and understanding recurrent networks. arXiv preprint arXiv:1506.02078 (2015).
 
+[48] Chris Cummins, Pavlos Petoumenos, Zheng Wang, and Hugh Leather. 2017b. Synthesizing benchmarks for predictive modeling. In IEEE/ACM International Symposium on Code Generation and Optimization (CGO).
+
+[91] Sepp Hochreiter and Jürgen Schmidhuber. 1997. Long short-term memory. Neural Computation (1997).
+
+[188] Martin White, Christopher Vendome, Mario Linares-Vásquez, and Denys Poshyvanyk. 2015. Toward deep learning software repositories. In Proceedings of the Working Conference on Mining Software Repositories (MSR).
+
+[49] Hoa Khanh Dam, Truyen Tran, and Trang Pham. 2016. A deep language model for software code. arXiv preprint arXiv:1608.02715 (2016).
+
+[26] Avishkar Bhoopchand, Tim Rocktäschel, Earl Barr, and Sebastian Riedel. 2016. Learning Python Code Suggestion with a Sparse Pointer Network. arXiv preprint arXiv:1611.08307 (2016).
+
+Although neural models usually have superior predictive performance, training them is significantly more costly compared to n-gram models usually requiring orders of magnitude more data. Intuitively, there are two reasons why deep learning methods have proven successful for language models. First, the hidden state in an RNN can encode longer-range dependencies of variable-length beyond the short context of n-gram models. Second, RNN languagemodels can learn amuch richer notion of similarity across contexts. For example, consider an 13-gram model over code, in which we are trying to estimate the distribution following the context for(int i=N; i>=0; i--). In a corpus, few examples of this pattern may exist because such long contexts occur rarely. A simple n-gram model cannot exploit the fact that this context is very similar to for(int j=M; j>=0; j--). But a neural network can exploit it, by learning to assign these two sequences similar vectors.
+
+尽管神经模型通常具有优越的预测性能，但与通常需要数量级数据的n-gram模型相比，训练它们的成本要高得多。 直观地说，深度学习方法被证明成功用于语言模型有两个原因。 首先，RNN中的隐藏状态可以编码超出n-gram模型的短上下文的可变长度的较长范围依赖性。 其次，RNN语言模型可以在各种情境中学习更丰富的相似概念。 例如，考虑一个13克的代码模型，其中我们试图估计上下文之后的分布（int i = N; i> = 0; i--）。 在语料库中，可能存在这种模式的几个例子，因为这种长时间的情境很少发生。 一个简单的n-gram模型无法利用这个上下文非常类似于（int j = M; j> = 0; j--）的事实。 但神经网络可以利用它，通过学习分配这两个序列相似的向量。
+
+- Syntactic Models (trees). 
+Syntactic (or structural) code-generating models model code at the level of abstract syntax trees (ASTs). Thus, in contrast to sequence-based models, they describe a stochastic process of generating tree structures. Such models make simplifying assumptions about how a tree is generated, usually following generative NLP models of syntactic trees: they start from a root node, then sequentially generate children top-to-bottom and left-to-right. Syntactic models generate a tree node conditioned on context defined as the forest of subtrees generated so far. In contrast to sequence models, these models — by construction — generate syntactically correct code. In general, learning models that generate tree structures is harder compared to generating sequences: it is relatively computationally expensive, especially for neural models, given the variable shape and size of the trees that inhibit efficient batching. In contrast to their wide application in NLP, probabilistic context free grammars (PCFG) have been found to be unsuitable as language models of code [126, 164]. This may seem surprising, because most parsers assume that programming languages are context-free. But the problem is that the PCFGs are not a good model of statistical dependencies between code tokens, because nearby tokens may be far away in the AST. So it is not that PCFGs do not capture long-range dependencies (n-gram-based models do not either), but that they do not even capture close-range dependencies that matter [29]. Further, ASTs tend to be deeper and wider than text parse trees due to the highly compositional nature of code.
+
+语法(或结构)代码生成模型抽象语法树(ast)层次上的模型代码。因此，与基于序列的模型相反，它们描述了生成树结构的随机过程。这些模型简化了关于如何生成树的假设，通常遵循语法树的生成NLP模型:它们从根节点开始，然后依次从上到下和从左到右生成子节点。语法模型根据上下文生成树节点，上下文定义为到目前为止生成的子树的森林。与序列模型相反，这些模型通过构造生成语法正确的代码。一般来说，生成树结构的学习模型要比生成序列困难:相对于计算成本而言，生成树结构的学习模型比较昂贵，特别是对于神经模型，因为树的形状和大小各不相同，会抑制有效的批处理。相对于它们在NLP中的广泛应用，人们发现无概率上下文语法(PCFG)不适合作为代码的语言模型[126,164]。这似乎令人惊讶，因为大多数解析器都假设编程语言是上下文无关的。但问题是,PCFGs不是一个好的模型的统计代码标记之间的依赖性,因为附近的令牌可能在AST很远。所以这不是PCFGs不捕获远程依赖(n-gram-based模型不),但近距离的依赖,他们甚至不捕捉[29]。此外，由于代码的高度组合性，ast往往比文本解析树更深入、更广泛。
+
+[126] Chris Maddison and Daniel Tarlow. 2014. Structured Generative Models of Natural Source Code. In Proceedings of the International Conference on Machine Learning (ICML).
+
+[164] Veselin Raychev, Pavol Bielik, Martin Vechev, and Andreas Krause. 2016. Learning programs from noisy data. In Proceedings of the Symposium on Principles of Programming Languages (POPL).
+
+[28] Pavol Bielik, Veselin Raychev, and Martin Vechev. 2015. Programming with “Big Code”: Lessons, Techniques and Applications. In LIPIcs-Leibniz International Proceedings in Informatics
+
+Maddison and Tarlow [126] and Allamanis et al. [13] increase the size of the context considered by creating a non-context-free log-bilinear neural network grammar, using a distributed vector representation for the context. Additionally,Maddison and Tarlow [126] restricts the generation to generate variables that have been declared. To achieve this, they use the deterministically-known information and filter out invalid output. This simple process always produces correct code, even when the network does not learn to produce it. In contrast, Amodio et al. [16] create a significantly more complex model that aims to learn to enforce deterministic constraints of the code generation, rather than enforcing them on the directly on the output.We further discuss the issue of embedding constraints and problem structure in models vs. learning the constraints in Section 6.
+
+Maddison和Tarlow[126]以及Allamanis等人通过使用上下文的分布式向量表示，创建一个非上下文无关的log-双线性神经网络语法来增加上下文的大小。此外，Maddison和Tarlow[126]限制生成生成已声明的变量。为此，他们使用确定性已知的信息并过滤掉无效的输出。这个简单的过程总是生成正确的代码，即使网络没有学会生成代码。相反，Amodio等人的[16]创建了一个明显更复杂的模型，该模型的目的是学习强制执行代码生成的确定性约束，而不是直接对输出强制执行这些约束。我们将在第6节中进一步讨论在模型中嵌入约束和问题结构与学习约束之间的关系。
+
+Bielik et al. [29], Raychev et al. [164] increase the context by annotating PCFGs with a learned program that uses features from the code. Although the programs can, in principle, be arbitrary, they limit themselves to synthesizing decision tree programs. Similarly,Wang et al. [185], Yin and Neubig [196] use an LSTM over AST nodes to achieve the same goal. Allamanis and Sutton [12] also create a syntactic model learning Bayesian TSGs [43, 156] (see Section 4.3).
+
+Bielik等人[[29]]，Raychev等人[164]使用从代码中使用特性的学习程序注释PCFGs，从而增加上下文。虽然程序在原则上可以是任意的，但是它们限制自己合成决策树程序。类似地，Wang等[185]、Yin和Neubig[196]使用AST节点上的LSTM来实现相同的目标。Allamanis和Sutton[12]还创建了一个学习Bayesian TSGs的语法模型[43,156](参见4.3节)。
+
+[29] Pavol Bielik, Veselin Raychev, and Martin Vechev. 2016. PHOG: Probabilistic Model for Code. In Proceedings of the International Conference on Machine Learning (ICML).
+
+[185] Xin Wang, Chang Liu, Richard Shin, Joseph E. Gonzalez, and Dawn Song. 2016c. Neural Code Completion. (2016).https://openreview.net/pdf?id=rJbPBt9lg.
 
 
 
