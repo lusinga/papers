@@ -1,0 +1,5 @@
+# Sequence-Aware Recommender Systems
+
+Recommender systems are one of the most successful applications of data mining and machine-learning technology in practice. Academic research in the field is historically often based on the matrix completion problem formulation,where for each user-item-pair only one interaction (e.g., a rating) is considered. In many application domains, however, multiple user-item interactions of different types can be recorded over time. And, a number of recent works have shown that this information can be used to build richer individual user models and to discover additional behavioral patterns that can be leveraged in the recommendation process.
+
+推荐系统是数据挖掘和机器学习技术在实践中最成功的应用之一。该领域的学术研究在历史上通常基于矩阵完成问题公式，其中每个用户-项目对只考虑一个交互 (例如，评级)。然而，在许多应用程序域中，随着时间的推移，可以记录不同类型的多个用户-项目交互。而且，许多最近的工作已经表明，这些信息可以用来构建更丰富的个人用户模型，并发现可以在推荐过程中使用的其他行为模式。
