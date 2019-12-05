@@ -126,3 +126,16 @@ In this paper, we present SLAMPA, a novel snippets code recommending tool with a
 
 本文提出了一种新的代码片段推荐工具SLAMPA，该工具使用统计语言模型和混合代码克隆技术hybrid - cd。对于一段不完整的代码，SLAMPA可以推断它的意图，在Hybrid-CD的支持下从代码库中检索相关的代码，并向程序员推荐最相似的代码片段。
 
+Our evaluation results show: 
+(1) Hybrid-CD outperforms the existing works and is effective to retrieve similar code snippets; 
+(2) Leveraging a deep neural language model, SLAMPA is able to find the potential reuse opportunities and recommends appropriate code snippets to programmers during programming; 
+(3) The performance of SLAMPA is related to the capability of language model.
+
+我们的评估结果显示:
+(1) Hybrid-CD优于现有的工作，可以有效地检索相似的代码片段;
+(2)利用深度神经语言模型，SLAMPA能够发现潜在的重用机会，并在编程过程中向程序员推荐适当的代码片段;
+(3) SLAMPA的性能与语言模型的能力有关。
+
+As for our future work, we will further enhance SLAMPA by introducing the latest language models (e.g., Pointer Sentinel-LSTM [34]). Furthermore, we will incorporate some domain specific knowledge (e.g., return type, related document and comments, etc. ) into SLAMPA, which are not in the scope of consideration yet in this work.
+
+至于我们未来的工作，我们将通过引入最新的语言模型 (例如，指针 Sentinel-LSTM [34) 来进一步增强 SLAMPA。此外，我们将纳入一些特定领域的知识 (例如，返回类型、相关文档和评论等)。) 到 SLAMPA，这些都不在这项工作的考虑范围之内。
