@@ -59,3 +59,40 @@ As part of our study, we experiment with the scalability of these models, i.e. h
 
 作为我们研究的一部分，我们对这些模型的可伸缩性进行了实验，即当它们具有更多的参数或层时，它们的性能如何变化。训练大型模型可能不是件小事，因为它们可能不适用于一台机器，并且需要大量的计算。因此，我们将模型和数据并行性结合起来，并在云TPU泡头的“切片”上建立训练模型。5个TPU泡头是包含1024个TPU v3芯片的多机架超级计算机，它们通过高速2D网格与支持CPU主机互连。我们利用Mesh TensorFlow库[Shazeer et al.， 2018]来简化模型并行化和数据并行化的实现[Krizhevsky, 2014]。
 
+### 2.2 The Colossal Clean Crawled Corpus
+
+### 2.3 Downstream tasks
+
+### 2.4 Input and output format
+
+## 3 Experiments
+
+### 3.1 Baseline
+
+#### 3.1.1 Model
+
+#### 3.1.2 Training
+
+#### 3.1.3 vocabulary
+
+#### 3.1.4 Unsupervised objective
+
+#### 3.1.5 Baseline performance
+
+### 3.2 Architectures
+
+### 3.3 Unsupervised objectives
+
+### 3.4 Pre-training dataset
+
+### 3.5 Training strategy
+
+### 3.6 scaling
+
+### 3.7 Putting it all together
+
+## 4. Reflection
+
+### 4.1 Takeaways
+
+### 4.2 Outlook
