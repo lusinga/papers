@@ -8,27 +8,57 @@ Natural language processing tasks, such as question answering, machine translati
 
 ## 1. Introduction
 
-Machine learning systems now excel (in expectation) at tasks they are trained for by using a combination of large datasets, high-capacity models, and supervised learning (Krizhevsky et al., 2012) (Sutskever et al., 2014) (Amodei et al., 2016). Yet these systems are brittle and sensitive to slight changes in the data distribution (Recht et al., 2018) and task specification (Kirkpatrick et al., 2017). Current systems are better characterized as narrow experts rather than competent generalists. We would like to move towards more general systems which can perform many tasks – eventually without the need to manually create and label a training dataset for each one.
+Machine learning systems now excel (in expectation) at tasks they are trained for by using a combination of large datasets, high-capacity models, and supervised learning (Krizhevsky et al., 2012) (Sutskever et al., 2014) (Amodei et al., 2016). 
+Yet these systems are brittle and sensitive to slight changes in the data distribution (Recht et al., 2018) and task specification (Kirkpatrick et al., 2017). Current systems are better characterized as narrow experts rather than competent generalists. We would like to move towards more general systems which can perform many tasks – eventually without the need to manually create and label a training dataset for each one.
+
+1. Krizhevsky, A., Sutskever, I., and Hinton, G. E. Imagenet classification with deep convolutional neural networks. In Advances in neural information processing systems, pp. 1097–1105, 2012.
+2. Sutskever, I., Vinyals, O., and Le, Q. V. Sequence to sequence learning with neural networks. In Advances in neural information processing systems, pp. 3104–3112, 2014.
+3. Amodei, D., Ananthanarayanan, S., Anubhai, R., Bai, J., Battenberg, E., Case, C., Casper, J., Catanzaro, B., Cheng, Q., Chen, G., et al. Deep speech 2: End-to-end speech recognition in english and mandarin. In International Conference on Machine Learning, pp. 173–182, 2016.
+
+4. Recht, B., Roelofs, R., Schmidt, L., and Shankar, V. Do cifar-10 classifiers generalize to cifar-10? arXiv preprint arXiv:1806.00451, 2018.
+5. Finn, C., Abbeel, P., and Levine, S. Model-agnostic metalearning for fast adaptation of deep networks. arXiv preprint arXiv:1703.03400, 2017.
 
 机器学习系统现在通过使用大数据集、高容量模型和监督学习的组合，在它们训练的任务中表现出色(在预期中)(Krizhevsky et al.， 2012) (Sutskever et al.， 2014) (Amodei et al.， 2016)。然而，这些系统对于数据分布(Recht et al.， 2018)和任务规范(Kirkpatrick et al.， 2017)中的细微变化是脆弱和敏感的。当前的系统被更好地描述为狭隘的专家，而不是称职的通才。我们希望向能够执行许多任务的更通用的系统发展——最终不需要为每个任务手动创建和标记训练数据集。
 
 The dominant approach to creating ML systems is to collect a dataset of training examples demonstrating correct behavior for a desired task, train a system to imitate these behaviors, and then test its performance on independent and identically distributed (IID) held-out examples. This has served well to make progress on narrow experts. But the often erratic behavior of captioning models (Lake et al., 2017), reading comprehension systems (Jia & Liang, 2017), and image classifiers (Alcorn et al., 2018) on the diversity and variety of possible inputs highlights some of the shortcomings of this approach.
 
+1. Lake, B. M., Ullman, T. D., Tenenbaum, J. B., and Gershman, S. J. Building machines that learn and think like people. Behavioral and Brain Sciences, 40, 2017.
+2. Jia, R. and Liang, P. Adversarial examples for evaluating reading comprehension systems. arXiv preprint arXiv:1707.07328,
+3. Alcorn, M. A., Li, Q., Gong, Z., Wang, C., Mai, L., Ku, W.-S., and Nguyen, A. Strike (with) a pose: Neural networks are easily fooled by strange poses of familiar objects. arXiv preprint arXiv:1811.11553, 2018.
+
 创建ML系统的主要方法是收集一组训练示例，这些示例演示了所需任务的正确行为，训练系统模仿这些行为，然后在独立且同分布(IID)的保留示例上测试其性能。这有助于在狭隘的专家方面取得进展。但是，字幕模型(Lake等，2017)、阅读理解系统(Jia & Liang, 2017)和图像分类器(Alcorn等，2018)在可能输入的多样性和多样性上的不稳定行为，突显了这种方法的一些缺点。
 
 Our suspicion is that the prevalence of single task training on single domain datasets is a major contributor to the lack of generalization observed in current systems. Progress towards robust systems with current architectures is likely to require training and measuring performance on a wide range of domains and tasks. Recently, several benchmarks have been proposed such as GLUE (Wang et al., 2018) and decaNLP (McCann et al., 2018) to begin studying this.
+
+1. Wang, A., Singh, A., Michael, J., Hill, F., Levy, O., and Bowman, S. R. Glue: A multi-task benchmark and analysis platform for natural language understanding. arXiv preprint arXiv:1804.07461, 2018.
+2. McCann, B., Keskar, N. S., Xiong, C., and Socher, R. The natural language decathlon: Multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.
 
 我们怀疑，在单个域数据集上流行的单一任务训练是当前系统缺乏泛化的主要原因。使用当前体系结构的健壮系统的进展可能需要在广泛的领域和任务上进行培训和测量性能。最近，一些基准被提出，如GLUE (Wang et al.， 2018)和decaNLP (McCann et al.， 2018)开始研究这个。
 
 Multitask learning (Caruana, 1997) is a promising framework for improving general performance. However, multitask training in NLP is still nascent. Recent work reports modest performance improvements (Yogatama et al., 2019) and the two most ambitious efforts to date have trained on a total of 10 and 17 (dataset, objective) pairs respectively (McCann et al., 2018) (Bowman et al., 2018). From a meta-learning perspective, each (dataset, objective) pair is a single training example sampled from the distribution of datasets and objectives. Current ML systems need hundreds to thousands of examples to induce functions which generalize well. This suggests that multitask training many need just as many effective training pairs to realize its promise with current approaches. It will be very difficult to continue to scale the creation of datasets and the design of objectives to the degree that may be required to brute force our way there with current techniques. This motivates exploring additional setups for performing multitask learning.
 
+1. Caruana, R. Multitask learning. Machine learning, 28(1):41–75,1997
+2. Yogatama, D., d’Autume, C. d. M., Connor, J., Kocisky, T., Chrzanowski, M., Kong, L., Lazaridou, A., Ling, W., Yu, L., Dyer, C., et al. Learning and evaluating general linguistic intelligence. arXiv preprint arXiv:1901.11373, 2019.
+3. McCann, B., Keskar, N. S., Xiong, C., and Socher, R. The natural language decathlon: Multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.
+4. Bowman, S. R., Pavlick, E., Grave, E., Van Durme, B., Wang, A., Hula, J., Xia, P., Pappagari, R., McCoy, R. T., Patel, R., et al. Looking for elmo’s friends: Sentence-level pretraining beyond language modeling. arXiv preprint arXiv:1812.10860, 2018.
+
 多任务学习(Caruana, 1997)是一种很有前途的提高综合性能的框架。然而，多任务训练在NLP中还处于起步阶段。最近的工作报告显示了适度的性能改进(Yogatama et al.， 2019)和迄今为止最雄心勃勃的两项工作分别针对10对和17对(数据集，目标)(McCann et al.， 2018) (Bowman et al.， 2018)。从元学习的角度来看，每个(数据集、目标)对都是从数据集和目标的分布中采样的单个训练示例。目前的毫升系统需要数百至数千个例子来归纳归纳功能。这表明，多任务训练需要许多有效的训练对，以实现其承诺与目前的方法。要想继续扩大数据集的创建和目标的设计，达到用现有技术强行达到的程度，将是非常困难的。这激发了对执行多任务学习的额外设置的探索。
 
 The current best performing systems on language tasks utilize a combination of pre-training and supervised finetuning. This approach has a long history with a trend towards more flexible forms of transfer. First, word vectors were learned and used as inputs to task-specific architectures (Mikolov et al., 2013) (Collobert et al., 2011), then the contextual representations of recurrent networks were transferred (Dai & Le, 2015) (Peters et al., 2018), and recent work suggests that task-specific architectures are no longer necessary and transferring many self-attention blocks is sufficient (Radford et al., 2018) (Devlin et al., 2018).
 
+1. Mikolov, T., Sutskever, I., Chen, K., Corrado, G. S., and Dean, J. Distributed representations of words and phrases and their compositionality. In Advances in neural information processing systems, pp. 3111–3119, 2013.
+2. Collobert, R., Weston, J., Bottou, L., Karlen, M., Kavukcuoglu, K., and Kuksa, P. Natural language processing (almost) from scratch. Journal of Machine Learning Research, 12(Aug):2493– 2537, 2011.
+3. Dai, A. M. and Le, Q. V. Semi-supervised sequence learning. In Advances in neural information processing systems, pp. 3079– 3087, 2015.
+4. Peters, M. E., Neumann, M., Iyyer, M., Gardner, M., Clark, C., Lee, K., and Zettlemoyer, L. Deep contextualized word representations. arXiv preprint arXiv:1802.05365, 2018.
+5. GPT：　Radford, A., Narasimhan, K., Salimans, T., and Sutskever, I. Improving language understanding by generative pre-training.
+6. BERT：Devlin, J., Chang, M.-W., Lee, K., and Toutanova, K. Bert: Pretraining of deep bidirectional transformers for language understanding. arXiv preprint arXiv:1810.04805, 2018.
+
 目前在语言任务方面表现最好的系统是结合了培训前的培训和监督下的微调。这一方法历史悠久，其趋势是更灵活的转让形式。首先,词作为输入向量学习和使用特定于任务的架构(Mikolov et al ., 2013) (Collobert et al ., 2011),然后网络转移复发的上下文表示(戴&勒,2015)(Peters等人,2018),和最近的研究表明,特定于任务架构不再是必要和转移许多self-attention块就足够了(雷德福et al ., 2018) (Devlin et al ., 2018)。
 
 These methods still require supervised training in order to perform a task. When only minimal or no supervised data is available, another line of work has demonstrated the promise of language models to perform specific tasks, such as commonsense reasoning (Schwartz et al., 2017) and sentiment analysis (Radford et al., 2017).
+
+1. Schwartz, R., Sap, M., Konstas, I., Zilles, L., Choi, Y., and Smith, N. A. Story cloze task: Uw nlp system. In Proceedings of the 2nd Workshop on Linking Models of Lexical, Sentential and Discourse-level Semantics, pp. 52–55, 2017.
+2. Radford, A., Jozefowicz, R., and Sutskever, I. Learning to generate reviews and discovering sentiment. arXiv preprint arXiv:1704.01444, 2017.
 
 为了完成一项任务，这些方法仍然需要监督训练。当只有极少的或没有监督数据可用时，另一个领域的研究表明，语言模型有望执行特定的任务，如常识推理(Schwartz et al.， 2017)和情感分析(Radford et al.， 2017)。
 
@@ -42,24 +72,37 @@ At the core of our approach is language modeling. Language modeling is usually f
 
 $p(x)=\prod_{i=1}^n p(s_n|s_1,...,s_{n-1})$
 
+1. Jelinek, F. and Mercer, R. L. Interpolated estimation of markov source parameters from sparse data. In Proceedings of the Workshop on Pattern Recognition in Practice, Amsterdam, The Netherlands: North-Holland, May., 1980.
+2. Bengio, Y., Ducharme, R., Vincent, P., and Jauvin, C. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.
+
 我们方法的核心是语言建模。语言建模通常从一组示例$(x_1, x_2，…$(s_1, s_2，…s_n)美元。由于语言具有自然的顺序性，通常将符号上的联合概率因式分解为条件概率的乘积(Jelinek & Mercer, 1980) (Bengio et al.， 2003):
 
 This approach allows for tractable sampling from and estimation of p(x) as well as any conditionals of the form $p(s_{n-k}, ..., s_n | s_1, ..., s_{n-k-1})$. In recent years, there have been significant improvements in the expressiveness of models that can compute these conditional probabilities, such as self-attention architectures like the Transformer (Vaswani
 et al., 2017).
 
+1. Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, Ł., and Polosukhin, I. Attention is all you need. In Advances in Neural Information Processing Systems, pp. 5998–6008, 2017.
+
 这种方法允许对p(x)进行可处理的抽样和估计，以及$p(s_{n-k}, ..., s_n | s_1, ..., s_{n-k-1})$。近年来，可以计算这些条件概率的模型的表达性有了显著的改进，例如Transformer这样的自我关注架构(Vaswani et al.， 2017)。
 
 Learning to perform a single task can be expressed in a probabilistic framework as estimating a conditional distribution $p(output|input)$. Since a general system should be able to perform many different tasks, even for the same input, it should condition not only on the input but also on the task to be performed. That is, it should model $p(output| input,task)$. This has been variously formalized in multitask and meta-learning settings. Task conditioning is often implemented at an architectural level, such as the task specific encoders and decoders in (Kaiser et al., 2017) or at an algorithmic level such as the inner and outer loop optimization framework of MAML (Finn et al., 2017). But as exemplified in McCann et al. (2018), language provides a flexible way to specify tasks, inputs, and outputs all as a sequence of symbols. For example, a translation training example can be written as the sequence (translate to french, english text, french text). Likewise, a reading comprehension training example can be written as (answer the question, document, question, answer). McCann et al. (2018) demonstrated it was possible to train a single model, the MQAN, to infer and perform many different tasks on examples with this type of format.
+
+1. Kaiser, L., Gomez, A. N., Shazeer, N., Vaswani, A., Parmar, N., Jones, L., and Uszkoreit, J. One model to learn them all. arXiv preprint arXiv:1706.05137, 2017.
+2. Finn, C., Abbeel, P., and Levine, S. Model-agnostic metalearning for fast adaptation of deep networks. arXiv preprint arXiv:1703.03400, 2017.
+3. McCann, B., Keskar, N. S., Xiong, C., and Socher, R. The natural language decathlon: Multitask learning as question answering. arXiv preprint arXiv:1806.08730, 2018.
 
 学习执行单个任务可以在概率框架中表示为估计条件分布$p(输出|输入)$。由于一个通用系统应该能够执行许多不同的任务，即使对于相同的输入，它不仅应该对输入设置条件，还应该对要执行的任务设置条件。也就是说，它应该建模$p(输出|输入，任务)$。这在多任务和元学习环境中得到了不同程度的形式化。任务调节通常在架构级实现，例如任务特定的编码器和解码器(Kaiser et al.， 2017)，或者在算法级实现，例如MAML的内环和外环优化框架(Finn et al.， 2017)。但如McCann等人(2018)所示，语言提供了一种灵活的方式来指定任务、输入和输出，所有这些都是作为符号序列。例如，可以将翻译训练示例编写为序列(翻译成法语、英语文本、法语文本)。同样，一个阅读理解训练的例子可以写成(回答问题、文档、问题、答案)。McCann等人(2018)证明，可以训练单一模型MQAN，以这种格式在示例上推断和执行许多不同的任务。
 
 Language modeling is also able to, in principle, learn the tasks of McCann et al. (2018) without the need for explicit supervision of which symbols are the outputs to be predicted. Since the supervised objective is the the same as the unsupervised objective but only evaluated on a subset of the sequence, the global minimum of the unsupervised objective is also the global minimum of the supervised objective. In this slightly toy setting, the concerns with density estimation as a principled training objective discussed in (Sutskever et al., 2015) are side stepped. The problem instead becomes whether we are able to, in practice, optimize the unsupervised
 objective to convergence. Preliminary experiments confirmed that sufficiently large language models are able to perform multitask learning in this toy-ish setup but learning is much slower than in explicitly supervised approaches.
 
+1. Sutskever, I., Jozefowicz, R., Gregor, K., Rezende, D., Lillicrap, T., and Vinyals, O. Towards principled unsupervised learning. arXiv preprint arXiv:1511.06440, 2015.
+
 原则上，语言建模也能够学习McCann等人(2018)的任务，而不需要明确地监督哪些符号是要预测的输出。由于监督目标与无监督目标相同，但仅在序列的一个子集上求值，因此无监督目标的全局最小值也是有监督目标的全局最小值。在这个稍微有些玩具的设置中，(Sutskever et al.， 2015)中讨论的将密度估计作为原则性训练目标的关注点被搁置一边。相反，问题变成了我们能否在实践中优化无监督目标以使其收敛。初步实验证实，足够大的语言模型能够在这种玩具式的设置中执行多任务学习，但学习速度比显式监督方法慢得多。
 
 While it is a large step from the well-posed setup described above to the messiness of “language in the wild”, Weston (2016) argues, in the context of dialog, for the need to develop systems capable of learning from natural language directly and demonstrated a proof of concept – learning a QA task without a reward signal by using forward prediction of a teacher’s outputs. While dialog is an attractive approach, we worry it is overly restrictive. The internet contains a vast amount of information that is passively available without the need for interactive communication. Our speculation is
 that a language model with sufficient capacity will begin to learn to infer and perform the tasks demonstrated in natural language sequences in order to better predict them, regardless of their method of procurement. If a language model is able to do this it will be, in effect, performing unsupervised multitask learning. We test whether this is the case by analyzing the performance of language models in a zero-shot setting on a wide variety of tasks.
+
+1. Weston, J. E. Dialog-based language learning. In Advances in Neural Information Processing Systems, pp. 829–837, 2016.
 
 虽然是一个大的步骤的适定的设置上面描述的混乱在野外“语言”,韦斯顿(2016)认为,在对话框中,需要开发系统能够直接从自然语言的学习,并演示了一个概念验证,学习一个QA任务没有奖励的信号通过使用向前预测老师的输出。虽然对话是一种有吸引力的方法，但我们担心它过于严格。互联网包含了大量的信息，人们可以被动地获取这些信息，而不需要进行互动交流。我们推测，一个具有足够能力的语言模型将开始学习推断和执行自然语言序列中所演示的任务，以便更好地预测它们，而不管它们的获取方法如何。如果一个语言模型能够做到这一点，那么它实际上就是在执行无监督的多任务学习。我们通过分析语言模型在各种任务上的零距离设置的性能来测试是否存在这种情况。
 
