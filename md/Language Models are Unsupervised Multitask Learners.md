@@ -94,3 +94,43 @@ Byte Pair Encoding (BPE) (Sennrich et al., 2015) is a practical middle ground be
 
 字节对编码(Byte Pair Encoding, BPE) (Sennrich et al.， 2015)是一种介于字符级和字级之间的实用中间地带的语言建模方法，它可以有效地插值频繁符号序列的字级输入和不频繁符号序列的字符级输入。尽管名为BPE，但引用BPE实现通常操作Unicode代码点，而不是字节序列。这些实现需要包含Unicode符号的完整空间，以便对所有Unicode字符串建模。这将导致在添加任何多符号标记之前基词汇表超过130,000。与通常与BPE一起使用的32,000到64,000个令牌词汇表相比，这实在是太大了。相比之下，字节级版本的BPE只需要256个基本词汇表。然而，直接将BPE应用于字节序列会导致次优合并，因为BPE使用基于贪婪频率的启发式方法来构建令牌词汇表。我们观察到BPE中包含了很多像dog这样的常用词，因为它们出现在很多变体中，比如dog。狗!狗吗?.这导致有限的词汇槽和模型容量的次优分配。为了避免这种情况，我们防止BPE跨字符类别合并任何字节序列。我们为空格添加了一个异常，它显著地提高了压缩效率，同时跨多个vocab标记只添加了最小的单词碎片。
 
+This input representation allows us to combine the empirical benefits of word-level LMs with the generality of byte-level approaches. Since our approach can assign a probability to any Unicode string, this allows us to evaluate our LMs on any dataset regardless of pre-processing, tokenization, or vocab size.
+
+这种输入表示允许我们将字级LMs的经验优势与字节级方法的通用性结合起来。由于我们的方法可以为任何Unicode字符串赋值一个概率，这允许我们在任何数据集上计算LMs，而不管预处理、记号化或vocab的大小。
+
+### 2.3. Model
+
+We use a Transformer (Vaswani et al., 2017) based architecture for our LMs. The model largely follows the details of the OpenAI GPT model (Radford et al., 2018) with a few modifications. Layer normalization (Ba et al., 2016)
+was moved to the input of each sub-block, similar to a pre-activation residual network (He et al., 2016) and an additional layer normalization was added after the final selfattention block. A modified initialization which accounts for the accumulation on the residual path with model depth
+is used. We scale the weights of residual layers at initialization
+by a factor of $1/\sqrt{N}$ where N is the number of residual layers. The vocabulary is expanded to 50,257. We also increase the context size from 512 to 1024 tokens and a larger batchsize of 512 is used.
+
+## 3. Experiments
+
+We trained and benchmarked four LMs with approximately log-uniformly spaced sizes. The architectures are summarized in Table 2. The smallest model is equivalent to the original GPT, and the second smallest equivalent to the
+largest model from BERT (Devlin et al., 2018). Our largest model, which we call GPT-2, has over an order of magnitude more parameters than GPT. The learning rate of each model was manually tuned for the best perplexity on a 5% held-out sample of WebText. All models still underfit Web-Text and held-out perplexity has as of yet improved given more training time.
+
+我们对四个LMs进行了训练和基准测试，它们的大小大约是log均匀间隔的。架构总结在表2中。最小的模型相当于原始的GPT，第二小的模型相当于BERT (Devlin et al.， 2018)的最大模型。我们最大的模型，我们称之为GPT-2，它的参数比GPT多一个数量级。每个模型的学习率都是在5%的WebText样本上手动调整以获得最佳的perplexity。所有的模型仍然不适合网络文本和helout perplexity已经改善了给更多的训练时间。
+
+### 3.1. Language Modeling
+
+As an initial step towards zero-shot task transfer, we are interested in understanding how WebText LM’s perform at zero-shot domain transfer on the primary task they are trained for – language modeling. Since our model operates on a byte level and does not require lossy pre-processing
+or tokenization, we can evaluate it on any language model benchmark. Results on language modeling datasets are commonly reported in a quantity which is a scaled or exponentiated version of the average negative log probability per canonical prediction unit - usually a character, a byte, or
+a word. We evaluate the same quantity by computing the log-probability of a dataset according to a WebText LM and dividing by the number of canonical units. For many of these datasets, WebText LMs would be tested significantly outof- distribution, having to predict aggressively standardized text, tokenization artifacts such as disconnected punctuation
+and contractions, shuffled sentences, and even the string <UNK> which is extremely rare in WebText - occurring only 26 times in 40 billion bytes. We report our main results in Table 3 using invertible de-tokenizers which remove as many of these tokenization / pre-processing artifacts as possible. Since these de-tokenizers are invertible, we can still calculate the log probability of a dataset and they can be thought of as a simple form of domain adaptation. We observe gains of 2.5 to 5 perplexity for GPT-2 with these de-tokenizers.
+
+作为迈向零镜头任务转移的第一步，我们有兴趣了解WebText LM如何在零镜头域转移的主要任务上执行他们被训练为非语言建模。由于我们的模型在字节级别上运行，不需要有损预处理或标记化，所以我们可以在任何语言模型基准上对其进行评估。语言建模数据集的结果通常以每规范预测单元(通常是一个字符、一个字节或一个单词)的平均负对数概率的比例或指数形式来报告。我们通过根据WebText LM计算数据集的日志概率，并除以规范单元的数量来评估相同的数量。对于许多这样的数据集，WebText LMs将被测试出显著的out - distribution，必须预测积极标准化的文本，标记化工件，如断开的标点和缩写，打乱的句子，甚至字符串，这在WebText中极为罕见，在400亿字节中仅出现26次。我们在表3中报告了使用可逆反令牌器的主要结果，该反令牌器删除了尽可能多的这些令牌化/预处理工件。由于这些解记号器是可逆的，我们仍然可以计算数据集的日志概率，它们可以被认为是一种简单的域适应形式。我们观察到使用这些解令器GPT-2获得2.5到5个perplexity。
+
+WebText LMs transfer well across domains and datasets, improving the state of the art on 7 out of the 8 datasets in a zero-shot setting. Large improvements are noticed on small datasets such as Penn Treebank and WikiText-2 which have only 1 to 2 million training tokens. Large improvements are also noticed on datasets created to measure long-term
+dependencies like LAMBADA (Paperno et al., 2016) and the Children’s Book Test (Hill et al., 2015). Our model is still significantly worse than prior work on the One Billion Word Benchmark (Chelba et al., 2013). This is likely due to a combination of it being both the largest dataset and having some of the most destructive pre-processing - 1BW’s sentence level shuffling removes all long-range structure.
+
+WebText LMs可以很好地跨域和数据集传输，在一个零镜头设置中改进8个数据集中的7个数据集的状态。在小型的数据集中，如Penn Treebank和WikiText-2，只有100万到200万的训练令牌，可以看到很大的改进。在为测量长期依赖关系而创建的数据集(如LAMBADA (Paperno et al.， 2016)和儿童书籍测试(Hill et al.， 2015)上也发现了巨大的改进。我们的模型仍然比之前在十亿词基准上的工作要差很多(Chelba et al.， 2013)。这可能是由于它既是最大的数据集，又有一些最具破坏性的预处理——1BW的句子层次变换删除了所有的长程结构。
+
+### 3.2. Children’s Book Test
+
+The Children’s Book Test (CBT) (Hill et al., 2015) was created to examine the performance of LMs on different categories of words: named entities, nouns, verbs, and prepositions. Rather than reporting perplexity as an evaluation metric, CBT reports accuracy on an automatically constructed cloze test where the task is to predict which of 10 possible choices for an omitted word is correct. Following the LM approach introduced in the original paper, we compute the probability of each choice and the rest of the sentence conditioned on this choice according to the LM, and predict the one with the highest probability. As seen in Figure 2 performance steadily improves as model size is increased and closes the majority of the gap to human performance on this test. Data overlap analysis showed one of the CBT test set books, The Jungle Book by Rudyard Kipling, is in WebText, so we report results on the validation set which has no significant overlap. GPT-2 achieves new state of the art results of 93.3% on common nouns and 89.1% on named entities. A de-tokenizer was applied to remove PTB style tokenization artifacts from CBT.
+
+儿童书籍测试(CBT) (Hill et al.， 2015)是为了检查LMs在不同类别的单词上的表现:命名实体、名词、动词和介词。CBT并没有将复杂程度作为一个评估指标，而是在一个自动构建的完形填空测试中报告准确性，该测试的任务是预测一个遗漏的单词在10个选项中哪个选项是正确的。按照原文介绍的LM方法，我们根据LM计算出每个选择的概率以及以此为条件的句子其余部分，并预测出概率最高的一个。如图2所示，随着模型大小的增加，性能稳步提高，并消除了在此测试中与人类性能的大部分差距。数据重叠分析显示，其中一个CBT测试集集，鲁德亚德·吉卜林的《奇幻森林》，是在WebText中，所以我们报告的验证集的结果没有明显的重叠。GPT-2在常见名词上获得了93.3%的最新成果，在命名实体上获得了89.1%的最新成果。在CBT中应用去标记器去除PTB风格的标记伪影。
+
+
+
