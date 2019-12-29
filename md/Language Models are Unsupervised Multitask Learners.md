@@ -42,10 +42,30 @@ At the core of our approach is language modeling. Language modeling is usually f
 
 $p(x)=\prod_{i=1}^n p(s_n|s_1,...,s_{n-1})$
 
-This approach allows for tractable sampling from and estimation
-of p(x) as well as any conditionals of the form
-p(sn􀀀k; :::; snjs1; :::; sn􀀀k􀀀1). In recent years, there have
-been significant improvements in the expressiveness of models
-that can compute these conditional probabilities, such as
-self-attention architectures like the Transformer (Vaswani
+我们方法的核心是语言建模。语言建模通常从一组示例$(x_1, x_2，…$(s_1, s_2，…s_n)美元。由于语言具有自然的顺序性，通常将符号上的联合概率因式分解为条件概率的乘积(Jelinek & Mercer, 1980) (Bengio et al.， 2003):
+
+This approach allows for tractable sampling from and estimation of p(x) as well as any conditionals of the form $p(s_{n-k}, ..., s_n | s_1, ..., s_{n-k-1})$. In recent years, there have been significant improvements in the expressiveness of models that can compute these conditional probabilities, such as self-attention architectures like the Transformer (Vaswani
 et al., 2017).
+
+这种方法允许对p(x)进行可处理的抽样和估计，以及$p(s_{n-k}, ..., s_n | s_1, ..., s_{n-k-1})$。近年来，可以计算这些条件概率的模型的表达性有了显著的改进，例如Transformer这样的自我关注架构(Vaswani et al.， 2017)。
+
+Learning to perform a single task can be expressed in a probabilistic framework as estimating a conditional distribution $p(output|input)$. Since a general system should be able to perform many different tasks, even for the same input, it should condition not only on the input but also on the task to be performed. That is, it should model $p(output| input,task)$. This has been variously formalized in multitask and meta-learning settings. Task conditioning is often implemented at an architectural level, such as the task specific encoders and decoders in (Kaiser et al., 2017) or at an algorithmic level such as the inner and outer loop optimization framework of MAML (Finn et al., 2017). But as exemplified in McCann et al. (2018), language provides a flexible way to specify tasks, inputs, and outputs all as a sequence of symbols. For example, a translation training example can be written as the sequence (translate to french, english text, french text). Likewise, a reading comprehension training example can be written as (answer the question, document, question, answer). McCann et al. (2018) demonstrated it was possible to train a single model, the MQAN, to infer and perform many different tasks on examples with this type of format.
+
+学习执行单个任务可以在概率框架中表示为估计条件分布$p(输出|输入)$。由于一个通用系统应该能够执行许多不同的任务，即使对于相同的输入，它不仅应该对输入设置条件，还应该对要执行的任务设置条件。也就是说，它应该建模$p(输出|输入，任务)$。这在多任务和元学习环境中得到了不同程度的形式化。任务调节通常在架构级实现，例如任务特定的编码器和解码器(Kaiser et al.， 2017)，或者在算法级实现，例如MAML的内环和外环优化框架(Finn et al.， 2017)。但如McCann等人(2018)所示，语言提供了一种灵活的方式来指定任务、输入和输出，所有这些都是作为符号序列。例如，可以将翻译训练示例编写为序列(翻译成法语、英语文本、法语文本)。同样，一个阅读理解训练的例子可以写成(回答问题、文档、问题、答案)。McCann等人(2018)证明，可以训练单一模型MQAN，以这种格式在示例上推断和执行许多不同的任务。
+
+Language modeling is also able to, in principle, learn the tasks of McCann et al. (2018) without the need for explicit supervision of which symbols are the outputs to be predicted. Since the supervised objective is the the same as the unsupervised objective but only evaluated on a subset of the sequence, the global minimum of the unsupervised objective is also the global minimum of the supervised objective. In this slightly toy setting, the concerns with density estimation as a principled training objective discussed in (Sutskever et al., 2015) are side stepped. The problem instead becomes whether we are able to, in practice, optimize the unsupervised
+objective to convergence. Preliminary experiments confirmed that sufficiently large language models are able to perform multitask learning in this toy-ish setup but learning is much slower than in explicitly supervised approaches.
+
+原则上，语言建模也能够学习McCann等人(2018)的任务，而不需要明确地监督哪些符号是要预测的输出。由于监督目标与无监督目标相同，但仅在序列的一个子集上求值，因此无监督目标的全局最小值也是有监督目标的全局最小值。在这个稍微有些玩具的设置中，(Sutskever et al.， 2015)中讨论的将密度估计作为原则性训练目标的关注点被搁置一边。相反，问题变成了我们能否在实践中优化无监督目标以使其收敛。初步实验证实，足够大的语言模型能够在这种玩具式的设置中执行多任务学习，但学习速度比显式监督方法慢得多。
+
+While it is a large step from the well-posed setup described above to the messiness of “language in the wild”, Weston (2016) argues, in the context of dialog, for the need to develop systems capable of learning from natural language directly and demonstrated a proof of concept – learning a QA task without a reward signal by using forward prediction of a teacher’s outputs. While dialog is an attractive approach, we worry it is overly restrictive. The internet contains a vast amount of information that is passively available without the need for interactive communication. Our speculation is
+that a language model with sufficient capacity will begin to learn to infer and perform the tasks demonstrated in natural language sequences in order to better predict them, regardless of their method of procurement. If a language model is able to do this it will be, in effect, performing unsupervised multitask learning. We test whether this is the case by analyzing the performance of language models in a zero-shot setting on a wide variety of tasks.
+
+虽然是一个大的步骤的适定的设置上面描述的混乱在野外“语言”,韦斯顿(2016)认为,在对话框中,需要开发系统能够直接从自然语言的学习,并演示了一个概念验证,学习一个QA任务没有奖励的信号通过使用向前预测老师的输出。虽然对话是一种有吸引力的方法，但我们担心它过于严格。互联网包含了大量的信息，人们可以被动地获取这些信息，而不需要进行互动交流。我们推测，一个具有足够能力的语言模型将开始学习推断和执行自然语言序列中所演示的任务，以便更好地预测它们，而不管它们的获取方法如何。如果一个语言模型能够做到这一点，那么它实际上就是在执行无监督的多任务学习。我们通过分析语言模型在各种任务上的零距离设置的性能来测试是否存在这种情况。
+
+## 2.1. Training Dataset
+
+Most prior work trained language models on a single domain of text, such as news articles (Jozefowicz et al., 2016), Wikipedia (Merity et al., 2016), or fiction books (Kiros et al., 2015). Our approach motivates building as large and diverse a dataset as possible in order to collect natural language demonstrations of tasks in as varied of domains and contexts as possible.
+
+之前的大多数工作都是在单一文本领域训练语言模型，如新闻文章(Jozefowicz等人，2016)、维基百科(Merity等人，2016)或小说书籍(Kiros等人，2015)。我们的方法鼓励构建尽可能大和多样化的数据集，以收集在尽可能多的领域和环境中任务的自然语言演示。
+
