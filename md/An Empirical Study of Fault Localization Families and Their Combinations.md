@@ -19,6 +19,27 @@ THE goal of fault localization is to identify the defective program elements rel
 - Predicate switching [10]: utilizing test results from mutating the results of conditional expressions  
 - Information retrieval-based fault localization (IRbased FL) [11]: utilizing bug report information  
 - History-based fault localization [12], [13]: utilizing the development history
+
+[
+- [1] X. Xie, T. Y. Chen, F.-C. Kuo, and B. Xu, “A theoretical analysis of the risk evaluation formulas for spectrum-based fault localization,” ACM Transactions on Software Engineering and Methodology (TOSEM), vol. 22, no. 4, p. 31, 2013. 
+- [2] R. Abreu, P. Zoeteweij, and A. J. Van Gemund, “On the accuracy of spectrum-based fault localization,” in Testing: Academic and Industrial Conference Practice and Research Techniques-MUTATION, 2007. TAICPART-MUTATION 2007. IEEE, 2007, pp. 89–98. 
+- [3] M. J. Harrold, G. Rothermel, K. Sayre, R.Wu, and L. Yi, “An empirical investigation of the relationship between spectra differences and regression faults,” Software Testing Verification and Reliability, vol. 10, no. 3, pp. 171–194, 2000.
+]
+[
+- [4] M. Papadakis and Y. Le Traon, “Metallaxis-fl: mutation-based fault localization,” Software Testing, Verification and Reliability, vol. 25, no. 5-7, pp. 605–628, 2015. 
+- [5] S. Moon, Y. Kim, M. Kim, and S. Yoo, “Ask the mutants: Mutating faulty programs for fault localization,” in Software Testing, Verification and Validation (ICST), 2014 IEEE Seventh International Conference on. IEEE, 2014, pp. 153–162.
+]
+- [6] H. Agrawal, J. R. Horgan, S. London, and W. E. Wong, “Fault localization using execution slices and dataflow tests,” in Software Reliability Engineering, 1995. Proceedings., Sixth International Symposium on. IEEE, 1995, pp. 143–151. 
+- [7] M. Renieres and S. P. Reiss, “Fault localization with nearest neighbor queries,” in Automated Software Engineering, 2003. Proceedings. 18th IEEE International Conference on. IEEE, 2003, pp. 30–39.
+
+- [8] C.-P. Wong, Y. Xiong, H. Zhang, D. Hao, L. Zhang, and H. Mei, “Boosting bug-report-oriented fault localization with segmentation and stack-trace analysis,” in Software Maintenance and Evolution (ICSME), 2014 IEEE International Conference on. IEEE, 2014, pp. 181–190. 
+- [9] R. Wu, H. Zhang, S.-C. Cheung, and S. Kim, “Crashlocator: locating crashing faults based on crash stacks,” in Proceedings of the 2014 International Symposium on Software Testing and Analysis. ACM, 2014, pp. 204–214.
+
+- [10] X. Zhang, N. Gupta, and R. Gupta, “Locating faults through automated predicate switching,” in International Conference on Software Engineering, 2006, pp. 272–281. 
+- [11] J. Zhou, H. Zhang, and D. Lo, “Where should the bugs be fixed? more accurate information retrieval-based bug localization based on bug reports,” in Software Engineering (ICSE), 2012 34th International Conference on. IEEE, 2012, pp. 14–24. 
+- [12] S. Kim, T. Zimmermann, E. J. Whitehead Jr, and A. Zeller, “Predicting faults from cached history,” in Proceedings of the 29th international conference on Software Engineering. IEEE Computer Society, 2007, pp. 489–498. 
+- [13] F. Rahman, D. Posnett, A. Hindle, E. Barr, and P. Devanbu, “Bugcache for inspections: hit or miss?” in Proceedings of the 19th ACM SIGSOFT symposium and the 13th European conference on Foundations of software engineering. ACM, 2011, pp. 322–331.
+
 - 基于频谱的故障定位(SBFL)[1]，[2]，[3]:利用测试覆盖信息
 - 基于突变的故障定位(MBFL)[4]，[5]:利用从程序突变中收集的测试结果
 - (动态)程序切片[6]，[7]:利用动态程序依赖
@@ -184,3 +205,18 @@ In particular, we consider a simple fault prediction technique introduced by Rah
 一般来说，过去包含更多bug的程序文件在未来[42]中可能会有更多bug。开发历史可用于故障预测，即在发现任何故障之前，根据程序中元素的缺陷可能性对其进行排序。传统上，故障预测和故障定位被认为是两个不同的问题。然而，由于它们都产生了一系列的可疑元素，我们在本文中也考虑了故障预测技术。
 
 特别地，我们考虑了Rahman等人提出的一种简单的故障预测技术。这种技术只是根据应用于文件上的修复更改的数量对文件进行排序。这个简单的技术与更复杂的故障预测技术FixCache[12]具有相同的检查功能。
+
+### 2.8 Learning to Rank
+
+Learning to rank techniques train a machine learning model for a ranking task [43]. Learning to rank is widely used in Information Retrieval (IR) and Natural Language Processing (NLP) [44]. For example, in document retrieval, the task is to sort documents by the relevance to a query. One way to create the ranking model is with expert knowledge. By contrast, learning to rank techniques improve ranking performance and automatically create the ranking model, integrating many features (or signals).
+
+学习排序技术训练了一个用于排序任务[43]的机器学习模型。学习排序在信息检索(IR)和自然语言处理(NLP)[44]中得到了广泛的应用。例如，在文档检索中，任务是根据与查询的相关性对文档进行排序。创建排名模型的一种方法是利用专家知识。相比之下，学习排名技术可以提高排名性能，并自动创建排名模型，集成了许多特性(或信号)。
+
+Liu categorized learning to rank models into three groups [44]. Pointwise techniques transform the rank problem into a regression or ordinal classification problem for the ordinal score in the training data. Pairwise techniques approximate the problem by a classification problem: creating a classifier for classifying item pairs according to their ordinal position. The goal of pairwise techniques is to minimize ordinal inversions. Listwise techniques take ranking lists as input and evaluate the ranking lists directly by the loss functions.
+
+刘将模型的学习分成三组[44]。点态化技术将秩问题转化为训练数据中序数分数的回归或序数分类问题。两两配对技术通过一个分类问题来近似这个问题:创建一个分类器，根据它们的序号位置对项目对进行分类。两两配对技术的目标是最小化序对反转。列表技术以排序列表为输入，利用损失函数直接对排序列表进行评估。
+
+Recently, Xuan and Monperrus showed that learning to rank model can be used to combine different formulae in SBFL [23]. The basic idea is to treat the suspiciousness score produced by different formulae as features and use learning to rank to find a model that ranks the faulty element as high as possible. In this paper we apply learning to rank similarly to combine approaches from different families.
+
+最近，Xuan和Monperrus证明了学习rank模型可以用于组合SBFL[23]中不同的公式。其基本思想是将不同公式所产生的可疑性分数作为特征，利用学习排序的方法，找到一个将错误元素尽可能高的排序模型。在这篇论文中，我们将学习应用于相似的排序，以结合来自不同家庭的方法。
+
