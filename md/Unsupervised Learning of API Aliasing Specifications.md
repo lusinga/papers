@@ -1,3 +1,5 @@
+# Unsupervised Learning of API Aliasing Specifications
+
 ## ABSTRACT
 
 Code completion plays a prominent role in modern integrated development environments (IDEs). Machine learning has become ubiquitous in analogous natural language writing and search software, surfacing more relevant autocompletions and search suggestions in fewer keystrokes. Prior research has reported training high-accuracy, deep neural networks for modeling source code, but little attention has been given to the practical constraints imposed by interactive developer tools.
