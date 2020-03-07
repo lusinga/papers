@@ -1,0 +1,7 @@
+# An Empirical Study of Operating Systems Errors
+
+## Abstract
+
+We present a study of operating system errors found by automatic, static, compiler analysis applied to the Linux and OpenBSD kernels. Our approach differs from previous studies that consider errors found by manual inspection of logs, testing, and surveys because static analysis is applied uniformly to the entire kernel source, though our approach necessarily considers a less comprehensive variety of errors than previous studies. In addition, automation allows us to track errors over multiple versions of the kernel source to estimate how long errors remain in the system before they are fixed. We found that device drivers have error rates up to three to seven times higher than the rest of the kernel. We found that the largest quartile of functions have error rates two to six times higher than the smallest quartile. We found that the newest quartile of files have error rates up to twice that of the oldest quartile, which provides evidence that code "hardens" over time. Finally, we found that bugs remain in the Linux kernel an average of 1.8 years before being fixed.
+
+我们研究了在Linux和OpenBSD内核中通过自动、静态、编译器分析发现的操作系统错误。我们的方法与以前的研究不同，以前的研究考虑通过手工检查日志、测试和调查发现的错误，因为静态分析统一地应用于整个内核源，尽管我们的方法必须考虑比以前的研究更少的各种错误。此外，自动化允许我们跟踪多个版本的内核源代码中的错误，以估计错误在修复之前在系统中保留的时间。我们发现设备驱动程序的错误率是内核其余部分的3到7倍。我们发现，函数中最大的四分位数的错误率是最小的四分位数的2到6倍。我们发现，最新的四分位数文件的错误率是最老的四分位数文件错误率的两倍，这就证明了随着时间的推移，代码会“变硬”。最后，我们发现在修复之前，Linux内核中的bug平均存在1.8年。
