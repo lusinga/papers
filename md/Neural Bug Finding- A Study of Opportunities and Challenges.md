@@ -63,6 +63,17 @@ Techniques for scanning source code for particular bug patterns go back to the p
 - [38] S. C. Johnson, “Lint, a C program checker,” 1978.
 - [2] E. Aftandilian, R. Sauciuc, S. Priya, and S. Krishnan, “Building useful program analysis tools using an extensible java compiler,” in 12th IEEE International Working Conference on Source Code Analysis and Manipulation, SCAM 2012, Riva del Garda, Italy, September 23-24, 2012, 2012, pp. 14–23.
 - [3] C. Calcagno, D. Distefano, J. Dubreil, D. Gabi, P. Hooimeijer, M. Luca, P. O’Hearn, I. Papakonstantinou, J. Purbrick, and D. Rodriguez, “Moving fast with software verification,” in NASA Formal Methods Symposium. Springer, 2015, pp. 3–11.
+- [39] A. Rice, E. Aftandilian, C. Jaspan, E. Johnston, M. Pradel, and Y. Arroyo-Paredes, “Detecting argument selection defects,” in Con- ference on Object-Oriented Programming, Systems, Languages, and Applications (OOPSLA), 2017.
+- [40] N. Ayewah, D. Hovemeyer, J. D. Morgenthaler, J. Penix, and W. Pugh, “Using static analysis to find bugs,” IEEE Software, vol. 25, no. 5, pp. 22–29, 2008. 
+- [41] N. Ayewah and W. Pugh, “The google findbugs fixit,” in Proceedings of the Nineteenth International Symposium on Software Testing and Analysis, ISSTA 2010, Trento, Italy, July 12-16, 2010, 2010, pp. 241–252.
+- [42] A. Bessey, K. Block, B. Chelf, A. Chou, B. Fulton, S. Hallem, C. Henri- Gros, A. Kamsky, S. McPeak, and D. R. Engler, “A few billion lines of code later: Using static analysis to find bugs in the real world,” Communications of the ACM, vol. 53, no. 2, pp. 66–75, 2010. (coverity)
+- [43] A. Wasylkowski and A. Zeller, “Mining temporal specifications from object usage,” in International Conference on Automated Software Engineering (ASE). IEEE, 2009, pp. 295–306.
+- [44] T. T. Nguyen, H. A. Nguyen, N. H. Pham, J. M. Al-Kofahi, and T. N. Nguyen, “Graph-based mining of multiple object usage patterns,” in European Software Engineering Conference and Symposium on the Foundations of Software Engineering (ESEC/FSE). ACM, 2009, pp. 383–392.
+- [45] M. Pradel, C. Jaspan, J. Aldrich, and T. R. Gross, “Statically checking API protocol conformance with mined multi-object specifications,” in International Conference on Software Engineering (ICSE), 2012, pp. 925–935.
+- [46] M. Pradel and T. R. Gross, “Detecting anomalies in the order of equallytyped method arguments,” in International Symposium on Software Testing and Analysis (ISSTA), 2011, pp. 232–242.
+- [47] F. Brown, S. Narayan, R. S.Wahby, D. R. Engler, R. Jhala, and D. Stefan, “Finding and preventing bugs in javascript bindings,” in 2017 IEEE Symposium on Security and Privacy, SP 2017, San Jose, CA, USA, May 22-26, 2017, 2017, pp. 559–578. 
+- [48] D. Engler, D. Y. Chen, S. Hallem, A. Chou, and B. Chelf, “Bugs as deviant behavior: A general approach to inferring errors in systems code,” in Symposium on Operating Systems Principles (SOSP). ACM, 2001, pp. 57–72. 
+- [49] B. Liang, P. Bian, Y. Zhang, W. Shi, W. You, and Y. Cai, “Antminer: Mining more bugs by reducing noise interference,” in ICSE, 2016.
 
 扫描特定bug模式的源代码的技术可以追溯到最早的lint工具[38]。最近在业界部署的工具包括谷歌使用的易出错[2]和Facebook使用的推断[3]。谷歌是我们的研究对象。部署静态bug检测器的详细信息考虑一个基于名称的静态检查器[39]，应用FindBugs工具[40]、[41]和一个基于规则推理的静态bug检测器[42]。静态bug发现的研究包括API误用[43]-[45]、基于名称的bug检测[46]、安全bug[47]、违反推断程序员信念[48]、以及其他类型的异常检测[49]。这些方法需要大量的手工工作来创建和调优bug检测器，而我们在这里只从示例中学习bug检测器。
 
@@ -74,13 +85,28 @@ The presence of false positives, a problem shared by both traditional and learne
 
 Learned models are becoming increasingly popular for bug finding. DeepBugs exploits identifier names, e.g., of variables and methods, to find buggy code [14]. Vasic et al. [53] use pointer networks to jointly find and fix variable mis-use bugs. Choi et al. train a memory network [54] to predict whether a piece of code may cause a buffer overrun [15]. A broader set of coding mistakes that may cause vulnerabilities is considered in other learning-based work [16]. Harer et at. [17] train a CNN to classify methods as vulnerable or not based on heuristics built on labels from a static analyzer. The main contribution of our work is to systematically study general neural bug detection and to predict the bug kind.
 
+- [14] M. Pradel and K. Sen, “DeepBugs: A learning approach to name-based bug detection,” in OOPSLA, 2018.
+- [53] M. Vasic, A. Kanade, P. Maniatis, D. Bieber, and R. singh, “Neural program repair by jointly learning to localize and repair,” in International Conference on Learning Representations, 2019. [Online]. Available: https://openreview.net/forum?id=ByloJ20qtm
+- [54] J. Weston, S. Chopra, and A. Bordes, “Memory networks,” CoRR, vol. abs/1410.3916, 2014.
+- [15] M. je Choi, S. Jeong, H. Oh, and J. Choo, “End-to-end prediction of buffer overruns from raw source code via neural memory networks,” CoRR, vol. abs/1703.02458, 2017.
+- [16] Z. Li, S. X. Deqing Zou and, X. Ou, H. Jin, S. Wang, Z. Deng, and Y. Zhong, “VulDeePecker: A deep learning-based system for vulnerability detection,” in NDSS, 2018. 
+- [17] J. A. Harer, L. Y. Kim, R. L. Russell, O. Ozdemir, L. R. Kosta, A. Rangamani, L. H. Hamilton, G. I. Centeno, J. R. Key, P. M. Ellingwood, M. W. McConley, J. M. Opper, S. P. Chin, and T. Lazovich, “Automated software vulnerability detection with machine learning,” CoRR, 2018. [Online]. Available: http://arxiv.org/abs/1803.04497
+
 学习模型在bug发现方面正变得越来越流行。DeepBugs利用标识符名称(例如变量和方法)来查找有bug的代码[14]。Vasic等人的[53]使用指针网络共同发现和修复变量滥用的错误。Choi等人训练内存网络[54]来预测一段代码是否会导致缓冲区溢出[15]。在其他基于学习的工作[16]中考虑了可能导致漏洞的一组更广泛的编码错误。哈勒尔等。[17]训练CNN根据基于静态分析器的标签构建的启发式将方法分类为易受攻击的或非易受攻击的。本工作的主要贡献是系统地研究了一般的神经缺陷检测方法，并对缺陷类型进行了预测。
 
 Instead of classifying whether a piece of code suffers from a bug, anomaly detection approaches search for code that stands out and therefore may be buggy. Bugram uses a statistical language model that warns about uncommon ngrams of tokens [25]. Salento learns a probabilistic model of API usages and warns about unusual usages [55]. In contrast to our work, these techniques learn from non-buggy examples only. Ray et al. [56] explains why this is possible and shows that buggy code is less natural than non-buggy code.
 
+- [25] S. Wang, D. Chollak, D. Movshovitz-Attias, and L. Tan, “Bugram: bug detection with n-gram language models,” in Proceedings of the 31st IEEE/ACM International Conference on Automated Software Engineer- ing, ASE 2016, Singapore, September 3-7, 2016, 2016, pp. 708–719.
+- [55] V. Murali, S. Chaudhuri, and C. Jermaine, “Bayesian specification learning for finding api usage errors,” in FSE, 2017.
+- [56] B. Ray, V. Hellendoorn, S. Godhane, Z. Tu, A. Bacchelli, and P. T. Devanbu, “On the "naturalness" of buggy code,” in Proceedings of the 38th International Conference on Software Engineering, ICSE 2016, Austin, TX, USA, May 14-22, 2016, 2016, pp. 428–439.
+
 异常检测方法不是对一段代码是否存在bug进行分类，而是搜索突出的代码，因此可能存在bug。Bugram使用一种统计语言模型来警告不常见的标记[25]。Salento学习API用法的概率模型，并对异常用法[55]发出警告。与我们的工作相反，这些技术只从没有错误的示例中学习。Ray等人解释了为什么这是可能的，并表明有bug的代码比没有bug的代码更不自然。
 
 Orthogonal to bug detection is the problem of defect prediction [57], [58]. Instead of pinpointing specific kinds of errors, as our work, it predicts whether a given software component will suffer from any bug at all. Wang et al. [6] propose a neural network-based model for this task [6].
+
+- [57] N. E. Fenton and M. Neil, “A critique of software defect prediction models,” IEEE Transactions on software engineering, vol. 25, no. 5, pp. 675–689, 1999. 
+- [58] T. Zimmermann, N. Nagappan, H. Gall, E. Giger, and B. Murphy, “Cross-project defect prediction: a large scale experiment on data vs. domain vs. process,” in Proceedings of the the 7th joint meeting of the European software engineering conference and the ACM SIGSOFT symposium on The foundations of software engineering. ACM, 2009, pp. 91–100.
+- [6] S. Wang, T. Liu, and L. Tan, “Automatically learning semantic features for defect prediction,” in ICSE, 2016, pp. 297–308.
 
 与缺陷检测正交的是缺陷预测问题[57]、[58]。它不是像我们的工作那样精确地指出特定类型的错误，而是预测给定的软件组件是否会遭受任何错误。Wang等人提出了一个基于神经网络的任务[6]模型。
 
