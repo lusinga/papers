@@ -43,7 +43,7 @@ SST-2斯坦福情感树库(Socher et al.， 2013)由电影评论和人类对其�
 - MRPC 
 The Microsoft Research Paraphrase Corpus (Dolan & Brockett, 2005) is a corpus of sentence pairs automatically extracted from online news sources, with human annotations for whether the sentences in the pair are semantically equivalent. Because the classes are imbalanced (68% positive), we follow common practice and report both accuracy and F1 score.
 
-Microsoft Research的释义语料库(Dolan &布罗基特，2005)是一个自动从在线新闻源提取的句子对语料库，其中包含人工注释，用于判断句子在语义上是否相同。因为这些班是不平衡的(68%阳性)，我们按照惯例报告准确性和F1分数。
+Microsoft Research的释义语料库(Dolan &布罗基特，2005)是一个自动从在线新闻源提取的句子对语料库，其中包含人工注释，用于判断句子在语义上是否相同。因为这些类是不平衡的(68%阳性)，我们按照惯例报告准确性和F1分数。
 
 - QQP 
 The Quora Question Pairs2 dataset is a collection of question pairs from the community question-answering website Quora. The task is to determine whether a pair of questions are semantically equivalent. As in MRPC, the class distribution in QQP is unbalanced (63% negative), so we report both accuracy and F1 score. We use the standard test set, for which we obtained private labels from the authors. We observe that the test set has a different label distribution than the training set.
