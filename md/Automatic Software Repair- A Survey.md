@@ -284,3 +284,47 @@ An improved version of angelic fix localization [95] extends the original techni
 Note that the fix locus locations returned by angelic fix localization are not necessarily the fault locations. The locations identified by angelic fix localization are places where the flow of the executions could be opportunistically altered, by modifying or adding conditions, to mask or compensate the effect of a fault, and do not necessarily correspond to places with faulty statements.
 
 请注意，天使修复定位返回的修复轨迹位置不一定是故障位置。由angelic fix localization确定的位置是执行的流程可以被机会主义地改变的地方，可以通过修改或添加条件来掩盖或补偿错误的影响，并不一定对应于有错误陈述的地方。
+
+## 6 FIX GENERATION
+
+## 7 FIX RECOMMENDERS
+
+Fix recommenders are techniques that do not attempt to produce fixes, but simply suggest a few changes that might be operated on the software to repair the fault. In some cases the recommended changes might fully describe the required fix, in some other cases some effort might be required to the developers to produce the final fix. Although these techniques do not produce an actual repair, that is, they do not produce a new version of the software that is supposed to be correct, their output can be quickly turned into a fix in the best cases.
+
+修复建议者是不尝试生成修复的技术，而只是建议对软件进行一些可能的更改来修复错误。在某些情况下，建议的更改可能完全描述所需的修复，而在另一些情况下，开发人员可能需要付出一些努力来生成最终的修复。虽然这些技术不会产生实际的修复，也就是说，它们不会产生应该是正确的软件新版本，但是在最好的情况下，它们的输出可以很快地变成修复。
+
+A few fix recommender techniques have been proposed so far. Here we discuss these techniques classified according to their fault model. General techniques aim to be effective with a range of programs, not limiting their scope to a specific class of faults. The other techniques can address security faults, which make programs vulnerable to attacks; data type faults, which may cause failures due to the misuse of data structures and other types of data; concurrency faults, which may cause deadlocks and other concurrency issues; and performance faults, which may cause unacceptable execution time for some functionalities.
+
+目前已经提出了一些修复推荐技术。在这里，我们将根据故障模型对这些技术进行分类讨论。通用技术的目标是对一系列程序有效，而不是将它们的范围限制在特定的故障类别上。其他技术可以解决安全故障，使程序容易受到攻击;数据类型错误，可能由于误用数据结构和其他类型的数据而导致故障;并发故障，可能导致死锁等并发问题;以及性能故障，这可能会导致某些功能无法接受的执行时间。
+
+Table 4 summarizes the discussed techniques (column Techniques), the classes of faults addressed by each technique (column Fault model), and the section in which the technique is described (column Section).
+
+表4总结了讨论的技术(列技术)、每种技术处理的故障类型(列故障模型)以及描述该技术的部分(列部分)。
+
+### 7.1 General Techniques
+
+BugFix [39] can analyze the debugging information at a specific program statement and report to developers a list of possible actions that may fix the faulty code. The technique exploits spectrum-based fault localization to identify the suspicious statements, and uses static and dynamic metrics to classify and relate the problem that must be fixed to the entries in a database of debugging rules. The fix suggestions extracted from the database are finally reported as a prioritized list to the developer.
+
+[39]可以分析特定程序语句中的调试信息，并向开发人员报告可能修复错误代码的操作列表。该技术利用基于频谱的故障定位来识别可疑语句，并使用静态和动态度量来对必须与调试规则数据库中的条目固定的问题进行分类和关联。从数据库中提取的修复建议最终作为优先级列表报告给开发人员。
+
+MintHint [141] also generates a ranked list of actions that can be performed to fix a fault. MintHint identifies the statements that are likely to be faulty using spectrum-based fault localization. Each faulty statement is replaced by a symbolic state transformer (i.e., a sort of abstract statement defined on the state of the program only) that satisfies the property of making the program pass all the available test cases. MintHint then explores a space of possible changes that can be performed on the faulty statement to obtain the same behavior defined by the state transformer. The possible solutions are finally returned to the developer ranked according to their likelihood of occurring in the repaired statement.
+
+MintHint[141]还生成可用于修复错误的操作的排序列表。MintHint使用基于频谱的故障定位来识别可能出错的语句。每个错误语句都被一个符号状态转换器(即，一种只定义在程序状态上的抽象语句)，它满足使程序通过所有可用测试用例的属性。MintHint然后探索可能对错误语句执行的更改空间，以获得状态转换器定义的相同行为。可能的解决方案最终根据其在已修复语句中出现的可能性返回给开发人员。
+
+## 8 EMPIRICAL EVIDENCE
+
+## 9 OPEN CHALLENGES
+
+## 10 CONCLUSIONS
+
+Automatic program repair techniques address the ambitious challenge of automatically repairing faulty software. In the last decade, program repair techniques have produced relevant and impactful results demonstrating the potential of significantly affecting testing, validation, and debugging practices on the long term.
+
+自动程序修复技术解决了自动修复错误软件的艰巨挑战。在过去的十年中，程序修复技术已经产生了相关的和有影响力的结果，证明了在长期内显著影响测试、验证和调试实践的潜力。
+
+This paper organizes the knowledge in the area, surveying the existing work, and discussing the main results and challenges. In particular, this paper shows that program repairing approaches address the problem of repairing software according to two main strategies. Generate-and-validate approaches generate a search space of the possible fixes and then explore this search space looking for a correct fix. Semantics-driven approaches produce a representation of the problem of fixing a program and solve this problem to obtain the actual fixes.
+
+本文组织了该领域的知识，调查了现有的工作，并讨论了主要结果和挑战。特别地，本文指出程序修复方法根据两种主要策略来解决软件修复问题。生成并验证方法生成可能的修复程序的搜索空间，然后在这个搜索空间中寻找正确的修复程序。语义驱动的方法生成修复程序问题的表示，并解决此问题以获得实际的修复。
+
+We integrate and summarize the empirical evidence collected from multiple diverse studies into a set of key facts that show the tradeoffs and factors influencing the effectiveness of these approaches. We finally discuss the challenges we believe are the most important and that can influence the future research in the area.
+
+我们将从多个不同研究中收集到的经验证据整合并总结为一组关键事实，这些事实显示了这些方法的权衡和影响其有效性的因素。最后，我们讨论了我们认为最重要的挑战，这些挑战将影响该领域未来的研究。
