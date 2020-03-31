@@ -1,4 +1,5 @@
 # Automatic Software Repair: A Survey
+2019
 
 ## Abstract
 
@@ -10,13 +11,34 @@ Despite their growing complexity and increasing size, modern software applicatio
 
 DEBUGGING software failures is still a painful, time consuming, and expensive process. For instance, recent studies showed that debugging activities often account for about 50 percent of the overall development cost of software products [1], [2].
 
+1. T. Britton, L. Jeng, G. Carver, and P. Cheak, "Reversible debugging software - quantify the time and cost saved using reversible debuggers," 2013.
+2. Undo Software, "Increasing software development productivity with reversible debugging," Undo Software, Tech. Rep. white paper, 2014.
+
 调试软件失败仍然是一个痛苦、耗时和昂贵的过程。例如，最近的研究表明，调试活动通常占软件产品[1]、[2]的总体开发成本的50%左右。
 
 There are many factors contributing to the cost of debugging, but the most impacting one is the extensive manual effort that is still required to identify and remove faults. In particular, the debugging process requires analyzing and understanding failed executions, identifying the causes of the failures, implementing fixes, and validating that the fixed program works correctly, that is, the problem has been fixed without introducing any side effect [3], [4], [5]. Most of these activities are executed manually or with partial tool support.
 
+- 3. M. A. M€ullerburg, "The role of debugging within software engineering environments," ACM SIGSOFT Softw. Eng. Notes, vol. 8, no. 4, pp. 81–90, 1983, doi: 10.1145/1006147.1006165. 
+- 4. B. Hailpern and S. Padmanabhan, "Software debugging, testing, and verification," IBM Syst. J., vol. 41, no. 1, pp. 4–12, 2002, doi: 10.1147/sj.411.0004. 
+- 5. A. Zeller, Why Programs Fail, Second Edition: A Guide to Systematic Debugging, 2nd ed. Burlington, MA, USA: Morgan Kaufmann, 2009.
+[这是一本书]
+
 影响调试成本的因素有很多，但影响最大的是仍然需要大量的手工工作来识别和删除错误。特别地，调试过程需要分析和理解失败的执行，确定失败的原因，实现修复，并验证修复后的程序是否正确工作，也就是说，在没有引入任何副作用[3]、[4]、[5]的情况下修复了问题。大多数这些活动都是手动执行的，或者使用部分工具支持。
 
 So far, the automation of debugging activities essentially concerned with the identification of the statements that are likely to be faulty [6], [7], [8], with the isolation of the specific inputs or application states that may cause failures [9], [10], [11], and with the detection of the anomalous events that may partially explain the reason of a failure[12], [13], [14], [15].
+
+- [6] J. A. Jones and M. J. Harrold, "Empirical evaluation of the Tarantula automatic fault-localization technique," in Proc. Int. Conf. Automated Softw. Eng., 2005, pp. 273–282, doi: 10.1145/1101908.1101949. 
+- [7] C. Liu, X. Yan, L. Fei, J. Han, and S. P. Midkiff, "Sober: Statistical model-based bug localization," in Proc. Joint Meet. Eur. Softw. Eng. Conf. Symp. Foundations Softw. Eng., 2005, pp. 286–295, doi: 10.1145/1081706.1081753. 
+- [8] R. Abreu, P. Zoeteweij, and A. J. C. van Gemund, "Spectrumbased multiple fault localization," in Proc. Int. Conf. Automated Softw. Eng., 2009, pp. 88–99, doi: 10.1109/ASE.2009.25.
+
+- [9] A. Zeller, “Yesterday, my program worked. Today, it does not. Why?” in Proc. Joint Meet. Eur. Softw. Eng. Conf. Symp. Found. Softw. Eng., 1999, pp. 253–267, doi: 10.1007/3-540-48166-4_16. 
+- [10] A. Zeller and R. Hildebrandt, "Simplifying and isolating failureinducing input," IEEE Trans. Softw. Eng., vol. 28, no. 2, pp. 183– 200, Feb. 2002, doi: 10.1109/32.988498. 
+- [11] A. Zeller, "Isolating cause-effect chains from computer programs," in Proc. Symp. Foundations Softw. Eng., 2002, pp. 1–10, doi: 10.1145/587051.587053.
+
+- [12] L. Mariani and F. Pastore, "Automated identification of failure causes in system logs," in Proc. Int. Symp. Softw. Rel. Eng., 2008, pp. 117–126, doi: 0.1109/ISSRE.2008.48. 
+- [13] A. Babenko, L. Mariani, and F. Pastore, "AVA: Automated interpretation of dynamically detected anomalies," in Proc. Int. Symp. Softw. Testing Anal., 2009, pp. 237–248, doi: 10.1145/ 1572272.1572300. 
+- [14] L. Mariani, F. Pastore, and M. Pezze, "Dynamic analysis for diagnosing integration faults," IEEE Trans. Softw. Eng., vol. 37, no. 4, pp. 486–508, Jul./Aug. 2011, doi: 10.1109/TSE.2010.93. 
+- [15] D. Zuddas, W. Jin, F. Pastore, L. Mariani, and A. Orso, "MIMIC: locating and understanding bugs by analyzing mimicked executions," in Proc. Int. Conf. Automated Softw. Eng., 2014, pp. 815– 826, 10.1145/2642937.2643014.
 
 到目前为止,有关自动化调试活动本质上与识别的语句可能错误的[6],[7],[8],隔离的特定输入或应用程序状态,可能会导致失败[9],[10],[11],和异常事件的检测可能部分解释失败的原因[12],[13],[14],[15]。
 
@@ -30,6 +52,12 @@ Techniques that identify specific inputs and specific states that may trigger fa
 
 Finally, anomaly detection techniques can detect the operations that are executed by an application during failures but not during correct executions. These operations may explain why and how an application failed. Anomaly detection techniques usually exploit specification mining approaches [16], [17], [18], [19] to automatically generate models that represent the legal behavior of an application, and then use these models to analyze the failed executions and determine the anomalous events [12], [13], [14], [15].
 
+规范挖掘方法
+- [16] M. D. Ernst, J. Cockrell, W. G. Griswold, and D. Notkin, “Dynamically discovering likely program invariants to support program evolution,” IEEE Trans. Softw. Eng., vol. 27, no. 2, pp. 99–123, Feb. 2001, doi: 10.1145/302405.302467. 
+- [17] D. Lorenzoli, L. Mariani, and M. Pezze, “Automatic generation of software behavioral models,” in Proc. Int. Conf. Softw. Eng., 2008, pp. 501–510, doi: 10.1145/1368088.1368157. 
+- [18] M. Gabel and Z. Su, “Testing mined specifications,” in Proc. Int. Symp. Foundations Softw. Eng., 2012, pp. 4:1–4:11, doi: 10.1145/ 2393596.2393598. 
+- [19] I. Krka, Y. Brun, and N. Medvidovic, “Automatic mining of specifications from invocation traces and method invariants,” in Proc. Int. Symp. Found. Softw. Eng., 2014, pp. 178–189, doi: 10.1145/ 2635868.2635890.
+
 最后，异常检测技术可以检测应用程序在故障期间执行的操作，但在正确执行期间不能检测这些操作。这些操作可以解释应用程序失败的原因和原因。异常检测技术通常利用规范挖掘方法[16]、[17]、[18]、[19]自动生成代表应用程序合法行为的模型，然后利用这些模型分析执行失败的情况，确定异常事件[12]、[13]、[14]、[15]。
 
 All these techniques provide useful insights about the possible locations of the faults, the inputs and states responsible for the failures, as well as the anomalous operations executed during failures. However, developers must still put a relevant effort on the analysis of the failed executions to exactly identify the faults that must be fixed. In addition, these techniques do not help the developers with the synthesis of an appropriate fix.
@@ -38,6 +66,22 @@ All these techniques provide useful insights about the possible locations of the
 
 Recently, researchers focused on a new class of approaches, namely program repair techniques [20], [21], [22], [23], [24], [25], [26], [27], [28], [29]. The key idea of these techniques is to try to automatically repair software systems by producing an actual fix that can be validated by the testers before it is finally accepted, or that can be adapted to properly fit the system. The benefit of using these techniques is that the fix both explains the reason of the failure and provides a possible solution to the problem, thus alleviating the effort necessary to identify and correct faults [30], [31].
 
+程序修复技术
+
+- [20] W. Weimer, T. Nguyen, C. Le Goues, and S. Forrest, "Automatically finding patches using genetic programming," in Proc. Int. Conf. Softw. Eng., 2009, pp. 364–374, doi: 10.1109/ ICSE.2009.5070536. 
+- [21] H. Nguyen, D. Qi, A. Roychoudhury, and S. Chandra, "Semfix: Program repair via semantic analysis," in Proc. Int. Conf. Softw. Eng., 2013, pp. 772–781, doi:10.1109/ICSE.2013.6606623. 
+- [22] D. Kim, J. Nam, J. Song, and S. Kim, "Automatic patch generation learned from human-written patches," in Proc. Int. Conf. Softw. Eng., 2013, pp. 802–811, doi: 10.1109/ICSE.2013.6606626. 
+- [23] F. DeMarco, J. Xuan, D. L. Berre, and M. Monperrus, "Automatic repair of buggy if conditions and missing preconditions with SMT," in Proc. Int. Workshop Constraints Softw. Testing Verification Anal., 2014, pp. 30–39, doi: 10.1145/2593735.2593740. 
+- [24] S. Sidiroglou-Douskos, E. Lahtinen, F. Long, and M. Rinard, "Automatic error elimination by horizontal code transfer across multiple applications," in Proc. Conf. Program. Language Des. Implementation, 2015, pp. 43–54, doi: 10.1145/2737924.2737988. 
+- [25] V. Dallmeier, A. Zeller, and B. Meyer, "Generating fixes from object behavior anomalies," in Proc. Int. Conf. Automated Softw. Eng., 2009, pp. 550–554, doi: 10.1109/ASE.2009.15. 
+- [26] S. Marcote and M. Monperrus, "Automatic repair of infinite loops," Tech. Rep. hal-01144026, 2015. 
+- [27] T. Ackling, B. Alexander, and I. Grunert, "Evolving patches for software repair," in Proc. Annu. Conf. Genetic Evol. Comput., 2011, pp. 1427–1434, doi: 10.1145/2001576.2001768. 
+- [28] F. Long and M. Rinard, "Staged program repair with condition synthesis," in Proc. Joint Meet. Eur. Softw. Eng. Conf. Symp. Foundations Softw. Eng., 2015, pp. 166–178, doi: 10.1145/ 2786805.2786811. 
+- [29] Y. Qi, X. Mao, Y. Lei, Z. Dai, and C. Wang, "The strength of random search on automated program repair," in Proc. Int. Conf. Softw. Eng., 2014, pp. 254–265, doi: 10.1145/2568225.2568254.
+
+- [30] Y. Tao, J. Kim, S. Kim, and C. Xu, "Automatically generated patches as debugging aids: a human study," in Proc. Int. Symp. Found. Softw. Eng., 2014, pp. 64–74, doi: 10.1145/2635868.2635873. 
+- [31] W. Weimer, "Patches as better bug reports," in Proc. Int. Conf. Generative Program. Component Eng., 2006, pp. 181–190, doi: 10.1145/1173706.1173734.
+
 最近，研究人员关注于一类新的方法，即程序修复技术[20]、[21]、[22]、[23]、[24]、[25]、[26]、[27]、[28]、[29]。这些技术的关键思想是，通过生成一个实际的补丁来自动修复软件系统，这个补丁可以在最终被接受之前由测试人员进行验证，或者可以调整以适当地适合系统。使用这些技术的好处是，修复既解释了失败的原因，又为问题提供了可能的解决方案，从而减轻了识别和纠正错误[30]和[31]所必需的工作。
 
 Since program repair techniques have the potential to dramatically reduce debugging effort, they attracted the interest of many researchers who produced a number of approaches for repairing different classes of faults under different conditions and hypotheses. Important results have been already achieved, but at the same time these results revealed the existence of relevant challenges that have to be faced.
@@ -45,6 +89,10 @@ Since program repair techniques have the potential to dramatically reduce debugg
 由于程序修复技术有可能极大地减少调试工作，因此吸引了许多研究人员的兴趣，他们提出了许多在不同条件和假设下修复不同类型故障的方法。已经取得了重要的成果，但与此同时，这些成果也揭示了必须面对的相关挑战。
 
 The contributions in the area have been preliminary analyzed by Khalilian et al. [32], who compared three repair techniques, and Monperrus et al. [33], [34] who discussed repair and self-healing techniques focusing on the oracle problem.
+
+- [32] A. Khalilian, A. Baraani-Dastjerdi, and B. Zamani, ‘‘On the evaluation of automatic program repair techniques and tools,’’ in Proc. Iranian Conf. Elect. Eng., 2016, pp. 61–66, doi: 10.1109/ IranianCEE.2016.7585390. 
+- [33] M. Monperrus, ‘‘Automatic software repair: A bibliography,’’ Univ. Lille, Lille, France, Tech. Rep. hal-01206501, 2015. 
+- [34] M. Monperrus and B. Baudry, ‘‘Two flavors in automated software repair: Rigid repair and plastic repair,’’ in Dagstuhl Seminar n. 13061 ‘‘Fault Prediction, Localization, and Repair’’, 2013.
 
 Khalilian et al.[32]比较了三种修复技术，Monperrus et al.[33]、[34]讨论了修复和自愈技术，重点讨论了oracle问题，并对该领域的贡献进行了初步分析。
 
@@ -58,7 +106,7 @@ The paper is organized as follows. Section 2 describes the procedure we followed
 
 ## 2 PAPER SELECTION
 
-We selected the papers for the survey by searching in the ACM Digital Library, the IEEE Explorer Digital Library, and the Google Scholar repository for the following terms commonly used in software repair papers: ‘‘program repair’’, ‘‘software repair’’, ‘‘automatic patch generation’’, ‘‘automatic fix generation’’, ‘‘generate and validate’’, and ‘‘semantics driven repair’’. We performed the paper selection at the beginning of January 2017. For each query, we extracted the first 200 references sorted by relevance. Since a few queries returned less than 200 references, we ended up with a total of 3,262 references to be analyzed. After removing duplicated entries, we obtained a population of 2,573 references.
+We selected the papers for the survey by searching in the ACM Digital Library, the IEEE Explorer Digital Library, and the Google Scholar repository for the following terms commonly used in software repair papers: "program repair", "software repair", "automatic patch generation", "automatic fix generation", "generate and validate", and "semantics driven repair". We performed the paper selection at the beginning of January 2017. For each query, we extracted the first 200 references sorted by relevance. Since a few queries returned less than 200 references, we ended up with a total of 3,262 references to be analyzed. After removing duplicated entries, we obtained a population of 2,573 references.
 
 我们选择的论文调查通过搜索ACM数字图书馆,IEEE Explorer数字图书馆,下列用语和谷歌学术搜索存储库中常用软件修复文件:“程序修复”、“软件修复”,“自动补丁的一代”,“自动修复的一代”,“生成和验证”,“语义驱动的修复”。我们在2017年1月初进行了论文筛选。对于每个查询，我们提取了按相关性排序的前200个引用。由于一些查询返回的引用少于200个，因此我们总共需要分析3262个引用。在删除重复条目之后，我们获得了2,573个引用。
 
@@ -86,9 +134,24 @@ The problem of automatically generating a fix for a faulty program relates to th
 
 This problem is an instance of automatic programming, which is the process operated by a machine of translating a specification about a task into a machine executable program for doing that task [57], [58]. Although the problem of automatically synthesizing software programs has been considered from the early ages of computer science and is still an active area of research [59], [60], [61], the problem of automatically repairing faulty programs have been considered only recently.
 
+- [57] A. W. Biermann, "Automatic programming: A tutorial on formal methodologies," J. Symbolic Comput., vol. 1, no. 2, pp. 119–142, 1985, doi: http://dx.doi.org/10.1016/S0747–7171(85)80010-9. 
+- [58] D. L. Parnas, "Software aspects of strategic defense systems," Commun. ACM, vol. 28, no. 12, pp. 1326–1335, 1985, doi: 10.1145/ 214956.214961.
+
+- [59] O. Polozov and S. Gulwani, "FlashMeta: A framework for inductive program synthesis," in Proc. Int. Conf. Object-Oriented Program. Syst. Languages Appl., 2015, pp. 107–126, doi: 10.1145/ 2814270.2814310. 
+- [60] R. Alur, et al., "Syntax-guided synthesis," in Proc. Int. Conf. Formal Methods Comput.-Aided Des., 2013, pp. 1–8, doi: 10.1109/ FMCAD.2013.6679385. 
+- [61] V. Le and S. Gulwani, "FlashExtract: A framework for data extraction by examples," in Proc. Conf. Program. Language Des. Implementation, 2014, pp. 542–553, doi: 10.1145/2594291.2594333.
+
 这个问题是一个自动编程的实例，它是一个机器操作的过程，将一个关于任务的规范转换成一个机器可执行程序来完成这个任务[57]，[58]。虽然自动合成软件程序的问题在计算机科学的早期就已经被考虑，并且仍然是[59]、[60]、[61]等研究的活跃领域，但是自动修复有问题的程序的问题直到最近才被考虑。
 
 A few approaches pioneered the area of automatic program repairing. Stumptner and Wotawa introduced the idea of defining fault modes to capture frequent faults in VHDL programs [46], [62]. Fault modes have been used to automatically check if a program misbehaves consistently with any known fault and attempt to automatically repair the program with strategies depending on the recognized fault mode. Staber et al. investigated how to automatically replace the components of a system to make it satisfy a given Linear Temporal Logic (LTL) specification [47]. Interestingly, they defined the repair process as a game between the system, which has to be repaired, and the environment, which acts against the system to make the repair fail [43], [47]. Weimer investigated how to repair a program that violates a safety policy specification that specifies the allowed paths in the control flow graph of the program under repair. His approach finds the smallest set of modifications to be performed on the method calls produced by a program to make it satisfy the specification [31]. Other researchers extended model checking with artificial intelligence techniques [48] or template-based strategies [49] to repair programs.
+
+- [46] M. Stumptner and F. Wotawa, "A model-based approach to software debugging," in Proc. Int. Workshop Principles Diagnosis, 1996, pp. 233–239, doi: 10.1007/978-3-540-92814-0_36.
+- [62] M. Stumptner and F. Wotawa, ‘‘Model-based program debugging and repair,’’ in Proc. Int. Conf. Ind., Eng. Other Appl. Appl. Intell. Syst., 1996, pp. 155–160.
+- [47] S. Staber, B. Jobstmann, and R. Bloem, ‘‘Finding and fixing faults,’’ in Proc. Adv. Res. Work. Conf. Correct Hardware Des. Verification Methods, 2005, pp. 35–49, doi: 10.1007/11560548_6.
+- [43] B. Jobstmann, A. Griesmayer, and R. Bloem, ‘‘Program repair as a game,’’ in Proc. Int. Conf. Comput. Aided Verification, 2005, pp. 226–238, doi: 10.1007/11513988_23.
+- [31] W. Weimer, ‘‘Patches as better bug reports,’’ in Proc. Int. Conf. Generative Program. Component Eng., 2006, pp. 181–190, doi: 10.1145/1173706.1173734.
+- [48] F. Buccafurri, T. Eiter, G. Gottlob, and N. Leone, ‘‘Enhancingmodel checking in verification by AI techniques,’’ Artif. Intell., vol. 112, no. 1–2, pp. 57–104, 1999, doi: 10.1016/S0004-3702(99)00039-9. 
+- [49] A. Dennis, R. Monroy, and P. Nogueira, ‘‘Proof-directed debugging and repair,’’ in Proc. Symp. Trends Functional Program., 2006, pp. 131–140.
 
 有几种方法是自动程序修复领域的先驱。Stumptner和Wotawa在VHDL程序[46]中引入了定义故障模式以捕获频繁故障的思想[62]。故障模式用于自动检查程序是否与任何已知故障行为一致，并尝试根据识别的故障模式使用策略自动修复程序。Staber等人研究了如何自动替换系统的组件，使其满足给定的线性时间逻辑(LTL)规范[47]。有趣的是，他们将修复过程定义为系统和环境之间的博弈，系统需要修复，而环境与系统相反，导致修复失败。Weimer研究了如何修复一个违反安全策略规范的程序，该规范在被修复程序的控制流图中指定了允许的路径。他的方法是对程序生成的方法调用执行最小的修改集合，使其满足规范[31]。其他研究人员使用人工智能技术[48]或基于模板的策略[49]扩展模型检查来修复程序。
 
@@ -107,6 +170,10 @@ Two well-known approaches for automatically dealing with program failures are th
 自动处理程序故障的两种众所周知的方法是软件修复和软件修复技术。虽然在原则上相似，但是它们有不同的用途，并且使用不同的解决方案来处理错误。
 
 Software healing solutions detect software failures in-the-field and respond to them by making the necessary adjustments to restore the normal operation of a system [66], [67], [68]. These adjustments are not deployed at the source code level, but rather applied at runtime on the deployed application to prevent or mitigate failures. Multiple occurrences of similar failures on the same instance of the software may trigger the same healing process multiple times.
+
+- [66] H. Psaier and S. Dustdar, "A survey on self-healing systems: approaches and systems," Springer Comput., vol. 91, no. 1, pp. 43–73, 2011, doi: 10.1007/s00607-010-0107-y. 
+- [67] D. Ghosh, R. Sharman, H. Rao, and S. Upadhyaya, "Self-healing systems - survey and synthesis," Elsevier Decision Support Syst., vol. 42, no. 4, pp. 2164–2185, 2007, doi: 10.1016/j.dss.2006.06.011. 
+- [68] A. Keromytis, "Characterizing self-healing software systems," in Proc. Int. Conf. Math. Methods Models Archit. Comput. Netw. Secur, 2007, pp. 22–33, doi: 10.1007/978-3-540-73986-9_2.
 
 软件修复解决方案在现场检测软件故障，并作出必要的调整以恢复系统的正常运行[66]、[67]、[68]。这些调整并不部署在源代码级别，而是在运行时应用于部署的应用程序，以防止或减轻故障。在软件的同一实例上多次出现类似故障可能会多次触发相同的修复过程。
 
