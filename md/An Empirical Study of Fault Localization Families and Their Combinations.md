@@ -20,6 +20,7 @@ THE goal of fault localization is to identify the defective program elements rel
 - Information retrieval-based fault localization (IRbased FL) [11]: utilizing bug report information  
 - History-based fault localization [12], [13]: utilizing the development history
 
+SBFL
 [
 - [1] X. Xie, T. Y. Chen, F.-C. Kuo, and B. Xu, “A theoretical analysis of the risk evaluation formulas for spectrum-based fault localization,” ACM Transactions on Software Engineering and Methodology (TOSEM), vol. 22, no. 4, p. 31, 2013. 
 - [2] R. Abreu, P. Zoeteweij, and A. J. Van Gemund, “On the accuracy of spectrum-based fault localization,” in Testing: Academic and Industrial Conference Practice and Research Techniques-MUTATION, 2007. TAICPART-MUTATION 2007. IEEE, 2007, pp. 89–98. 
@@ -219,4 +220,3 @@ Liu categorized learning to rank models into three groups [44]. Pointwise techni
 Recently, Xuan and Monperrus showed that learning to rank model can be used to combine different formulae in SBFL [23]. The basic idea is to treat the suspiciousness score produced by different formulae as features and use learning to rank to find a model that ranks the faulty element as high as possible. In this paper we apply learning to rank similarly to combine approaches from different families.
 
 最近，Xuan和Monperrus证明了学习rank模型可以用于组合SBFL[23]中不同的公式。其基本思想是将不同公式所产生的可疑性分数作为特征，利用学习排序的方法，找到一个将错误元素尽可能高的排序模型。在这篇论文中，我们将学习应用于相似的排序，以结合来自不同家庭的方法。
-

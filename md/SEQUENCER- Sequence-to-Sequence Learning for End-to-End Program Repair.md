@@ -101,3 +101,7 @@ SEQUENCER is a sequence-to-sequence deep learning model that aims at automatical
 序列发生器是一个序列到序列的深度学习模型，旨在通过生成一行补丁来自动修复错误 (i。e.,这个错误可以通过用一条固定的线替换一条错误线来修复)。我们不考虑行删除，因为: 1) 它不需要令牌生成的方法 (因此对我们的研究来说不那么有趣)，2) 如果需要,音序器可以与轻量级 Kali [11] 相结合，包括线路删除。我们不考虑线路添加，因为在大多数相关工作中使用的基于频谱的故障定位对于线路添加补丁 [15] 无效。我们注意到，在 Defects4J 的所有 64% 个错误中，有 395 是通过替换现有的源代码 [16] 来修复的。给定具有错误行为的软件系统 (i.e.,失败的测试案例)，最先进的故障定位技术被用于识别越野车方法和可疑的越野车线路。这种技术已经被证明可以预测正确的越野车线，成为 44% [15] 的前 10 名候选人之一。排序器然后执行一个新颖的越野车上下文抽象 (第 3.2 节) 过程，该过程智能地组织故障定位数据 (i e.,错误的类、方法和行) 成为一个表示，该表示简洁且适合深度学习模型，但能够保存有关 bug 上下文的有价值的信息,将用于预测修复。然后，该表示被馈送到经过训练的序列到序列模型 (第 3.3.1 节)，该模型执行补丁推理 (第 3.4 节) 并且能够生成多个代表 bug 潜在单行补丁的单行代码。最后，补丁准备 (第 3.5 节) 步骤中的定序器通过格式化代码并用建议的行替换可疑行来生成具体的补丁。图 2 显示了训练阶段 (左) 和推理阶段 (右) 的上述步骤。在本节的剩余部分，我们将讨论常见的步骤以及特定于训练和推理的步骤。
 
 [11] Z. Qi, F. Long, S. Achour, and M. Rinard, “An analysis of patch plausibility and correctness for generate-andvalidate patch generation systems,” in Proceedings of the 2015 International Symposium on Software Testing and Analysis, ser. ISSTA 2015, Baltimore, MD, USA: ACM, 2015, pp. 24–36, ISBN: 978-1-4503-3620-8. DOI: 10.1145/ 2771783.2771791. [Online]. Available: http://doi.acm.org/10.1145/2771783.2771791.
+
+[15] D. Zou, J. Liang, Y. Xiong, M. D. Ernst, and L. Zhang, “An empirical study of fault localization families and their combinations,” IEEE Transactions on Software Engineering, 2019.
+
+
