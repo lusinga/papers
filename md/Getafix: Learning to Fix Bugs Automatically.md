@@ -40,7 +40,7 @@ As an example of a bug category targeted in this work, consider NullPointerExcep
 
 作为本工作中针对的 bug 类别的一个例子，考虑 nullpointerexception-仍然是 Java 和其他语言中最普遍的 bug 之一。如果静态分析器警告潜在的 null 取消引用，开发人员可能会以各种方式修复问题。图 1 展示了三个修复 null 取消引用错误的匿名示例，分别在现有 if 条件中添加一个联合，用三元操作替换一个调用，并添加一个早期返回。虽然所有这些修复都引入了某种空检查，但确切的修复在很大程度上取决于已经存在的代码。除了这些例子之外，还有更多的方法来修复空引用错误，例如，通过添加一个新的 if 语句或者通过分离扩展一个现有的 if 条件。学习所有这些修复模式并决定将哪一个应用于给定的错误代码是一个不平凡的问题。
 
-## 7 RelatedWork
+## 7 Related Work
 
 ### 7.1 Automated Program Repair
 
