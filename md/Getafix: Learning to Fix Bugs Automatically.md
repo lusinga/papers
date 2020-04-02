@@ -138,6 +138,11 @@ The first step of Getafix takes a set of example bug fixes, and decomposes each 
 
 Getafix 的第一步采用一组示例错误修复，并将每个修复分解为细粒度的编辑。这些编辑提供了在后面的步骤中学习和应用修复模式的基本要素。例如，图 3 显示了一个代码更改和 Getafix 提取的三个细粒度编辑: (i) 如果任务为 null (以绿色显示)，则插入早期返回; (ii) 将 public 改为 private (以红色显示); 和 (iii) 移动 doworkk 方法 (以蓝色显示)。
 
+### 3.1 Trees
+
+Getafix extracts fine-grained edits based on ASTs. For our
+purposes, a node in an AST has:
+
 ## 7 Related Work
 
 ### 7.1 Automated Program Repair
