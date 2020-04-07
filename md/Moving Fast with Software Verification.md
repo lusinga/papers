@@ -101,16 +101,20 @@ INFER [4] 是一种旨在验证内存安全的程序分析器，最初由 Monoid
 
 INFER combines several recent advances in automatic verification. It's underlying formalism is separation logic [10]. It implements a compositional, bottom-up variant of the classic RHS inter-procedural analysis algorithm based on procedure summaries [11]. There are two main novelties. First, it uses compact summaries, based on the ideas of footprints and frame inference [2] from separation logic, to avoid the need for huge summaries that explicitly tabulate most of the input-output possibilities. Second, it uses a variation on the notion of abductive inference to discover those summaries [5].
 
-[10] Peter W. O'Hearn, John C. Reynolds, and Hongseok Yang. Local reasoning about programs that alter data structures. In Computer Science Logic, 15th Interna- tional Workshop, CSL 2001. 10th Annual Conference of the EACSL, Paris, France, September 10-13, 2001, Proceedings, pages 1-19, 2001.
-
-[11] Thomas W. Reps, Susan Horwitz, and Shmuel Sagiv. Precise interprocedural data ow analysis via graph reachability. In Conference Record of POPL'95: 22nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, San Francisco, California, USA, January 23-25, 1995, pages 49{61, 1995.
-
-[2] Josh Berdine, Cristiano Calcagno, and Peter W. O'Hearn. Smallfoot: Modular automatic assertion checking with separation logic. In Formal Methods for Com- ponents and Objects, 4th International Symposium, FMCO 2005, Amsterdam, The Netherlands, November 1-4, 2005, Revised Lectures, pages 115-137, 2005.
-
-[5] Cristiano Calcagno, Dino Distefano, Peter W. O'Hearn, and Hongseok Yang. Compositional shape analysis by means of bi-abduction. J. ACM, 58(6):26, 2011.
+- [10] Peter W. O'Hearn, John C. Reynolds, and Hongseok Yang. Local reasoning about programs that alter data structures. In Computer Science Logic, 15th Interna- tional Workshop, CSL 2001. 10th Annual Conference of the EACSL, Paris, France, September 10-13, 2001, Proceedings, pages 1-19, 2001.
+- [11] Thomas W. Reps, Susan Horwitz, and Shmuel Sagiv. Precise interprocedural data ow analysis via graph reachability. In Conference Record of POPL'95: 22nd ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, San Francisco, California, USA, January 23-25, 1995, pages 49-61, 1995.
+- [2] Josh Berdine, Cristiano Calcagno, and Peter W. O'Hearn. Smallfoot: Modular automatic assertion checking with separation logic. In Formal Methods for Com- ponents and Objects, 4th International Symposium, FMCO 2005, Amsterdam, The Netherlands, November 1-4, 2005, Revised Lectures, pages 115-137, 2005.
+- [5] Cristiano Calcagno, Dino Distefano, Peter W. O'Hearn, and Hongseok Yang. Compositional shape analysis by means of bi-abduction. J. ACM, 58(6):26, 2011.
 
 INFER 结合了自动验证的几个最新进展。它的潜在形式主义是分离逻辑 [10]。它实现了基于程序摘要的经典 RHS 程序间分析算法的成分，自下而上的变体 [11]。有两种主要的新奇事物。首先，它使用紧凑的摘要，基于分离逻辑的足迹和帧推断 [2] 的思想,以避免需要明确列出大多数输入输出可能性的巨大摘要。其次，它使用了外展推论概念的变体来发现那些总结 [5]。
 
+Bi-abduction. INFER computes a compositional shape analysis by synthesizing specification for a piece of code in isolation. Specifications in this case are Hoare's triples where pre/post-conditions are separation logic formulae. More specifically, for a given piece of code C, INFER synthesizes pre/post specifications of the form
+{P}C{Q}
+by inferring suitable P and Q. A crucial point is that such specifications do not express functional correctness but rather memory safety. The consequence is that they relates to a basic general property that every code should satisfy.
+
+双绑架。INFER 通过单独合成一段代码的规范来计算组合形状分析。在这种情况下，规范是 Hoare 的三元组，其中前/后条件是分离逻辑公式。更具体地说，对于给定的代码 C，推断合成表单的前/后规范
+{P}C{Q}
+通过推断合适的 P 和 Q。一个关键点是，这样的规范并没有表达功能正确性，而是表达了内存安全。结果是它们与每个代码都应该满足的基本通用属性相关。
 
 ## 5 Integration with the Development Infrastructure
 
