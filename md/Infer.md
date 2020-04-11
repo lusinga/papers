@@ -19,7 +19,11 @@ The important thing about separating conjunction is the way that it fits togethe
 
 分离连接的重要之处在于它与计算机内存中的突变相匹配;有关程序命令的推理往往通过更新(*)—适当的连接来工作，模拟RAM的适当的操作更新。
 
-
+Separation logic uses Hoare triples of the form
+$\{pre\}prog\{post\}$
+where $pre$ is the precondition, $prog$ a program part, and $post$ the postcondition. Triples are abstract specifications of the behavior of the program. For example, we could take
+$(\{r\mapsto open\} closeResource(r)\{r\mapsto closed\} (spec))$
+as a specification for a method which closes a resource given to it as a parameter.
 
 ## Bi-abduction
 
