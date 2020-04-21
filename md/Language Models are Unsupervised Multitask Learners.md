@@ -75,7 +75,7 @@ $p(x)=\prod_{i=1}^n p(s_n|s_1,...,s_{n-1})$
 1. Jelinek, F. and Mercer, R. L. Interpolated estimation of markov source parameters from sparse data. In Proceedings of the Workshop on Pattern Recognition in Practice, Amsterdam, The Netherlands: North-Holland, May., 1980.
 2. Bengio, Y., Ducharme, R., Vincent, P., and Jauvin, C. A neural probabilistic language model. Journal of machine learning research, 3(Feb):1137–1155, 2003.
 
-我们方法的核心是语言建模。语言建模通常从一组示例$(x_1, x_2，…$(s_1, s_2，…s_n)美元。由于语言具有自然的顺序性，通常将符号上的联合概率因式分解为条件概率的乘积(Jelinek & Mercer, 1980) (Bengio et al.， 2003):
+我们方法的核心是语言建模。语言建模通常从一组示例$p(x)=\prod_{i=1}^n p(s_n|s_1,...,s_{n-1})$。由于语言具有自然的顺序性，通常将符号上的联合概率因式分解为条件概率的乘积(Jelinek & Mercer, 1980) (Bengio et al.， 2003):
 
 This approach allows for tractable sampling from and estimation of p(x) as well as any conditionals of the form $p(s_{n-k}, ..., s_n | s_1, ..., s_{n-k-1})$. In recent years, there have been significant improvements in the expressiveness of models that can compute these conditional probabilities, such as self-attention architectures like the Transformer (Vaswani
 et al., 2017).

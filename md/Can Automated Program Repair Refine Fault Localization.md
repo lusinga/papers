@@ -1,0 +1,53 @@
+# Can Automated Program Repair Refine Fault Localization?
+
+## ABSTRACT
+
+Software bugs are prevalent in modern software systems and notoriously hard to debug manually. Therefore, a large body of research efforts have been dedicated to automated software debugging, including both automated fault localization and program repair. However, the existing fault localization techniques are usually ineffective on real-world software systems while even the most advanced program repair techniques can only fix a small ratio of real-world bugs. Although fault localization and program repair are inherently connected, we observe that in the literature their only connection is that program repair techniques usually use off-the-shelf fault localization techniques (e.g., Ochiai) to determine the potential candidate statements/elements for patching. In this work, we explore their connection in the other direction, i.e., can program repair in turn help with fault localization? In this way,we not only open a new dimension for more powerful fault localization, but also extend the application scope of program repair to all possible bugs (not only the bugs that can be directly automatically fixed).We have designed ProFL, a simplistic approach using patch-execution results (from program repair) as the feedback information for fault localization. The experimental results on the widely used Defects4J benchmark show that the basic ProFL can already localize 161 of the 395 studied bugs within Top-1, while state-of-the-art spectrum and mutation based fault localization techniques at most localize 117 within Top-1. We also demonstrate ProFL’s effectiveness under different settings. Lastly, we show that ProFL can further boost state-of-the-art fault localization via both unsupervised and supervised learning.
+
+软件错误在现代软件系统中很普遍，并且众所周知很难手动调试。因此，大量的研究工作致力于自动化软件调试，包括自动化故障定位和程序修复。然而，现有的故障定位技术在现实世界的软件系统上通常是无效的，而即使是最先进的程序修复技术也只能修复一小部分现实世界的错误。尽管故障定位和程序修复是内在联系的，但我们观察到，在文献中，它们唯一的联系是程序修复技术通常使用现成的故障定位技术 (e.g.,ochiai) 来确定用于修补的潜在候选语句/元素。在这项工作中，我们探索了它们在另一个方向上的联系，即程序修复能反过来帮助故障定位吗？这样，我们不仅为更强大的故障定位打开了一个新的维度,而且还将程序修复的应用范围扩展到所有可能的 bug (不仅仅是可以直接自动修复的 bug)。我们设计了 ProFL，一种使用补丁执行结果的简单方法 (来自程序修复)作为故障定位的反馈信息。在广泛使用的 Defects4J 基准测试上的实验结果表明，基本 ProFL 已经可以将 161 个研究 bug 中的 395 本地化在 Top-1 内,而最先进的光谱和基于突变的故障定位技术最多在 Top-1 中定位 117。我们还展示了 ProFL 在不同设置下的有效性。最后，我们表明 ProFL 可以通过无监督和有监督的学习进一步提升最先进的故障定位。
+
+## 1 INTRODUCTION
+
+Software bugs (also called software faults, errors, defects, flaws, or failures [65]) are prevalent in modern software systems, and have been widely recognized as notoriously costly and disastrous. For example, in 2017, Tricentis.com investigated software failures impacting 3.7 Billion users and $1.7 Trillion assets, and reported that this is just scratching the surface – there can be far more software bugs in the world than we will likely ever know about [61]. In practice, software debugging is widely adopted for removing software bugs. However, manual debugging can be extremely tedious, challenging, and time-consuming due to the increasing complexity of modern software systems [60]. Therefore, a large body of research efforts have been dedicated to automated debugging to reduce manual debugging efforts [6, 26, 43, 51, 60].
+
+- [6] Antonia Bertolino. 2007. Software testing research: Achievements, challenges, dreams. In 2007 Future of Software Engineering. IEEE Computer Society, 85–103.
+- [26] Edward Kit and Susannah Finzi. 1995. Software testing in the real world: improving the process. ACM Press/Addison-Wesley Publishing Co.
+- [43] Glenford J Myers, Corey Sandler, and Tom Badgett. 2011. The art of software testing. John Wiley & Sons.
+- [51] William E Perry. 2007. Effective Methods for Software Testing: Includes Complete Guidelines, Checklists, and Templates. John Wiley & Sons.
+- [60] Gregory Tassey. 2002. The economic impacts of inadequate infrastructure for software testing. National Institute of Standards and Technology, RTI Project 7007, 011 (2002).
+
+软件缺陷(也称为软件故障、错误、缺陷、缺陷或故障[65])在现代软件系统中非常普遍，并且被广泛认为是出了名的昂贵和灾难性的。例如，在2017年，Tricentis.com调查了影响37亿用户和1.7万亿美元资产的软件故障，报告称这只是皮毛——世界上的软件故障可能比我们所知道的要多得多[61]。在实践中，软件调试被广泛用于消除软件bug。然而，由于现代软件系统[60]的复杂性不断增加，手工调试可能是非常冗长、具有挑战性和耗时的。因此，大量的研究工作致力于自动化调试，以减少手工调试的工作量[6,26,43,51,60]。
+
+There are two key questions in software debugging: (1) how to automatically localize software bugs to facilitate manual repair? (2) how to automatically repair software bugs without human intervention? To address them, researchers have proposed two categories of techniques, fault localization [3, 12, 22, 33, 42, 71, 72] and program repair [24, 28, 29, 35, 36, 52, 53, 63]. For example, pioneering spectrum-based fault localization (SBFL) techniques [3, 12, 22] compute the code elements covered by more failed tests or less passed tests as more suspicious, pioneering mutation-based fault localization (MBFL) techniques [42, 46, 72] inject code changes (e.g., changing > into >=) based on mutation testing [15, 20] to each code element to check its impact on test outcomes, and pioneering search-based program repair techniques (e.g., GenProg [29]) tentatively change program elements based on certain rules (e.g., deleting/changing/adding program elements) and use the original test suite as the oracle to validate the generated patches. Please refer to the recent surveys on automated software debugging for more details [41, 67]. To date, unfortunately, although debugging has been extensively studied and even has drawn attention from industry (e.g., FaceBook [38, 58] and Fujitsu [57]), we still lack practical automated debugging techniques: (1) existing fault localization techniques have been shown to have limited effectiveness in practice [47, 68]; (2) existing program repair techniques can only fix a small ratio of real bugs [17, 21, 64] or specific types of bugs [38].
+
+故障定位：
+- [3] Rui Abreu, Peter Zoeteweij, and Arjan JC Van Gemund. 2007. On the accuracy of spectrum-based fault localization. In Testing: Academic and Industrial Conference Practice and Research Techniques-MUTATION (TAICPART-MUTATION 2007). IEEE, 89–98.
+- [12] Valentin Dallmeier, Christian Lindig, and Andreas Zeller. 2005. Lightweight defect localization for java. In ECOOP. 528–550.
+- [22] James A Jones, Mary Jean Harrold, and John Stasko. 2002. Visualization of test information to assist fault localization. In ICSE. 467–477.
+- [33] Ben Liblit, Mayur Naik, Alice X Zheng, Alex Aiken, and Michael I Jordan. 2005. Scalable statistical bug isolation. PLDI (2005), 15–26.
+- [42] Seokhyeon Moon, Yunho Kim, Moonzoo Kim, and Shin Yoo. 2014. Ask the mutants: Mutating faulty programs for fault localization. In Software Testing, Verification and Validation (ICST), 2014 IEEE Seventh International Conference on. IEEE, 153–162.
+- [71] Jifeng Xuan and Martin Monperrus. 2014. Test case purification for improving fault localization. In FSE. 52–63.
+- [72] Lingming Zhang, Lu Zhang, and Sarfraz Khurshid. 2013. Injecting mechanical faults to localize developer faults for evolving software. In OOPSLA. 765–784.
+
+程序修复：
+- [24] Dongsun Kim, Jaechang Nam, Jaewoo Song, and Sunghun Kim. 2013. Automatic patch generation learned from human-written patches. In Proceedings of the 2013 International Conference on Software Engineering. IEEE Press, 802–811.
+- [28] Xianglong Kong, Lingming Zhang, W Eric Wong, and Bixin Li. 2015. Experience report: How do techniques, programs, and tests impact automated program repair?. In ISSRE. 194–204.
+- [29] Claire Le Goues, ThanhVu Nguyen, Stephanie Forrest, andWestleyWeimer. 2012. GenProg: A Generic Method for Automatic Software Repair. IEEE Transactions on Software Engineering 38, 1 (2012), 54–72. https://doi.org/10.1109/TSE.2011.104
+- [35] Fan Long and Martin Rinard. 2015. Staged program repair with condition synthesis. In Proceedings of the 2015 10th Joint Meeting on Foundations of Software Engineering, ESEC/FSE 2015, Bergamo, Italy, August 30 - September 4, 2015. 166–178. https://doi.org/10.1145/2786805.2786811
+- [36] Fan Long and Martin Rinard. 2016. Automatic patch generation by learning correct code. In Proceedings of the 43rd Annual ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages, POPL 2016, St. Petersburg, FL, USA, January 20 - 22, 2016. 298–312. https://doi.org/10.1145/2837614.2837617
+- [52] Yuhua Qi, Xiaoguang Mao, Yan Lei, Ziying Dai, and Chengsong Wang. 2014. The Strength of Random Search on Automated Program Repair. In Proceedings of the 36th International Conference on Software Engineering (ICSE 2014). ACM, New York, NY, USA, 254–265. https://doi.org/10.1145/2568225.2568254
+- [53] Zichao Qi, Fan Long, Sara Achour, and Martin Rinard. 2015. An analysis of patch plausibility and correctness for generate-and-validate patch generation systems. In ISSTA. 24–36.
+- [63] WestleyWeimer, Zachary P Fry, and Stephanie Forrest. 2013. Leveraging program equivalence for adaptive program repair: Models and first results. In ASE. 356–366.
+
+自动调试的两个综述：
+
+- [41] Martin Monperrus. 2018. Automatic Software Repair: A Bibliography. ACM Comput. Surv. 51, 1, Article 17 (Jan. 2018), 24 pages. https://doi.org/10.1145/ 3105906
+- [67] W. Eric Wong, Ruizhi Gao, Yihao Li, Rui Abreu, and Franz Wotawa. 2016. A Survey on Software Fault Localization. IEEE Trans. Softw. Eng. 42, 8 (Aug. 2016), 707–740. https://doi.org/10.1109/TSE.2016.2521368
+
+业界关注：
+- [38] Alexandru Marginean, Johannes Bader, Satish Chandra, Mark Harman, Yue Jia, Ke Mao, Alexander Mols, and Andrew Scott. 2019. Sapfix: Automated end-to-end repair at scale. In Proceedings of the 41st International Conference on Software Engineering: Software Engineering in Practice. 269–278.
+- [58] Andrew Scott, Johannes Bader, and Satish Chandra. 2019. Getafix: Learning to fix bugs automatically. arXiv preprint arXiv:1902.06111 (2019).
+- [57] Ripon K Saha, Yingjun Lyu, Hiroaki Yoshida, and Mukul R Prasad. 2017. ELIXIR: effective object oriented program repair. In Proceedings of the 32nd IEEE/ACM International Conference on Automated Software Engineering. IEEE Press, 648–659.
+
+软件调试有两个关键问题 :( 1) 如何自动本地化软件 bug 以方便人工修复？(2) 如何在没有人为干预的情况下自动修复软件 bug？为了解决这些问题，研究人员提出了两类技术，故障定位 [3 、 12 、 22 、 33 、 42 、 71 、 72] 和程序修复 [24 、 28 、 29, 35 、 36 、 52 、 53 、 63]。例如，开拓性的基于频谱的故障定位 (SBFL) 技术 [3,12，22] 计算被更多失败的测试或更少通过的测试覆盖的代码元素作为更多的可疑,开拓性的基于突变的故障定位 (MBFL) 技术 [42,46，72] 注入代码变化 (e.g.,根据每个代码元素的突变测试 [15,20] 将> 更改为> =)，以检查其对测试结果的影响，以及开创性的基于搜索的程序修复技术 (e.g.,genProg [29]) 试探性地根据某些规则改变程序元素 (e.g.,删除/更改/添加程序元素)并使用原始测试套件作为 oracle 来验证生成的修补程序。有关自动软件调试的更多详细信息，请参考最近的调查 [41,67]。不幸的是，迄今为止，尽管调试已经被广泛研究，甚至已经引起了业界的关注 (e g.,faceBook [38,58] 和 Fujitsu [57])，我们仍然缺乏实用的自动化调试技术 :( 1) 现有的故障定位技术已被证明在实践中效果有限 [47,68]; (2) 现有的程序修复技术只能修复一小部分真实 bug [17,21，64] 或特定类型的 bug [38]。
+
