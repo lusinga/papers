@@ -313,6 +313,362 @@ Another result of these developments was a number of seminal works on FM integra
 
 这些发展的另一个结果是FM整合的一些开创性的工作[Broy和Slotosch 1998;加洛韦和斯托达特1997b;佩奇1997]。Paige受系统方法集成的启发[Kronlof 1993]，定义了一种通用的“元方法”，其目的是在Hehner [Hehner 1990]的基础上，使用具有共同谓词语义基础的符号翻译将几种正式和半正式方法集成在一起。与此同时，Galloway和Stoddart [1997b]在他们之前的研究[Galloway和Stoddart 1997a]的基础上，也提出了用多范式方法创建混合FMs的设想。此外，Broy和Slotosch[1998]提出FMs应该集成到V-Model of development [Hohn和Hoppner 2008]中，使用共同的语义基础将不同的人工制品跨开发步骤连接起来。
 
+These diverse efforts eventually led to the founding of the iFM conference series in 1999 [Araki et al. 1999], with the aim of developing theoretical foundations for “combining behavioural and state-based formalisms”. For the second iteration of the iFM conference [Grieskamp et al. 2000], the scope broadened to consider all the different aspects of FM integration, including semantic integration, traceability, tool integration, and refinement. A few years later, a conference series was also established for UTP [Dunne and Stoddart 2006], with the aim of continuing to develop unifying semantics for diverse notations within the UTP framework.
+
+这些不同的努力最终导致了1999年iFM系列会议的成立[荒木等人1999]，其目的是为“将基于行为和基于状态的形式主义相结合”奠定理论基础。对于iFM会议的第二次迭代[Grieskamp等人，2000]，范围扩大到考虑FM集成的所有不同方面，包括语义集成、可跟踪性、工具集成和细化。几年后，还为UTP [Dunne和Stoddart 2006]建立了一个会议系列，目的是继续在UTP框架内为不同的表示法开发统一的语义。
+
+However, there is as yet no agreed and general methodology for integrating FMs that could be applied to RASs [Farrell et al. 2018]. Overall, integration is of particular pertinence to RASs, since such systems are multi-layered and possess a high degree of semantic heterogeneity. As Farrell et al. found, they “can be variously categorised as embedded, cyber-physical, real-time, hybrid, adaptive and even autonomous systems, with a typical robotic system being likely to contain all of these aspects”. When we consider RASs, we must consider advanced computational paradigms like real-time, hybrid computation with differential equations, probability, and rigid body dynamics. This implies the use of several different modelling languages and paradigms to describe the different aspects, and therefore a variety of analysis techniques to assure properties of the overall system. Assurance of autonomous systems will certainly therefore require iFMs [Farrell et al. 2018]. Figure 1 on page 3 summarises this relationship.
+
+然而，目前还没有公认的和通用的集成FMs的方法可以应用于RASs [Farrell et al. 2018]。总体而言，由于RASs系统是多层次的，并且具有高度的语义异构性，因此集成对RASs具有特殊的针对性。正如Farrell等人所发现的，它们“可以分为嵌入式、网络物理、实时、混合、自适应甚至自主系统，典型的机器人系统可能包含所有这些方面”。当我们考虑RASs时，我们必须考虑先进的计算范式，如实时、混合计算微分方程、概率和刚体动力学。这意味着使用几种不同的建模语言和范例来描述不同的方面，从而使用各种分析技术来确保整个系统的属性。因此，自主系统的保证必然需要iFMs [Farrell等，2018]。第3页的图1总结了这种关系。
+
+Strength 5. iFMs raise the potential of integration and coordination of several FMs to consistently reason about RAS properties implemented by a combination of various technologies such as software, electronic hardware, and mechanical hardware.
+
+iFMs提高了几个FMs的集成和协调的潜力，从而一致地推断由软件、电子硬件和机械硬件等各种技术组合实现的RAS属性。
+
+Weakness 5. There is currently no agreed framework for the integration of FMs that would effectively address the needs in the RAS domain or similar domains.
+
+目前还没有商定的FMs一体化框架来有效地解决RAS领域或类似领域的需求。
+
+## 4 OPPORTUNITIES FOR INTEGRATED FORMAL METHODS
+
+This section continues with the environmental part of our SWOT analysis. Several key opportunities for the transfer of iFMs arise from ongoing assurance challenges, particularly in RAS assurance and from looking at what other disciplines do to cope with similar challenges. In the following, we describe opportunities stemming from 
+- the desire for early removal of severe errors (Section 4.1); 
+- the desire to learn from accidents and their root causes (Section 4.2); 
+- the desire of assurance to form a mature discipline (Section 4.3); and 
+- the desire for adequate and dependable norms (Section 4.4). 
+
+本节继续我们的SWOT分析的环境部分。iFMs的转移的几个关键机会来自于持续的保证挑战，特别是在RAS保证中，并且来自于观察其他规程如何处理类似的挑战。在下面，我们描述的机会来自
+- 希望早日消除严重错误(第4.1节);
+- 希望从事故及其根源中吸取教训(第4.2节);
+- 形成成熟学科的保证愿望(第4.3条);和
+- 希望有适当和可靠的准则(第4.4条)。
+
+### 4.1 The Desire for Early Removal of Severe Errors
+
+Summarising major challenges in automotive systems engineering in 2006, Broy [2006, p. 39] indicated that modelling languages used in practice were often not formalised and the desired benefits could not be achieved from semi-formal languages. Moreover, software engineering was not well integrated with core control and mechanical engineering processes. Domain engineers would produce software/hardware sub-systems and mechanical sub-assemblies in undesirable isolation. Broy referred to a lack of iFMs for overall architecture verification.
+
+总结2006年汽车系统工程的主要挑战，Broy [2006, p. 39]指出，在实践中使用的建模语言往往没有形式化，并且不能从半形式化语言中获得预期的好处。此外，软件工程并没有很好地与核心控制和机械工程过程相结合。领域工程师将在不希望的隔离状态下生产软件/硬件子系统和机械部件。Broy提到缺乏用于整体架构验证的iFMs。
+
+Has the situation changed since then? In model-centric development in embedded software practice (e.g., based on UML or SysML), drawbacks can be significant if methods and tools are not well integrated or trained personnel are missing [Liebel et al. 2016]. Likely, Broy’s criticism remains in contemporary automatic vehicle engineering and assurance practice. In fact, he has a recent, clearly negative, but not pessimistic answer to this question [Broy 2018]. Moreover, this view is shared by the Autonomy Assurance International Programme’s discussion of assurance barriers,8 that is, current challenges in RAS assurance. These barriers (e.g., validation, verification, risk acceptance, simulation, human-robot interaction) could be addressed by formal engineering models and calculations based on such models to be used as evidence in assurance cases.
+
+从那以后情况有变化吗?在嵌入式软件实践的以模型为中心的开发中(例如，基于UML或SysML)，如果方法和工具没有很好地集成或缺少经过培训的人员，缺陷可能会很严重[Liebel等人，2016]。布洛伊的批评可能还停留在当代自动车辆工程和保险实践中。事实上，对于这个问题(Broy 2018)，他最近给出了一个明显负面但并不悲观的答案。此外，自治保证国际计划对保证障碍的讨论(即RAS保证的当前挑战)也同意这一观点。这些障碍(例如，验证、验证、风险接受、仿真、人机交互)可以通过正式的工程模型和基于这些模型的计算来解决，并在保证案例中用作证据。
+
+Model-based assurance [Habli et al. 2010; Hawkins et al. 2015] uses system models to structure assurance cases and represents another opportunity for formal methods in (through-life) assurance. Assurance arguments that are purely informal can be difficult to evaluate, and may be subject to argumentation fallacies [Greenwell et al. 2006]. Consequently, there have been a number of efforts to formalise and mechanise assurance cases, both at the argumentation level [Denney and Pai 2018; Rushby 2014] and the evidence level [Cruanes et al. 2013]. More recently, in MDE, the Structured Assurance Case Meta-model (SACM)9 is a standardised meta-model that supports both structured argumentation and integration of evidence from diverse system models [Wei et al. 2019]. SACM unifies several existing argumentation notations, and also provides support for artefact traceability and terminology. It could, in the future, serve as a crucial component for iFMs in assurance.
+
+基于模型的保证[Habli et al. 2010;Hawkins等人[2015]使用系统模型来构建保证案例，并代表了(终身)保证中正式方法的另一个机会。纯粹非正式的保证论证可能很难评估，而且可能成为论证谬误[Greenwell et al. 2006]。因此，在论证层面(Denney和Pai 2018;Rushby 2014]和证据水平[Cruanes et al. 2013]。最近，在MDE中，结构化保证案例元模型(Structured Assurance Case Meta-model, SACM)9是一个标准化的元模型，它支持结构化论证和来自不同系统模型的证据集成[Wei et al. 2019]。SACM统一了几种现有的论证符号，还提供了对人工制品可跟踪性和术语的支持。将来，它可能成为iFMs的一个重要组成部分。
+
+Leading voices from applied software engineering research periodically mention the role of FMs as a key technology to master upcoming challenges in assuring critical software systems [Moore et al. 2016]. A round table about the adoption of FMs in IT security [Schaffer and Voas 2016] positively evaluated their overall suitability, the combination of FMs with testing, and the achievements in FM automation. The panellists noticed limitations of FMs in short-time-tomarket projects and in detecting unknown vulnerabilities as well as shortcomings in FM training and adoption in practice.
+
+来自应用软件工程研究的主要声音定期提到FMs作为一种关键技术的角色，以掌握在确保关键软件系统方面即将面临的挑战[Moore等人，2016]。一个关于在IT安全中采用FMs的圆桌会议[Schaffer和Voas 2016]对FMs的总体适用性、FMs与测试的结合以及FM自动化的成果进行了积极的评估。小组成员注意到FMs在短期市场项目和检测未知漏洞方面的局限性，以及FM培训和实践采用方面的缺陷。
+
+However, even for mission-critical systems, high costs from late defect removal and long defect repair cycles [Jones and Bonsignour 2011], as well as dangerous and fatal10 incidents indicate that assurance in some areas is still driven by practices failing to assist engineers in overcoming their challenges. Moreover, Neumann, an observer of a multitude of computing risks, stated that “the needs for better safety, reliability, security, privacy, and system integrity that I highlighted 24 years ago in my book, Computer-Related Risks, are still with us in one form or another today” [Feitelson 2019; Hoffmann 2018; Neumann 1995].
+
+然而，即使对于关键任务系统，后期的缺陷清除和较长的缺陷修复周期带来的高成本[Jones和Bonsignour 2011]，以及危险和致命的事件表明，在某些领域的保证仍然是由未能帮助工程师克服挑战的实践驱动的。此外，Neumann，一个对大量计算风险的观察者，指出“24年前我在我的书《计算机相关风险》中强调的对更好的安全性、可靠性、安全性、隐私和系统完整性的需求，今天仍然以这样或那样的形式与我们同在”[Feitelson 2019;霍夫曼2018;诺依曼1995年)。
+
+For example, artificial intelligence software—particularly machine learning (ML) components— has been developed at a high pace and used in many non-critical applications. Recently, ML components are increasingly deployed in critical domains. For verification and error removal, such software has to be transparent and explainable. Preferring verifiable algorithms to heuristics, Parnas [2017] recalled the corresponding engineering principle: “We cannot trust a device unless we know how it works”. One way to follow this principle and establish transparency is to reverse engineer (i.e., to decode) the functionality of an ML component even if this is not possible in general [Ben-David et al. 2019]. FMs can help extract knowledge and reverse engineer abstractions of ML systems to explain their behaviour.We might then ask to which extent the reverse engineered and verified functionality serves as a substitute for the original ML component.
+
+例如，人工智能软件——尤其是机器学习(ML)组件——已经得到了高速发展，并在许多非关键应用中得到了应用。最近，ML组件越来越多地部署在关键领域。为了验证和消除错误，这样的软件必须是透明和可解释的。Parnas[2017]更喜欢可验证的算法，而不是启发式，回顾了相应的工程原理:“我们不能相信一个设备，除非我们知道它是如何工作的”。遵循这一原则并建立透明度的一种方法是逆向工程(即逆向工程)。(用于解码)ML组件的功能，即使这在一般情况下是不可能的[Ben-David et al. 2019]。FMs可以帮助提取知识并对ML系统的抽象进行逆向工程以解释它们的行为。然后我们可能会问，反向工程和验证功能在多大程度上可以替代原始ML组件。
+
+These anecdotes make it reasonable to question current assurance practice. Seen through the eyes of assurance, they suggest that we might again be facing a dependable software engineering crisis similar to the one from the late 1960s [Broy 2018; Randell 2018].
+
+这些趣闻使我们有理由对当前的保险实践提出质疑。从确信的角度来看，它们表明我们可能再次面临一场可靠的软件工程危机，类似于上世纪60年代末的那场危机(Broy 2018;Randell 2018]。
+
+Opportunity 1. 
+We as method researchers could learn from this crisis and improve the way that FMs can be effectively coordinated to support early error removal in practical engineering processes. We as practitioners could learn from this crisis and improve the way that we correctly engineer and certify highly automated systems such as robots and autonomous systems.
+
+作为方法研究人员，我们可以从这次危机中吸取教训，改进FMs的有效协调方式，以支持实际工程过程中的早期错误消除。作为实践者，我们可以从这场危机中吸取教训，改进我们正确设计和认证高度自动化系统(如机器人和自主系统)的方式。
+
+### 4.2 The Desire to Learn From Accidents and Their Root Causes
+
+In the title of Section 4.1, the word “severe” refers to the negative consequences potentially caused by errors we want to remove using iFMs. The more severe the potential consequences of an error, the more critical is its early removal. The usefulness of iFMs thus positively correlates with their support in the removal of critical errors. However, the estimation of severity often also requires the careful study of past field incidents [Holloway and Johnson 2008].
+
+在第4.1节的标题中，“严重”一词指的是我们希望使用iFMs消除的错误可能造成的负面后果。一个错误的潜在后果越严重，越需要尽早排除它。因此，iFMs的有用性与它们在消除关键错误方面的支持是正相关的。然而，对严重程度的估计通常也需要仔细研究过去的现场事故[Holloway和Johnson 2008]。
+
+We speak of field incidents to refer to significant operational events in the field (i.e., the environment in which a technical system is operated) which are undesired because of their safety risks and their severe harmful consequences. Field incidents range from minor incidents to major accidents. It is important to separate the observed effect, the field incident, from its causes or, more precisely, from the causal chains of events leading to the observed effect. Hence, this analysis depends on the considered system perimeter [e.g., Avizienis et al. 2004]. Depending on the possibilities of observation and the depth pursued in a root cause analysis (RCA), a conclusion on a possible cause can result in any combination of, for example, overall system failure, human error, adverse environmental condition, design fault, hardware fault, software fault, or specification error.
+
+我们所说的野战事件是指在野战中发生的重大作战事件。由于其安全风险和严重的有害后果而不受欢迎的。现场事故从小到大。重要的是要把观察到的结果，即现场事件，同其原因分开，或者更确切地说，同导致观察到的结果的事件的因果链分开。因此，这种分析依赖于考虑的系统周长。， Avizienis et al. 2004]。根据观察的可能性和根本原因分析(RCA)所追求的深度，对可能原因的结论可以导致任何组合，例如，整个系统故障、人为错误、不利的环境条件、设计故障、硬件故障、软件故障或规格错误。
+
+There are many databases about field incidents: some are comprehensive and include RCA, others are less detailed, and some are confidential, depending on the regulations in the corresponding application domain or industry sector. Based on such databases, accident research, insurance, and consumer institutions occasionally provide brief root cause statistics along with accident statistics.
+
+关于现场事故的数据库有很多:一些是全面的，包括RCA，另一些不太详细，还有一些是机密的，这取决于相应应用领域或行业部门的法规。基于这样的数据库，事故研究、保险和消费者机构偶尔会提供简要的根本原因统计数据和事故统计数据。
+
+Accident statistics allow certain predictions of the safety of systems and their operation, for example, whether risk has been and will be acceptably low. Such statistics are also used in estimations of the amount of field testing necessary to sufficiently reduce risk [Kalra and Paddock 2016].
+
+事故统计允许对系统及其操作的安全性进行某些预测，例如，风险是否已经并且将会低到可以接受的程度。这些统计数据也被用于评估充分降低风险所需的实地测试数量[Kalra和Paddock 2016]。
+
+For example, it is well acknowledged that inadequately designed and implemented user interfaces are a significant contributory factor in computer-related accidents [Koopman and Wagner 2017; Kun et al. 2016; MacKenzie 1994]. But how and how fast have we arrived at this conclusion and how can we prevent future such incidents? Without proper empirical investigation of accident causes, such statistics are of little use in decisions on measures for accident prevention [Hopkins 2004], particularly on improvements of engineering processes, methods (e.g., iFMs), and technologies (e.g., iFM tools) used to build these systems. For this, we require more in-depth, possibly formal, RCAs and statistics that relate error removal by iFMs and incident root causes. To this extent, RCA is a great opportunity for the investigation of iFM effectiveness.
+
+例如，众所周知，设计和实现不充分的用户界面是导致计算机相关事故的一个重要因素[Koopman和Wagner 2017;Kun等人，2016;麦肯齐1994]。但是，我们是如何、以多快的速度得出这一结论的?我们如何防止今后再次发生这类事件?如果没有对事故原因进行适当的实证调查，这些统计数据在事故预防措施的决策中几乎没有用处[Hopkins 2004]，特别是在用于构建这些系统的工程过程、方法(例如，iFMs)和技术(例如，iFM工具)的改进方面。为此，我们需要更深入、更正式的RCAs和统计数据，这些数据与iFMs的错误清除和事件根源相关。从这个意义上说，RCA是研究iFM有效性的一个很好的机会。
+
+MacKenzie [1994] reported about deficiencies of information gathering (e.g., RCA) for databases on computer-related accidents back in the early 1990s. He noted that independent, well-known, but confidential databases might reduce under-reporting and were thus believed to improve safety culture. Reporting has not much improved as observed by Jackson et al. [2007, p. 39]. To understand the current RCA situation,we studied a sample of 377 reports from open field incident databases (in aviation, automotive, rail, energy, and others) finding the following [Gleirscher and Nyokabi 2018]: 
+- (1) RCAs in these reports were of poor quality, either because they were not going deep enough, economically or technically infeasible, or inaccessible to us. 
+- (2) Particularly, root causes (e.g., software faults, specification errors)were rarely documented in a way that useful information about the technologies used (e.g., software) or consequences in the development process could be retrieved from the reports. 
+- (3) Reports in some sectors (e.g., aerospace, rail, power plants, process industry) contain more in-depth RCAs than others (e.g., automotive) because of different regulations. 
+- (4) Some sectors operate official databases (e.g., NHTSA14 and NTSB15 in the US transportation sector) and others do not (e.g., German road transportation sector). 
+- (5) Our findings suggest that even in domains with regulated RCA, reports in open databases tend to be less informative than reports in closed databases. 
+- (6) The reports from the automotive industry exhibited a relatively small fraction of technology-related errors (e.g., software-related errors).
+
+MacKenzie[1994]报告了1990年代早期计算机相关事故数据库信息收集(例如RCA)的缺陷。他指出，独立、知名但保密的数据库可能会减少漏报，因此被认为可以改善安全文化。Jackson等人[2007,p. 39]观察到报告并没有太大改善。为了了解当前RCA的情况，我们研究了来自开放领域事故数据库(航空、汽车、铁路、能源和其他领域)的377份报告样本，发现了以下内容[Gleirscher和Nyokabi 2018]:
+-( 1)这些报告中的rca质量较差，原因可能是它们不够深入，在经济或技术上不可行，或者我们无法获得。
+- (2)特别是，根本原因(如软件故障、规范错误)很少以一种能够从报告中检索到关于开发过程中使用的技术(如软件)或结果的有用信息的方式记录下来。
+- (3)由于法规不同，某些行业(如航空航天、铁路、电厂、流程工业)的报告比其他行业(如汽车行业)的报告包含更深入的rca。
+- (4)有些部门经营官方数据库(如美国运输部门的NHTSA14和NTSB15)，有些部门不经营官方数据库(如德国公路运输部门)。
+- (5)我们的研究结果表明，即使在RCA规范的领域，开放数据库中的报告也往往不如封闭数据库中的报告提供的信息丰富。
+- (6)来自汽车行业的报告显示了相对较小的技术相关错误(例如，与软件相关的错误)。
+
+To validate our study and to better understand the context of our findings, we interviewed eight16 safety experts [Gleirscher and Nyokabi 2018]. One finding was that, because of an unclear separation of technologies and a lack of explicit architectural knowledge, a desirable classification of root causes is sometimes infeasible. Hence, accident analysts often close their reports with a level of detail too low to draw helpful conclusions. Additionally, one expert stated that the hidden number of software-related or software-caused field incidents in dependable systems practice is likely much larger than the known number. This matches our intuition but we are missing clear evidence.
+
+为了验证我们的研究并更好地理解我们的发现，我们采访了8位安全专家(Gleirscher和Nyokabi 2018)。一个发现是，由于技术的不清晰分离和缺乏明确的架构知识，对根本原因进行理想的分类有时是不可行的。因此，事故分析人员在结束报告时，往往过于详细，难以得出有益的结论。此外，一名专家指出，在可靠的系统实践中，与软件相关或由软件引起的现场事故的隐藏数量可能远远大于已知的数量。这符合我们的直觉，但我们缺少明确的证据。
+
+Ladkin [2013a], a researcher involved in the further development of IEC 61508, demands regulations to mandate the use of systematic RCAs. In support of his view, we believe that rigorous in-depth RCAs based on iFMs can be helpful to gain clarity about actual root causes. Again, beyond this undesirable form of late error removal, RCA data is essential for the measurement of the effectiveness of error removal techniques, particularly iFMs.
+
+Ladkin [2013a]是一位参与IEC 61508进一步发展的研究人员，他要求制定法规强制要求使用系统的RCAs。为了支持他的观点，我们认为，基于iFMs的严格深入的RCAs有助于弄清实际的根本原因。此外，除了这种不受欢迎的后期错误消除形式之外，RCA数据对于测量错误消除技术的有效性是必不可少的，特别是对于iFMs。
+
+The “Toyota unintended acceleration” incident exemplifies the difficulty of drawing conclusions without using powerful RCA techniques: a first RCA concluded that floor mats and sticky throttle pedals caused a fatal car mishap. A second RCA carried out by NASA experts and based on testing and automated static analysis of the control system (i.e., software and hardware) was not conclusive. A third RCA based on code reviews—we could not find out which level of formal inspection was used—detected defects in the control software and safety architecture, demonstrated to be likely the causes of the accident [Koopman 2014].
+
+“丰田汽车意外加速”事件表明，在不使用强大的RCA技术的情况下，很难得出结论:RCA的第一个结论是，地垫和卡住的油门踏板导致了一场致命的汽车事故。第二个RCA由NASA专家进行，基于控制系统的测试和自动静态分析。，软件和硬件)不是决定性的。第三个基于代码审查的RCA——我们无法找出使用了哪一级的正式检查——检测到控制软件和安全架构中的缺陷，这些缺陷被证明可能是事故的原因[Koopman 2014]。
+
+Opportunity 2. 
+We could invest in integrated formal methods for RCA based on standardised data recording (e.g., aircraft black boxes), especially important for RASs where human operators cannot practically perform incident response. Based on lessons from formal RCA, we could further invest in the employment of integrated formal methods in RAS assurance and certification to prevent field incidents, major product recalls, and overly lengthy root cause investigations.
+
+我们可以投资于基于标准化数据记录(例如，飞机黑匣子)的RCA的集成正式方法，这对RASs尤其重要，因为在RASs中，人工操作员无法实际执行事件响应。根据正式RCA的经验教训，我们可以进一步投资于在RAS保证和认证中使用集成的正式方法，以防止现场事故、重大产品召回和过于冗长的根本原因调查。
+
+### 4.3 The Desire of Assurance to Form a Mature Discipline
+
+In his Turing Award acceptance speech in 1981, Tony Hoare reviewed type safety precautions in programming languages and concluded: “In any respectable branch of engineering, failure to observe such elementary precautions would have long been against the law” [Hoare 1981].
+
+在1981年的图林奖获奖感言中，Tony Hoare回顾了编程语言中的类型安全预防措施，并总结道:“在任何受人尊敬的工程分支中，不遵守这些基本的预防措施将是违反法律的”[Hoare 1981]。
+
+Inspired by this comparison, it can be helpful to look at other engineering disciplines such as civil, mechanical, or electrical engineering to identify transfer opportunities for iFMs. There, engineers use FMs in many of their critical tasks. However, nowadays these methods are often hidden behind powerful software tools usable by qualified professional engineers. Although type systems, run-time bounds checking, and other variants of assertion checking have been frequently used in dependable systems practice, the overall level of FM adoption is still comparatively low.
+
+受到这个比较的启发，它可以帮助查看其他工程学科，如土木、机械或电气工程，以确定iFMs的转移机会。在那里，工程师们在许多关键任务中使用FMs。然而，现在这些方法常常隐藏在由合格的专业工程师使用的强大软件工具背后。尽管在可靠的系统实践中经常使用类型系统、运行时界限检查和断言检查的其他变体，但是FM的总体采用水平仍然相对较低。
+
+For example, even in less critical mechanical engineering domains, vocationally trained engineers use computer-aided engineering, design, and manufacturing software. Whether for designing machine parts for serial production (i.e., specification) or for calculations (e.g., dimensioning, force or material flow simulations) for these parts and their assembly (i.e., for prototype verification), these engineers use tools based on canonical mathematical models.
+
+例如，即使在不太重要的机械工程领域，受过职业培训的工程师也会使用计算机辅助工程、设计和制造软件。是否设计用于批量生产的机器零件(即，或用于计算(例如，尺寸、力或物料流动模拟)这些部件及其装配(例如，尺寸、力或物料流动模拟)。这些工程师使用基于标准数学模型的工具。
+
+Nowadays, drawings from computer-aidedmechanical design carry at least two types of semantics: one declarative based on calculus for dimensioning (1), and one procedural for the synthesis of Computer-Numerical-Control programs for production machines processing materials to realise the drawings (2). Note that the unifying base of these two semantics is geometry, a well-studied mathematical discipline. Although higher levels of complexity demand more sophisticated analytical expertise, typically from engineers with several years of work experience, many tasks can be accomplished by less-trained engineers using the corresponding tools.
+
+如今,从计算机辅助机械设计图纸携带至少两种语义类型:一个声明基于微积分的尺寸(1),和一个程序对计算机数控程序的合成生产机器加工材料实现图纸(2)。请注意,这两个语义的统一的基础是几何,研究数学学科。虽然更高层次的复杂性需要更复杂的分析专业知识，通常来自具有多年工作经验的工程师，但是许多任务可以由缺乏训练的工程师使用相应的工具来完成。
+
+Whereas in computer-aided mechanical design both semantics seem to be used to a similar extent, in DA we observe that analogous semantics are rarely used even if tools are available, and less often we see (1) and (2) being consistently used. Low adoption might result from the semantics for dimensioning and production automation being usually less abstract than the semantics for verification (1) and synthesis (2) of computer programs. Accordingly, Parnas suggests a shift from correctness proof to property calculation to develop practical formal methods [Parnas 2010, p. 33].
+
+然而，在计算机辅助机械设计中，这两种语义似乎被使用到相似的程度，在DA中，我们观察到，即使有工具可用，也很少使用类似的语义，而且很少看到(1)和(2)被一致地使用。低采用可能是由于尺寸标注和生产自动化的语义通常不如计算机程序的验证(1)和合成(2)的语义抽象。因此，Parnas建议从正确性证明转向属性计算，以开发实用的形式化方法[Parnas 2010, p. 33]。
+
+Patterns have had a long history in many disciplines. In mechanical engineering, patterns are better known as machine elements and are particularly useful in high-reliability applications. Machine elements (and standardised forms thereof) have a stabilising impact on the outcome of an engineering project. The process of element selection and composition can take tremendous advantage not only from the reuse of proven design knowledge but also from the reuse of complex calculations (e.g., from gear transmissions, injection moulding tools, skeleton framings). Moreover, modern tools typically foster the use of element libraries and parametric design. Importantly, because the properties of such elements are in many cases well known, calculations for assemblies (i.e., compositional verification) get relatively easy. However, the higher the required precision of these calculations, the more expensive is their computation.
+
+模式在许多学科中都有悠久的历史。在机械工程中，模式更多地被称为机器元素，在高可靠性应用程序中特别有用。机械元件(及其标准化形式)对工程项目的结果具有稳定的影响。元素选择和组合的过程不仅可以从重复使用已证实的设计知识中获得巨大的好处，而且可以从重复使用复杂的计算中获得巨大的好处(例如，从齿轮传动、注塑工具、骨架骨架)。此外，现代工具通常鼓励使用元素库和参数化设计。重要的是，因为这些元素的属性在很多情况下都是众所周知的，所以对程序集的计算(即，成分验证)变得相对容易。然而，这些计算所需的精度越高，它们的计算成本就越高。
+
+These observations are in line with what we know from collaborations in robotics, like mechatronics, a discipline where many engineering domains have to play together well: FMs are heavily used for the analysis of robot controllers and for various kinds of simulations and tests [Lozano- Perez and Wesley 1979; Meng and Kak 1993].
+
+这些观察结果与我们从机器人领域的合作中了解到的情况一致，比如机电一体化，这是一门许多工程领域必须很好地合作的学科:FMs被大量用于机器人控制器的分析以及各种模拟和测试[Lozano- Perez和Wesley, 1979;孟和Kak 1993]。
+
+Digital circuit engineering is a domain where FMs such as model checking have been successfully applied decades ago. However, systematic hardware errors, such as Spectre and Meltdown, and the unavailability of temporal specifications of optimised operations (e.g., branch-prediction and speculative execution) discontinue the verifiability of recent computer architectures. This lack of verifiability of the assumptions (e.g., partitioning, information flow) about the execution platform complicates the verifiability of the software (e.g., an operating system) running on such a platform.
+
+数字电路工程是一个领域，FMs，如模型检查已经成功地应用了几十年。然而，系统硬件错误，如Spectre和Meltdown，以及优化操作的临时规范(例如，分支预测和投机执行)的不可用，使最近计算机架构的可验证性中断。关于执行平台的假设(例如，分区、信息流)缺乏可验证性，这使得在这样的平台上运行的软件(例如，操作系统)的可验证性复杂化。
+
+Opportunity 3. Dependability assurance has not yet successfully adopted iFMs as a vital part of their key methodologies. If FMs seem relatively well established in other disciplines, we might also be able to successfully transfer iFMs to RAS assurance and assurance in other domains. Beyond software design patterns, we could benefit from best practices in formal specification and development manifested in repositories of FM patterns. Moreover, we could aim at the further unification of established FMs to provide common formal semantics for various domains.
+
+可靠性保证尚未成功地将iFMs作为其关键方法的重要组成部分。如果FMs在其他学科中建立得相对良好，那么我们也可以成功地将iFMs转移到RAS担保和其他领域的担保。除了软件设计模式之外，我们还可以受益于FM模式存储库中正式规范和开发中的最佳实践。此外，我们还可以进一步统一已建立的FMs，为各种领域提供通用的形式语义。
+
+### 4.4 The Desire for Adequate and Dependable Norms
+
+Dependable systems practice usually includes the transition from what is called the system specification to an artefact called system design. Typically, software and hardware specifications are then derived from these two artefacts before delving into detailed technology choice and development. Jackson et al. [2007, p. 48] observe that safety culture in such a framework is more important than strict standards, but adequate standards and certification regimes can establish and strengthen the safety culture desirable in dependable systems practice.
+
+可靠的系统实践通常包括从所谓的系统规范到人为的系统设计的转变。通常，在深入研究详细的技术选择和开发之前，软件和硬件规范是从这两种人工制品中派生出来的。Jackson等人[2007,p. 48]观察到，在这种框架下的安全文化比严格的标准更重要，但是适当的标准和认证制度可以建立和加强可靠的系统实践中所需要的安全文化。
+
+A striking finding in one of our recent discussions of dependable systems standards (e.g., IEC 61508, ISO 26262,20 DO-178C) is that normative parts for specification (i.e., requirements engineering), for specification validation (i.e., avoiding and handling requirements errors), and for hazard and risk analysis (particularly in early process stages) seem to be below the state of the art [Feitelson 2019; Gleirscher and Nyokabi 2018], despite several observations that significant portions [e.g., 44%, Health and Safety Executive 2003] of the causes of safety-critical softwarerelated incidents fall into the category of specification errors [Knight 2002, 2014].
+
+我们最近在讨论可靠的系统标准(如IEC 61508, ISO 26262,20 DO-178C)时，一个惊人的发现是，规范的规范部分(即，用于规范验证(例如，需求工程)。，避免和处理需求错误)，以及危害和风险分析(特别是在早期过程阶段)似乎低于目前的水平[Feitelson 2019;Gleirscher和Nyokabi[2018]，尽管有几项观察表明， 44%，健康与安全执行局2003]的安全关键软件相关事件的原因属于规格错误的范畴[Knight 2002, 2014]。
+
+If one identifies an error in the software specification, do causes of this error originate from an erroneous system specification? How are system, software, and hardware specifications (formally) related? Control software typically governs the behaviour of a whole machine. Hence, core components of a software specification might, modulo an input/output relation [Parnas and Madley 1995], very well govern the narrative of the overall system specification. Inspired by the issue of specification validity as highlighted in Jones [2003], do these standards provide guidance for checking the validity and consistency of core parts of system, software, and hardware specifications?
+
+如果一个人识别出软件规范中的一个错误，那么这个错误的原因是源于一个错误的系统规范吗?系统、软件和硬件规范(形式上)如何相关?控制软件通常控制整个机器的行为。因此，软件规范的核心组件可能通过模块化输入/输出关系[Parnas和Madley 1995]，很好地控制了整个系统规范的叙述。受到Jones[2003]强调的规范有效性问题的启发，这些标准是否为检查系统、软件和硬件规范的核心部分的有效性和一致性提供了指导?
+
+The literature provides plenty of evidence of undesired impacts of specification errors dating back as early as the investigations of Lutz [1993] and Endres [1975]. As reported by MacKenzie [1994], the 92% of computer-related field incidents caused by human-computer interaction also illustrate the gap between specifications and capabilities of humans to interact with automation. Despite these older figures, we are talking of one of the most critical parts of standards. Practitioners could expect to receive strong guidance from these parts. Moreover, the requirements to show conformance to these parts should not be vacuous.
+
+文献提供了大量的证据，证明早在Lutz[1993]和Endres[1975]的研究中，就存在规格错误的不良影响。正如MacKenzie[1994]所报道的，由人机交互引起的92%的与计算机相关的现场事故也说明了人类与自动化交互的规范和能力之间的差距。尽管这些数据比较老，但我们讨论的是标准中最关键的部分之一。实践者可以期望从这些部分得到强有力的指导。此外，显示这些部分一致性的需求不应该是空洞的。
+
+Many standards define specific sets of requirements (i.e., for error removal and fault-tolerance) depending on the level of risk a system (or any part of it) might cause. The higher this level, the more demanding these requirements. Examples of demanding requirements include safety integrity level (SIL) 3-4 (IEC 61508), automotive safety integrity level (ASIL) C-D (ISO 26262), systematic capability 3-4 (IEC 61508), design assurance level (DAL) A-B (DO-178C). Even for the highest such levels the mentioned standards only “highly recommend” but not mandate the use of FMs.
+
+许多标准定义了特定的需求集(例如，根据系统(或系统的任何部分)可能导致的风险级别而定。这个级别越高，这些要求就越高。严格要求的例子包括安全完整性等级(SIL) 3-4 (IEC 61508)，汽车安全完整性等级(ASIL) C-D (ISO 26262)，系统能力3-4 (IEC 61508)，设计保证等级(DAL) A-B (DO-178C)。即使对于这样的最高水平，上述标准也只是“强烈推荐”，而不是强制要求使用FMs。
+
+Guidelines for embedded software development such as MISRA:1994 [Motor Industry Research Association 1994] recommend FMs for SIL 4, although MISRA:2004 no longer includes such information and instead refers back21 to MISRA:1994. As already mentioned, ISO 26262, as the overriding standard, does not go beyond high recommendation of FMs for ASIL D. Koopman [2014] that, in the US, car manufacturers are not required to follow MISRA and that there are no other software certification requirements. This currently also applies to autonomous road vehicles.
+
+嵌入式软件开发的指导方针，如MISRA:1994[汽车工业研究协会1994]，建议将FMs用于SIL 4，尽管MISRA:2004不再包含此类信息，而是返回到MISRA:1994。如前所述，ISO 26262作为压倒一切的标准，并没有超出ASIL D. Koopman[2014]对FMs的高推荐，在美国，汽车制造商不需要遵循MISRA，也没有其他的软件认证要求。这目前也适用于自动驾驶道路车辆。
+
+In an interesting anecdote, Ladkin reported on his lack of success in introducing systematic hazard (and risk) analysis methodology into normative parts of this standard [Ladkin 2013a]. Moreover, he mentioned22 unsuccessful attempts to strengthen the role of FMs in IEC 61508 and on the “broken standardisation” in assurance practice. In reaction to that, he proposed the use of evidently independent peer reviews to “dampen committee-capture by big-company bully players”.
+
+在一个有趣的轶事中，Ladkin报告了他在将系统风险(和风险)分析方法引入本标准的规范部分方面缺乏成功[Ladkin 2013a]。此外，他还提到了在iec61508中加强FMs作用的22次失败的尝试，以及在保证实践中“不规范”的做法。作为对此的回应，他提议使用明显独立的同行评审来“抑制大公司恃强凌弱者的承诺”。
+
+Additionally, Knight [2014] observed: “There is an expectation by the community that standards will embody the best available technology and that their presentation will allow determination of conformance to be fairly straightforward. A criticism that is seldom heard is that some standards are, in fact, technically flawed and poorly presented.” He exemplifies his critique by several issues with IEC 61508 and RTCA DO-178B and suggests to make the meaning of “conformance [or compliance] with a standard” more rigorous. Particularly, he encourages to replace indirect (i.e., process-related) evidence (e.g., documentation of specification activities) in assurance cases by direct (i.e., artefact-related) evidence (e.g., unsuccessful checks for presence of certain specification faults, successful checks for absence of implementation errors).23 With the observation in software quality control that “there is little evidence that conformance to process standards guarantees good products”, Kitchenham and Pfleeger [1996] delivered a reasonable basis for Knight’s suggestions.
+
+此外，Knight[2014]观察到:“社区期望标准将包含最好的可用技术，并且它们的表示将使一致性的确定相当简单。一个很少听到的批评是，有些标准实际上存在技术缺陷，而且没有得到很好的体现。他举例说明了他对IEC 61508和RTCA DO-178B的几个问题的批评，并建议使“与标准的一致性[或遵从性]”的含义更加严格。特别是，他鼓励取代间接(即。过程相关的)证据(例如，规范活动的文档)在保证案例中由直接的(例如，，与工件相关的)证据(例如，不成功的检查是否存在某些规格错误，成功的检查是否存在实现错误)。在软件质量控制的观察中，“几乎没有证据表明过程标准的一致性保证了好的产品”，Kitchenham和Pfleeger[1996]为Knight的建议提供了一个合理的基础。
+
+Regarding the integration of dependability approaches and FMs, Bowen and Stavridou [1993] had stated in 1993 that they “do not know how to combine formal methods assurance with metrics collected from other techniques such as fault-tolerance”. Is this still an issue? From a practical viewpoint, standards such as, for example, IEC 61508, ISO 26262, and DO-178C, provide recommendations about techniques for the reduction of both random hardware failures (e.g., by fault-tolerance techniques) and systematic hardware and software failures (e.g., by FMs, static analysis, and testing). If iFMs can support the combined application of the recommended techniques and achieve an improvement in practice, then we should really strive to demonstrate this.
+
+关于可靠性方法和FMs的集成，Bowen和Stavridou[1993]在1993年表示，他们“不知道如何将正式方法保证与从其他技术(如容错)收集的度量结合起来”。这还是个问题吗?从实用的角度来看，诸如IEC 61508、ISO 26262和DO-178C之类的标准提供了关于减少随机硬件故障(例如，通过容错技术)和系统硬件和软件故障(例如，通过FMs、静态分析和测试)的技术建议。如果iFMs能够支持推荐技术的联合应用并在实践中实现改进，那么我们就应该努力证明这一点。
+
+We believe that critical fractions of strong direct evidence can be delivered through the use of FMs. In support of Feitelson’s argument [Feitelson 2019], we see a great opportunity for an assessment of how the corresponding guidelines in these standards can be extended and aligned with recent results in FM research.
+
+我们相信，重要的直接证据可以通过使用FMs来传递。为了支持Feitelson的观点[Feitelson 2019]，我们看到了一个评估这些标准中相应的指导方针如何扩展并与FM研究的最新结果相一致的大好机会。
+
+Opportunity 4. We as researchers and practitioners could support the creation of adequate state-of-the-art regulations with improved guidance on specification construction and validation. That way, we could foster well-certified high-risk software in a time where dangerous autonomous machines are about to get widely deployed in our society.
+
+作为研究人员和从业人员，我们可以通过改进规范构建和验证方面的指导来支持创建足够的最新法规。通过这种方式，我们可以在危险的自动机器即将广泛应用于我们的社会之际，培育经过良好认证的高风险软件。
+
+## 5 THREATS TO THE ADOPTION OF INTEGRATED FORMAL METHODS
+
+This section closes the environmental part of our SWOT analysis by identifying threats to FM transfer as well as challenges that arise from alternative or competing approaches taking the opportunities mentioned in Section 4. We also outline remedies to these threats.
+
+本节结束了我们的SWOT分析的环境部分，通过识别FM转移的威胁，以及来自替代或竞争的方法所带来的挑战，利用第4节中提到的机会。我们还概述了应对这些威胁的措施。
+
+The development of effective iFMs and their successful transfer into practice can be impeded
+by
+• a lack of agreement on a sound semantic base for domain-specific and cross-domain FM
+integration (Sections 5.1 and 5.2),
+• missing support for widely used and established tools (Section 5.2),
+• a lack of interest in practical problems on the side of FM researchers (Section 5.3),
+• a lack of incentives for FM researchers to engage with current practice and for software
+practitioners to engage with recent theoretical results (Section 5.3),
+• a bad reputation among practitioners and applied researchers (Section 5.3),
+• proofs that are faulty or do not scale (Section 5.4),
+• the quest for soundness overriding the quest for usefulness (Section 5.5).
+We discuss these threats and barriers in more detail in the following:
+
+有效的综合管理措施的发展及其成功地转化为实践可能受到阻碍
+
+通过
+
+•缺乏对领域特定和跨域FM集成的良好语义基础的共识(第5.1和5.2节)，
+•缺少对广泛使用和已建立的工具的支持(第5.2节)，
+•FM研究者对实际问题缺乏兴趣(5.3节)，
+•FM研究人员缺乏参与当前实践的动机，软件从业者缺乏参与最近理论结果的动机(第5.3节)，
+•从业者和应用研究人员之间的坏名声(第5.3节)，
+•有缺陷或不缩放的证明(第5.4节)，
+•对可靠性的追求压倒了对有用性的追求(第5.5节)。
+我们将在以下详细讨论这些威胁和障碍:
+
+### 5.1 Difficulties and Misconceptions of Unification
+
+According to Broy [2006], the successes and failures of semi-formal languages (e.g., UML, SysML) suggest that FMs, once wrapped in FM-based tools, get exposed to the quest for a unified syntax, one main objective of the UML movement in the 1990s. Rather than a unified syntax, it is more desirable to have a unified semantics and several well-defined mappings to domain-specific syntax wherever convenient (Section 3.5). This approach is occasionally taken up by DSLs in MDE (Section 3.2). Harel and Rumpe [2004] argued that one cannot achieve proper integration of methods and notations without a unifying semantics. This argument carries over to the problem of tool integration as already discussed in Section 3.5 and revisited below. Particularly, the following challenges apply to FMs when used in MDE: 
+- (1) the maintenance of a single source of information serving in the (automated) derivation of downstream artefacts (e.g., proof results, code via synthesis) [Mohagheghi et al. 2012], 
+- (2) a clear mapping between the DSL presented to the engineer (using intuitive notation) and the DSL semantics serving as the basis of formal verification, 
+- (3) the embedding of a lean domain-specific formalism into a common data model [Broy et al. 2010] suitable for access and manipulation by engineers through their various tools [Gleirscher et al. 2007].
+
+根据Broy[2006]的研究，半正式语言(如UML、SysML)的成功和失败表明，FMs一旦被基于fm的工具所包裹，就会暴露出对统一语法的追求，而这正是20世纪90年代UML运动的主要目标之一。与其使用统一的语法，不如使用统一的语义和几个定义良好的映射来方便地映射到特定于域的语法(第3.5节)。在MDE中，dsl偶尔采用这种方法(第3.2节)。Harel和Rumpe[2004]认为，如果没有统一的语义，就无法实现方法和表示法的适当集成。这一观点也适用于工具集成的问题，正如在3.5节中已经讨论过并在下面重新讨论过的。特别是，以下挑战适用于FMs时，在MDE使用:
+- (1)维护单一的信息来源(自动化)派生的服务下游制品(例如,结果证明,代码通过合成)[Mohagheghi et al . 2012],
+- (2)一个清晰的DSL提交给工程师之间的映射(使用直观的符号)和DSL语义作为形式验证的基础上,
+- (3)将精益领域特定的形式主义嵌入到通用数据模型中[Broy等人2010]，该模型适合于工程师通过各种工具进行访问和操作[Gleirscher等人2007]。
+
+These challenges are complicated by irreducible unidirectionalities in automated transformations (e.g., model-to-code) limiting the desirable round-trip engineering [Stevens 2018] (i.e., the change between views of the same data).
+
+这些挑战由于自动化转换(例如，模型到代码)中不可减少的单向性而变得复杂，从而限制了理想的双向工程[Stevens 2018](例如相同数据视图之间的更改)。
+
+We discussed SACM [Wei et al. 2019] as an assurance DSL in Section 4.1. Likewise, architecture description languages (e.g., the Architecture Analysis & Design Language [Feiler et al. 2004], EASTADL [Debruyne et al. 2004]) are DSLs for overall embedded system design. DSLs can be seen as one shortcut to the still ongoing efforts of arriving at a reduced version or a variant of UML where a semantics can be defined for the whole language [e.g., Posse and Dingel 2016].
+
+我们在第4.1节中讨论了SACM [Wei等人，2019年]作为一种保证DSL。同样，架构描述语言(例如，架构分析和设计语言[Feiler等，2004]，EASTADL [Debruyne等，2004])是用于整体嵌入式系统设计的dsl。dsl可以被看作是一种捷径，它可以帮助人们不断努力，最终得到一个简化的版本或者UML的变体，在这个版本中可以为整个语言定义一个语义。， Posse和Dingel 2016]。
+
+At a higher level of abstraction, so-called architecture frameworks (cf. ISO 42010, e.g., the Department of Defense Architecture Framework) and artefact and traceability models [e.g., Ramesh and Jarke 2001; Whitehead 2007] have been proposed, aiming at the standardisation of specific parts of the systems and software engineering life-cycle and of the documentation and data models used there. These frameworks and models are similar to the models used in product data/life-cycle management in fields like mechanical or civil engineering.
+
+在更高的抽象级别上，所谓的体系结构框架(如ISO 42010，国防部体系结构框架)和人工制品和可跟踪性模型(如，拉梅什和贾克2001;Whitehead 2007]已经被提出，旨在对系统和软件工程生命周期的特定部分以及其中使用的文档和数据模型进行标准化。这些框架和模型类似于在机械或土木工程等领域的产品数据/生命周期管理中使用的模型。
+
+To our best knowledge, no cross-disciplinary semantic unification has been undertaken yet (see Section 3.5), serving as a basis for dependable systems engineering. Although many of these approaches have not been developed with the aim of formalisation and the unification of semantics, we believe that this effort has to be made when developing powerful iFMs.
+
+据我们所知，还没有进行任何跨学科的语义统一(参见3.5节)，这是可靠的系统工程的基础。虽然这些方法中有许多都不是为了形式化和语义的统一而开发的，但是我们认为，在开发强大的iFMs时必须做出这种努力。
+
+Threat 1. Themain threat is the lack of agreement on a sound semantic base for domain-specific and cross-domain iFMs.
+
+主要的威胁是缺乏对领域特定和跨领域iFMs的良好语义基础的一致。
+
+Remedy 1. To reduce this threat, FM integration and refinement-based software engineering could be better aligned with artefact models [e.g., Mendez-Fernandez et al. 2010; Whitehead 2007]. This alignmentmay foster the unification of formal semantics to strengthen traceability among the artefacts and to aid in a variety of change impact analysis tasks in the engineering process [e.g., Broy 2017; van Lamsweerde 2009].
+
+为了减少这种威胁，FM集成和基于细化的软件工程可以更好地与人工模型相结合[例如，FM集成和基于细化的软件工程]。， Mendez-Fernandez et al. 2010;怀特黑德2007]。这种对齐可以促进形式语义的统一，以加强人工制品之间的可追溯性，并在工程过程中帮助进行各种变化影响分析任务[例如。,布罗2017;范Lamsweerde 2009]。
+
+### 5.2 Reluctant Integration Culture and Legacy Processes
+
+Tool integration is about the integration of engineering information technology, for example, tools for requirements specification, computer-aided software engineering, and computer-aided mechanical design. Among the wide variety of solutions to capture and track model data, the majority deals with linking or merging data models [Gleirscher et al. 2007] in one or another shallow way (e.g., software repositories, data exchange formats, product/engineering/application data or life-cycle management systems).
+
+工具集成是关于工程信息技术的集成，例如，需求规格说明的工具、计算机辅助软件工程和计算机辅助机械设计。在捕获和跟踪模型数据的各种解决方案中，大多数以一种或另一种浅层方式(例如，软件存储库、数据交换格式、产品/工程/应用程序数据或生命周期管理系统)处理连接或合并数据模型[Gleirscher et al. 2007]。
+
+Some tools with sustainable support are heavyweight, making it difficult to agree on lean model semantics, while others are proprietary, accompanied with interest in hiding model semantics. The surveys of Liebel et al. [2016, pp. 102,104], Mohagheghi et al. [2012, p. 104], and Akdur et al. [2018] confirm that method and model integration have not yet been solved in MBD, MDE, and dependable systems practice. Moreover, frequent proposals by researchers [e.g., Breu et al. 1997; Giese and Heldal 2004; Posse and Dingel 2016] to formalise fragments or variants of UML and SysML have not yet received wide attention by practitioners and standardisation authorities.
+
+一些具有可持续支持的工具是重量级的，因此很难在精益模型语义上达成一致，而另一些则是私有的，并伴随着对隐藏模型语义的兴趣。Liebel等人[2016,pp. 102,104]、Mohagheghi等人[2012,p. 104]和Akdur等人[2018]的调查证实，在MBD、MDE和可靠的系统实践中，方法和模型集成尚未得到解决。此外，研究人员经常提出建议。， Breu等，1997;Giese和Heldal 2004;将UML和SysML的片段或变体正式化，还没有得到从业者和标准化权威的广泛关注。
+
+DSL-based integrated development environments (e.g., using Xtext and Sirius) get close to what is suitable for FM-based tools. Such tools rely on a trusted representation of the formal semantics integrating the model data. For successful iFM transfer to assurance practice, tools need to be built on a lean and open central system model [e.g., Aravantinos et al. 2015; Huber et al. 1996].
+
+基于dsl的集成开发环境(例如，使用Xtext和Sirius)非常适合基于fm的工具。这些工具依赖于集成模型数据的形式语义的可信表示。为了成功地将iFM转移到保证实践中，工具需要建立在一个精益和开放的中央系统模型上[例如。， Aravantinos et al. 2015;Huber等人，1996]。
+
+An even greater barrier than loosely integrated tools are legacy language and modelling paradigms, an established tool and method market carried by legacy stakeholders and, possibly, a neglected continuous improvement of FM education and training.
+
+与松散集成的工具相比，更大的障碍是遗留语言和建模范例、遗留涉众所持有的已建立的工具和方法市场，以及可能忽略的FM教育和培训的持续改进。
+
+Threat 2. The main threat is discontinuous and disintegrated FM education, transfer, and tool development.
+
+Remedy 2. To reduce this threat, continuous adaptation and improvement of education through teaching, of transfer through training, application, and feedback, and of tool development through regulated interface standards are necessary.
+
+2的威胁。主要的威胁是教育、迁移和工具开发的不连续和不整合。
+
+方法2。为了减少这种威胁，有必要通过教学、通过培训、应用和反馈进行转移、通过规范的接口标准进行工具开发，从而不断适应和改进教育。
+
+### 5.3 Reluctant Transfer Culture and Exaggerated Scepticism
+
+Finally, the vision of introducing iFMs into assurance practice might be hindered by a lack of FM researchers able or willing to engage with industrial assurance practice, as diagnosed byWoodcock et al. [2009]. It is certainly hardwork to collect sufficient evidence for FM effectiveness in assurance practice because of intellectual property rights and other legal issues but also because of a lack of awareness among FM researchers [Woodcock et al. 2009]. However, for credible method comparison experiments, Jones and Bonsignour [2011] recommended a sample of 20 similar projects split into two groups, 10 projects without treatment (i.e., not using FMs) and 10 projects with treatment (i.e., using FMs) to establish strong evidence (i.e., evidence of level 5 or above [Goues et al. 2018]).
+
+最后，将iFMs引入保险实践的愿景可能会受到FM研究人员缺乏能力或意愿参与工业保险实践的阻碍，正如woodcock等人[2009]所诊断的那样。由于知识产权和其他法律问题，以及FM研究人员缺乏认识，收集足够的证据来证明FM在保证实践中的有效性当然是一项艰巨的工作[Woodcock et al. 2009]。然而，为了进行可信的方法比较实验，Jones和Bonsignour[2011]推荐了20个类似的项目作为样本，并将其分为两组，其中10个项目没有经过处理(即没有经过处理)。，不使用FMs)和10个项目与治疗(即。，以确立有力的证据(即， 5级或以上的证据[Goues等，2018])。
+
+Exaggerated scepticism on the side of practitioners and applied researchers that has piled up over the years might be the most important barrier to cross. Early failures to meet high expectations on FMs and FM transfer might have led to what can be called an “FM Winter”. However, we think crossing a few other barriers first might make it easier to cope with scepticism in the assurance community and initiate an “FM Spring”, at least in assurance practice. The recent successes with FMs for certification of commercial medical devices [Harrison et al. 2019; Masci et al. 2013], and the associated burgeoning field of FMs for HCI [Weyers et al. 2017], are examples that could help to overcome this scepticism. Moreover, there is potential for transfer of these results to RAS engineering, where the need for safety-assured HCI is also paramount [Koopman and Wagner 2017; Kun et al. 2016].
+
+从业人员和应用研究人员多年来积累的过分怀疑态度，可能是最需要跨越的障碍。早期未能满足FMs和FM传输的高期望可能会导致所谓的“FM冬季”。然而，我们认为，首先跨越一些其他的障碍可能会使我们更容易应对来自于保证社区的怀疑，并至少在保证实践中启动一个“FM Spring”。FMs最近在商用医疗器械认证方面取得的成功[Harrison等，2019年;Masci等人2013年的研究，以及与之相关的HCI FMs新兴领域[Weyers等人2017年的研究]，都是有助于克服这种怀疑的例子。此外，这些结果有可能转移到RAS工程，在那里对安全保证的HCI的需求也是最重要的[Koopman和Wagner 2017;Kun等人，2016]。
+
+Threat 3. The main threat is the reluctance of FM researchers to regularly engage in transfer efforts combined with an exaggerated scepticism of practitioners and with other mechanisms (e.g. lack of funding, poorly focused research evaluation, intellectual property rights) preventing both sides from engaging in an effective bidirectional transfer.
+
+Remedy 3. To reduce this threat, building awareness among researchers as well as stronger incentives (e.g., regulation) to provide continuous transfer funding for FM research (e.g., not relying on short-term projects like Ph.D theses) is needed. A good start on the academic side could then be a specific standardised repository of FM case studies.
+
+威胁3。主要的威胁是，FM研究人员不愿定期参与转移努力，加上对从业者的过分怀疑，以及其他机制(例如缺乏资金、缺乏重点的研究评估、知识产权)阻止双方进行有效的双向转移。
+
+补救3。为了减少这种威胁，需要在研究人员中建立意识，并采取更有力的激励措施(例如，监管)，为FM研究提供持续的转移资金(例如，不依赖于博士论文等短期项目)。学术方面的一个良好开端可以是FM案例研究的一个特定的标准化存储库。
+
+### 5.4 Too Many Errors in Proofs and Failure to Scale
+
+From the perspective of measurement, Jones and Bonsignour [2011, Sec. 4.1] stated that “proofs of correctness sound useful, but [i] errors in the proofs themselves seem to be common failings not covered by the literature. Further, large applications may have thousands of provable algorithms, and [ii] the time required to prove them all might take many years”. For [i], the authors opposed 7% of erroneous bug repairs to up to 100% of erroneous proofs, though stating that the latter was based on an anecdote and there had been little data around. Jones and Bonsignour elaborated an example for [ii]: Assuming one provable algorithm per 5 function points24 and on average 4 proofs per day, Microsoft Windows 7 (160,000 function points) would have about 32,000 provable algorithms, taking a qualified software engineer about 36 calendar years. They highlighted that typically only around 5% of the personnel are trained to do this work, assuming that algorithms and requirements are stable during proof time.
+
+Jones和Bonsignour[2011，第4.1节]从度量的角度指出，“正确性的证明听起来很有用，但是[i]证明本身的错误似乎是文献中没有涵盖的常见错误。此外，大型应用程序可能有数千种可证明的算法，[ii]证明所有这些算法所需的时间可能需要多年”。对于[i]，作者反对7%的错误错误修复到100%的错误证明，尽管后者是基于一个奇闻轶事，几乎没有数据。Jones和Bonsignour为[ii]详细阐述了一个示例:假设每5个功能点有一个可证明算法，平均每天有4个证明，那么Microsoft Windows 7(16万个功能点)将有大约32,000个可证明算法，而一个合格的软件工程师大约需要36个日历年。他们强调，假设算法和需求在证明期间是稳定的，通常只有5%的人员接受过这方面的培训。
+
+Jones and Bonsignour’s argument is based on the view of practical program verification as a largely manual activity. However, research in reasoning about programs has devised promising approaches to proof automation (e.g., bounded model checkers, interactive proof assistants). Assessing such approaches, MacKenzie [2001] compared rigorous but manual formal proof with mechanised or automated proof. He could not find a case where mechanised proof threw doubt upon an established mathematical theorem. MacKenzie observed that this underpins the robustness argument of De Millo et al. [1979] for proofs as manual social processes rather than lengthy mechanical derivations (cf. Section 3.3). However, opposing De Millo et al.’s view, Jones [2003, p. 38] concluded that structuring of knowledge about computing ideas is the actual issue, and not the avoidance of mechanisation. Furthermore, Jones [2003, p. 39] mitigated Fetzer’s issue of the reality gap in program verification [Fetzer 1988] by referring to researchers’ continuous efforts in verifying hardware, programming languages, and compilers in addition to individual programs. Finally, in support of Jones and Bonsignour’s concerns, Jones [2003, p. 38] highlighted the validity of specifications, manual and automated proofs rely on, as a serious issue indeed having received too little attention from researchers (cf. Section 4.4).
+
+Jones和Bonsignour的论点基于这样一种观点，即实际的程序验证主要是手工活动。然而，关于程序推理的研究已经为证明自动化设计出了有前途的方法(例如，有界模型检验器、交互式证明助手)。在评估这些方法时，MacKenzie[2001]将严格但手工的形式证明与机械化或自动化的证明进行了比较。他找不到一个机械证明使人们对已建立的数学定理产生怀疑的例子。MacKenzie观察到，这支持了De Millo等人[1979]的稳健性论证，即证明是手工的社会过程，而不是冗长的机械推导(参见第3.3节)。然而，反对De Millo等人的观点，Jones [2003, p. 38]得出结论，关于计算思想的知识结构是实际问题，而不是避免机械化。此外，Jones [2003, p. 39]通过参考研究人员在验证除个别程序之外的硬件、编程语言和编译器方面的持续努力，减轻了Fetzer在程序验证方面的现实差距问题[Fetzer 1988]。最后，为了支持Jones和Bonsignour的观点，Jones [2003, p. 38]强调了规范、手动和自动证明所依赖的有效性，这确实是一个严重的问题，但却很少得到研究人员的关注(参见第4.4节)。
+
+Threat 4. The main threat is the lack of qualified personnel to cope with the required amount and type of proof.
+
+Remedy 4. We believe one angle of attacking this threat is the use of proof assistants wellintegrated with common environments for requirements specification and software development combined with continuous research and education in the corresponding methods and tools.
+
+威胁4。主要的威胁是缺乏合格的人员来处理所需的证据数量和类型。
+
+补救措施4。我们认为，攻击这种威胁的一个角度是使用proof assistant，它与需求规范和软件开发的常见环境很好地集成在一起，并结合对相应方法和工具的不断研究和教育。
+
+### 5.5 Failure to Derive Useful Tools
+
+Being loosely related to erroneous proofs, the information overload through false-positive findings of errors is a well-known problem in static program analysis. Semi-formal pattern checkers,25 such as PMD and FindBugs, are exposed to this threat [Gleirscher et al. 2014]. Additionally, FM-based verification tools, such as Terminator and ESC/Java [Flanagan et al. 2002], can be unable to correctly report all potential problems, because they are bounded and therefore unsound. While such tools can be helpful, confronting developers with many irrelevant findings (i.e., false positives) or a high risk of critical misses (i.e., false negatives) can lead to decreased use of FM-based tools.
+
+由于与错误证明的松散关系，通过错误的假阳性结果导致的信息过载是静态程序分析中一个众所周知的问题。半正式的模式检查器，如PMD和FindBugs等25个，面临这种威胁[Gleirscher et al. 2014]。此外，基于fm的验证工具，如Terminator和ESC/Java [Flanagan et al. 2002]，可能无法正确报告所有潜在问题，因为它们是有界的，因此是不可靠的。虽然这些工具可能很有帮助，但是让开发人员面对许多不相关的发现(例如，，误报)或严重漏报的高风险(即(如假阴性)会导致减少使用基于模糊语言的工具。
+
+igure 2 relates the two information retrieval metrics, precision and recall, with two adequacy criteria of proof calculi, soundness and completeness. Precision denotes the ratio of actual (solid circle) to correct (true positive findings in the hashed area) findings, while recall measures the ratio of correct to all theoretically correct (dotted circle) findings. The ideal value for both metrics is 1, meaning that there are only true negatives and true positives. Completeness, although unachievable for richer theories, would correspond to recall and soundness would correspond to a precision of 1.
+
+图2将两个信息检索指标precision和recall与两个证明算法的充分性标准:健全性和完全性联系起来。Precision表示实际(实心圆)结果与正确(散列区域内的真实阳性结果)结果之比，recall表示正确与所有理论正确(虚线圆)结果之比。这两个指标的理想值都是1，这意味着只有真阴性和真阳性。完整度，尽管对于更丰富的理论来说是无法达到的，但它将对应于回忆，而可靠性将对应于1的精度。
+
+On the one hand, the usefulness of the calculi underlying FMs is directly proportional only to their completeness and (traditionally) expires with a precision of less than 1. In other words, we usually try to avoid calculi that allow the derivation of false theorems. On the other hand, semiformal pattern checkers have shown to have a wide, sometimes unacceptable, range of precision and recall of their findings. The usefulness of practical FM-based tools might lie somewhere in the middle between classical calculi and bug finding tools with poor precision/recall values.
+
+一方面，FMs下的算法的有效性只与其完整性成正比，并且(传统上)失效的精度小于1。换句话说，我们通常尽量避免使用可以推导出错误定理的计算器。另一方面，半正式模式检查器显示出了广泛的，有时是不可接受的，范围的精度和回忆他们的发现。实用的基于fm的工具的有用性可能介于经典的微积分和精度/回忆值较差的bug查找工具之间。
+
+Threat 5. Themain threat is the struggle of academia and tool vendors to provide adequate tools, suited to adapt to novel scientific insights, to be integrated with other tools, and to be maintained in a flexible and independent manner.
+
+Remedy 5. To reduce this threat, an improvement of education and strong incentives can play an important role here (cf. Sections 5.2 and 5.3).
+
+威胁5。主要的威胁是学术界和工具供应商努力提供适当的工具，以适应新的科学见解，与其他工具集成，并以灵活和独立的方式进行维护。
+
+补救措施5。为了减少这种威胁，教育的改善和强有力的奖励措施可以在这方面发挥重要作用(参看第5.2和5.3节)。
+
 ## 8 SUMMARY
 
 Along the lines of Hoare et al. [2009], we analysed strengths, weaknesses, opportunities, and threats to determine the potential of integrated formal methods to improve the practice of dependability assurance. Emphasising robots and autonomous systems as an area in the spotlight of dependability assurance, we express our expectations of research progress and transfer. From these expectations, we derived a research and research transfer agenda with the objective of (i) enhancing the foundations of integrated formal methods, (ii) collecting evidence on the effectiveness of integrated formal methods in practice, (iii) successfully transferring integrated formal methods into the assurance practice, with a short-term focus on robots and autonomous systems, and (iv) fostering research progress, education, and training from the results of this transfer effort.
