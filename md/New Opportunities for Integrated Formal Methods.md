@@ -29,7 +29,6 @@ Based on observations contradicting the mentioned difficulties, Hoare [1996] cam
 - Charles Antony Richard Hoare. 1996. How did software get so reliable without proof? In FME’96: Industrial Benefit and
 Advances in Formal Methods. Springer Berlin Heidelberg, 1–17. DOI:https://doi.org/10.1007/3-540-60973-3_77
 
-
 基于与上述困难相矛盾的观察，霍尔 [1996] 来问 “软件是如何在没有证据的情况下变得如此可靠的？” 他，以及后来的 MacKenzie [2001]，建议不断改进的设计编程语言和编译器，防御性编程，检查和测试必须有效地阻止了许多危险的实践。麦肯齐创造了 “霍尔悖论”，指出尽管证据很少被使用，但软件已经显示出令人惊讶地适合目的。然而，面对日益复杂的软件 (例如 RAS)，麦肯齐思考霍尔的问题将持续多久。
 
 Indeed, recently we can observe a plethora of difficulties with robots and autonomous systems [Koopman and Wagner 2017; Neumann 2018]. Such systems are set to be more broadly deployed in society, thereby increasing their level of safety criticality [Guiochet et al. 2017] and requiring a stringent regulatory regime. A successful method for regulatory acceptance is provided by structured assurance cases, which provide comprehensible and indefeasible safety arguments supported by evidence [Habli et al. 2010; Hawkins et al. 2015; Kelly 1999]. However, such assurance cases—whether or not compliant with standards like IEC 615081 and DO-178C2—can be laborious to create, complicated to maintain and evolve, and must be rigorously checked by the evaluation process to ensure that all obligations are met and confidence in the arguments is achieved [Greenwell et al. 2006; Rushby 2013]. Nevertheless, these are problems that FMs are designed to overcome.
@@ -92,6 +91,8 @@ From theweaknesses,we observe in recent research, and fromthe threats formal met
 
 Our analysis (1) elaborates on the analysis and conclusions of Hoare et al. [2009], (2) extends their suggestions with regard to formal method experimentation and empirical evidence of effectiveness focusing on collaboration between formal method researchers and practitioners, and (3) develops a research and research transfer road map, placing emphasis on RASs.
 
+- Charles Antony Richard Hoare, Jayadev Misra, Gary T. Leavens, and Natarajan Shankar. 2009. The verified software initiative. Comput. Surveys 41, 4 (2009), 1–8. DOI:https://doi.org/10.1145/1592434.1592439
+
 我们的分析 (1) 阐述了 Hoare 等人的分析和结论 [2009]，(2) 扩展他们关于正式方法实验和注重正式方法研究人员和实践者之间合作的有效性的经验证据的建议，以及 (3) 开发研究和研究转移路线图,强调 RASs。
 
 ### 1.2 Overview
@@ -118,25 +119,48 @@ We view robots and autonomous systems as both dependable systems and highly auto
 
 By dependable systems engineering, we refer to error-avoidance and error-detection activities in control system and embedded software development (e.g., according to the V-model). Avizienis et al. [2004] devised a comprehensive terminology and an overview of the assessment and handling of a variety of faults, errors, and failures. For critical systems, such activities are expected to be explicit (e.g., traceable, documented), to employ best practices (e.g., design patterns), and to be driven by reasonably qualified personnel (e.g., well-trained and experienced engineers or programmers).
 
+- A. Avizienis, J.-C. Laprie, B. Randell, and C. Landwehr. 2004. Basic concepts and taxonomy of dependable and secure computing. IEEE Transactions on Dependable and Secure Computing 1, 1 (2004), 11–33. DOI:https://doi.org/10.1109/TDSC. 2004.2
+
 通过可靠的系统工程，我们指的是控制系统和嵌入式软件开发中的错误避免和错误检测活动 (例如，根据 V 模型)。Avizienis 等人 [2004] 设计了一个全面的术语和对各种故障、错误和故障的评估和处理的概述。对于关键系统，此类活动预计是明确的 (e.g.,可追溯的，有记录的)，采用最佳实践 (e.g.,设计模式)，并由合理合格的人员 (e.g.,训练有素，经验丰富的工程师或程序员)。
 
 The need for dependability often arises from the embedding of software into a cyber-physical context (i.e., an electronic execution platform, a physical process to be controlled, and other systems or human users to interact with). Dependability assurance (DA), or assurance for short, encompasses the usually cross-disciplinary task of providing evidence for an assurance case (e.g., safety, security, reliability) for a system in a specific operational context [Kelly 1999].
+
+- Tim P. Kelly. 1999. Arguing Safety – A Systematic Approach to Safety Case Management. Ph.D. dissertation. University of York, Dept. of Computer Science.
 
 对可靠性的需求通常来自将软件嵌入到网络物理环境中 (i。e.,电子执行平台、要控制的物理过程以及要与之交互的其他系统或人类用户)。可靠性保证 (DA)，简称保证，通常包含为保证案例提供证据的跨学科任务 (e.g.,安全性，安全性，可靠性) 对于特定操作环境中的系统 [Kelly 1999]。
 
 By formal methods, we refer to the use of formal (i.e., mathematically precise and unambiguous) modelling languages to describe system elements, such as software, hardware, and the environment, and the subjection of models written in these languages to analysis [Jones 2003; MacKenzie 2001], the results of which are targeted at assurance [Clarke and Wing 1996; RTCA 2011]. FMs always require the use of both formal syntax and formal semantics (i.e., the mapping of syntax into a mathematical structure). Semantics that allow the verification of refinement or conformance across different FMs is said to be unifying [Hoare and He 1998; van Glabbeek 2001]. iFMs allow the coordinated application of several potentially heterogeneous FMs, supported by interrelated layers of formal semantics [Börger et al. 2008; Grieskamp et al. 2000].
 
-通过形式化方法，我们指的是使用形式化 (i.e.,数学上精确和明确的) 建模语言来描述系统元素，如软件、硬件和环境，以及用这些语言编写的模型对分析的服从 [Jones 2003; macKenzie 2001],其结果针对保证 [Clarke and Wing 1996; RTCA 2011]。FMs 总是需要使用形式语法和形式语义 (即，将语法映射到数学结构中)。允许验证不同 FMs 的细化或一致性的语义据说是统一的 [Hoare 和 He 1998; van glambeek 2001]。IFMs 允许几个潜在的异构 FMs 的协调应用，由形式语义的相互关联层支持 [b ö rger et al. 2008; Grieskamp et al. 2000]。
+- Cliff B. Jones. 2003. The early search for tractable ways of reasoning about programs. IEEE Annals of the History of Computing 25, 2 (4 2003), 26–49. DOI:https://doi.org/10.1109/mahc.2003.1203057
+- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/ mitpress/4529.001.0001
+- Edmund M. Clarke and Jeannette M. Wing. 1996. Formal methods: State of the art and future directions. Comput. Surveys 28, 4 (1996), 626–643. DOI:https://doi.org/10.1145/242223.242257
+- RTCA. 2012. Formal Methods Supplement to DO-178C and DO-278A. Technical Report DO-333. Radio Technical Commission for Aeronautics (RTCA).
+- Charles Antony Richard Hoare and Jifeng He. 1998. Unifying Theories of Programming. Pearson College Div.
+- Robert J. van Glabbeek. 2001. Handbook of Process Algebra. Elsevier, Chapter 1. “The Linear Time - Branching Time Spectrum I: The Semantics of Concrete, Sequential Processes”, 3–99.
+- Egon Börger, Michael Butler, Jonathan P. Bowen, and Paul Boca (Eds.). 2008. Abstract State Machines, B and Z. Lecture Notes in Computer Science, vol. 5238. Springer Berlin. DOI:https://doi.org/10.1007/978-3-540-87603-8
+- Wolfgang Grieskamp, Thomas Santen, and Bill Stoddart (Eds.). 2000. Proceedings of the 2nd International Conference on Integrated Formal Methods, Lecture Notes in Computer Science, (LNCS), vol. 1945. Springer Berlin. DOI:https://doi.org/ 10.1007/3-540-40911-4
+
+通过形式化方法，我们指的是使用形式化 (i.e.,数学上精确和明确的) 建模语言来描述系统元素，如软件、硬件和环境，以及用这些语言编写的模型对分析的服从 [Jones 2003; macKenzie 2001],其结果针对保证 [Clarke and Wing 1996; RTCA 2011]。FMs 总是需要使用形式语法和形式语义 (即，将语法映射到数学结构中)。允许验证不同 FMs 的细化或一致性的语义据说是统一的 [Hoare 和 He 1998; van glambeek 2001]。IFMs 允许几个潜在的异构 FMs 的协调应用，由形式语义的相互关联层支持 [Börger et al. 2008; Grieskamp et al. 2000]。
 
 FMs stand in contrast to informal methods, which employ artefacts without a formal syntax or semantics, such as natural language descriptions and requirements. In the gap between informal methods and FMs, there is also a variety of semi-formal methods, including languages like the Unified Modelling Language (UML) and the Systems Modelling Language (SysML), whose syntax and semantics have frequently been subject of formalisation in research [e.g., Breu et al. 1997; Giese and Heldal 2004; Posse and Dingel 2016; Wieringa and Dubois 1994].
+
+- Ernesto Posse and Jürgen Dingel. 2016. An executable formal semantics for UML-RT. Software & Systems Modeling 15, 1 (2016), 179–217. DOI:https://doi.org/10.1007/s10270-014-0399-z
+- Ruth Breu, Ursula Hinkel, Christoph Hofmann, Cornel Klein, Barbara Paech, Bernhard Rumpe, and Veronika Thurner. 1997. Towards a formalization of the unified modeling language. In Proceedings of ECOOP’97 – Object-Oriented Programming. Springer Berlin, 344–366. DOI:https://doi.org/10.1007/bfb0053386
+- M. Giese and R. Heldal. 2004. From informal to formal specifications in UML. The Unified Modelling Language (2004), 197–211. DOI:https://doi.org/10.1007/978-3-540-30187-5_15
+- Roel Wieringa and Ericq Dubois. 1994. Integrating semi-formal and formal software specification techniques. Information Systems 19, 4 (1994), 33–54. DOI:https://doi.org/10.1016/s0306-4379(98)00007-6
 
 FMs 与非正式方法形成对比，非正式方法采用没有正式语法或语义的人工制品，如自然语言描述和要求。在非正式方法与 FMs 的鸿沟中，也有多种半正式方法，包括统一建模语言 (UML) 和系统建模语言 (SysML),其语法和语义经常成为研究中的形式化主题 [e.g.,breu 等人 1997;Giese 和 Heldal 2004; Posse 和 Dingel 2016; Wieringa 和 Dubois 1994]。
 
 FM-based tools assist in the modelling and reasoning based on an FM. Model-based development (MBD) and model-driven engineering (MDE) served many opportunities for FM-based tools to be applied in dependable systems practice [Bicarregui et al. 2009; Woodcock et al. 2009].
 
+- J. C. Bicarregui, John S. Fitzgerald, Peter Gorm Larsen, and Jim Woodcock. 2009. Industrial practice in formal methods: A review. In FM 2009: Formal Methods, Ana Cavalcanti and Dennis R. Dams (Eds.). Springer Berlin, Berlin, 810–813.
+- Jim Woodcock, Peter Gorm Larsen, Juan Bicarregui, and John Fitzgerald. 2009. Formal methods: Practice and experience. Comput. Surveys 41, 4, Article 19 (2009), 19:1–19:36 pages. DOI:https://doi.org/10.1145/1592434.1592436
+
 基于 FM 的工具有助于基于 FM 的建模和推理。基于模型的开发 (MBD) 和模型驱动工程 (MDE) 为基于 FM 的工具应用于可靠的系统实践提供了许多机会 [Bicarregui 等人。2009; Woodcock 等人。2009]。
 
 We speak of applied or practical FMs to signify successful applications of FMs in a practical context, for example, to develop embedded control software deployed in a commercial product marketed by an industrial company. We consider the use of FMs in research projects still as FM research. Empirical FM research investigates practical FMs, for example, using surveys, case studies, or controlled field experiments [Goues et al. 2018]. We speak of FM transfer if FM research is transferred into practice with the aim to effectively apply and practice FMs. We consider FM transfer, as discussed below, as crucial for empirical FM research and progress of iFM research.
+
+- C. L. Goues, C. Jaspan, I. Ozkaya, M. Shaw, and K. T. Stolee. 2018. Bridging the gap: From research to practical advice. IEEE Software 35, 5 (2018), 50–57. DOI:https://doi.org/10.1109/MS.2018.3571235
 
 我们谈论应用或实际的 FMs 来表示 FMs 在实际环境中的成功应用，例如，开发在工业公司销售的商业产品中部署的嵌入式控制软件。我们认为在研究项目中使用 FMs 仍然是 FM 研究。实证 FM 研究调查实用 FMs，例如，使用调查，案例研究或对照现场实验 [Goues et al. 2018]。我们谈到 FM 转移，如果 FM 研究转移到实践中，目的是有效地应用和实践 FMs。如下所述，我们认为 FM 转移对于经验 FM 研究和 iFM 研究的进展至关重要。
 
@@ -158,31 +182,55 @@ Expecting an increased use of FMs to solve practical challenges in the mid-1990s
 
 van Lamsweerde [2000] observed a growing number of FM success stories in requirements engineering. Evaluating several FM paradigms, he outlined weaknesses (e.g., isolation of languages, poor guidance) to be compensated and challenges to be met towards effective FM use, particularly their integration into multi-paradigm specification languages.
 
+- Axel van Lamsweerde. 2000. Formal specification: A roadmap. In Proceedings of the Conference on the Future of Software Engineering (ICSE’00). ACM, New York, 147–159. DOI:https://doi.org/10.1145/336512.336546
+
 Van Lamsweerde [2000] 在需求工程中观察到越来越多的 FM 成功案例。评估几个 FM 范式，他概述了弱点 (e.g.,语言的隔离，糟糕的指导) 要得到补偿，并面临有效使用 FM 的挑战，特别是它们集成到多范例规范语言中。
 
 Aiming at the improvement of software dependability, Jackson et al. [2007]made several key observations of recent dependability practice (e.g., lack of evidence for method effectiveness) leading to a general proposal with broad implications: rigorous dependability cases with explicit claims, the support of reuse and evolution, and the selective use of FMs. Additionally, these authors provide a number of recommendations to tool vendors and organisations in education and research.
+
+- Daniel Jackson, Lynette I. Millett, and Martyn Thomas. 2007. Software for Dependable Systems: Sufficient Evidence? National Academies Press.
 
 针对软件可靠性的改进，Jackson 等人 [2007] 对最近的可靠性实践 (e.g.,缺乏方法有效性的证据) 导致一个具有广泛含义的一般性建议: 具有明确要求的严格可靠性案例，重用和进化的支持，以及 FMs 的选择性使用。此外，这些作者还为教育和研究领域的工具供应商和组织提供了一些建议。
 
 Also in the mid-2000s, Hinchey et al. [2008] spotted a decline of internet software dependability in the context of an increased level of concurrency in such systems. Their observation was backed by an earlier comparative software/hardware dependability discussion by Gray and Brewer [2001]. Hinchey et al. highlighted achievements in FM automation enabling an increased use of lightweight FMs in “software engineers’ usual development environments”. Furthermore, they stressed the ability to use several FMs in a combined manner to verify distributed (embedded) systems, avoid errors, and hence stop the decline of software dependability.
 
+- Mike Hinchey, Michael Jackson, Patrick Cousot, Byron Cook, Jonathan P. Bowen, and Tiziana Margaria. 2008. Software engineering and formal methods. Commun. ACM 51, 9 (2008), 54–59. DOI:https://doi.org/10.1145/1378727.1378742
+- J. Gray and E. Brewer. 2001. Dependability in the Internet era. In Proceedings of the High Dependability Computing Consortium Conference (2001-05-07).
+
 同样在 21世纪00年代中期中期，Hinchey 等人 [2008] 发现在这样的系统中增加的并发水平的背景下互联网软件可靠性的下降。他们的观察得到了格雷和布鲁尔早期软件/硬件可靠性比较讨论的支持 [2001]。Hinchey 等人强调了 FM 自动化方面的成就，使得轻量级 FMs 在 “软件工程师通常的开发环境” 中的使用得以增加。此外，他们强调了以组合方式使用几个 FMs 来验证分布式 (嵌入式) 系统的能力，避免错误，从而阻止软件可靠性的下降。
 
-Hoare et al. [2009] issued a manifesto for a “Verified Software Initiative”. Based on a consensus of strengths, weaknesses, opportunities, and threats in the software engineering community, they proposed a long-term international “research program towards the construction of error-free software systems”. This initiative aims to achieve its agenda through (1) new theoretical insights into software development, (2) creation of novel automated FM tools, and (3) a collection of experiments and benchmarks. In particular, the initiative is driven by a number of “grand challenges” [Woodcock 2006]—difficult practical verification problems that can guide future research. The experiments have broad scope, and include a smart cash card [Stepney et al. 2000] (the Mondex card), a secure entry system (Tokeneer), and a cardiac pacemaker.
+Hoare et al. [2009] issued a manifesto for a “Verified Software Initiative”. Based on a consensus of strengths, weaknesses, opportunities, and threats in the software engineering community, they proposed a long-term international “research program towards the construction of error-free software systems”. This initiative aims to achieve its agenda through 
+- (1) new theoretical insights into software development, 
+- (2) creation of novel automated FM tools, and
+- (3) a collection of experiments and benchmarks. In particular, the initiative is driven by a number of “grand challenges” [Woodcock 2006]—difficult practical verification problems that can guide future research. The experiments have broad scope, and include a smart cash card [Stepney et al. 2000] (the Mondex card), a secure entry system (Tokeneer), and a cardiac pacemaker.
+
+- Jim Woodcock. 2006. First steps in the verified software grand challenge. IEEE Computer 39, 10 (10 2006).
+- S. Stepney, D. Cooper, and Jim Woodcock. 2000. An Electronic Purse: Specification, Refinement, and Proof. Technical monograph PRG-126. Oxford University Computing Laboratory.
 
 Hoare 等人 [2009] 发布了一个 “验证软件倡议” 的宣言。基于对软件工程界的优势、劣势、机会和威胁的共识，他们提出了一个长期的国际 “无错软件系统建设研究计划”。该倡议旨在通过 (1) 对软件开发的新理论见解，(2) 创建新型自动化正式方法工具，以及 (3) 实验和基准的集合来实现其议程。特别是，该倡议是由一系列 “重大挑战” [Woodcock 2006] 驱动的-困难的实际验证问题，可以指导未来的研究。实验范围广泛，包括智能现金卡 [Stepney et al. 2000] (Mondex 卡) 、安全进入系统 (令牌) 和心脏起搏器。
 
 Outlining an agenda for FM transfer, Jhala et al. [2012] raised the need for improved benchmarks, metrics, and infrastructure for experimental evaluation, the need for revised teaching and training curricula [Perlis 1969], and the need for research communities interested in engaging with practitioners and working on ways to scale FMs up to large systems and to increase the usability of FMs. The authors specified several applications with great opportunities for FM transfer.
 
-Jhala概述调频传输的议程,等。[2012]提出了需要改进的标准,指标、实验评价和基础设施,需要修订的教学和培训课程(玻璃市1969年),和需要研究社区感兴趣与从业者和致力于规模FMs大型系统,提高FMs的可用性。作者详细介绍了几种具有良好调频传输前景的应用。
+- Ranjit Jhala, Rupak Majumdar, Rajeev Alur, Anupam Datta, Daniel Jackson, Shriram Krishnamurthi, John Regehr, Natarajan Shankar, and Cesare Tinelli. 2012. Formal Methods: Future Directions & Transition To Practice. Workshop Report. National Science Foundation. http://goto.ucsd.edu/rjhala/NSFWorkshop/
+- Alan J. Perlis. 1969. Identifying and developing curricula in software engineering. In Proceedings of the May 14-16, 1969, Spring Joint Computer Conference (AFIPS’69 (Spring)). ACM, New York, 540–541. DOI:https://doi.org/10.1145/1476793.1476877
+
+Jhala概述形式化转换的议程[2012]提出了需要改进的标准,指标、实验评价和基础设施,需要修订的教学和培训课程(玻璃市1969年),和需要研究社区感兴趣与从业者和致力于规模FMs大型系统,提高FMs的可用性。作者详细介绍了几种具有良好调频传输前景的应用。
 
 Applied researchers and practitioners interviewed by Schaffer and Voas [2016] convey an optimistic picture of FM adoption in practice, highlighting the potentials to improve IT security, particularly in cyber-physical systems. Chong et al. [2016] share the view that FMs are the most promising approach towards acceptably dependable and secure systems. The challenges they list for the security domain are similar to the challengeswe perceive in RAS assurance: FM integration, sound abstraction techniques, compositional guarantees, and evidence for sustainable transfer.
 
-Schaffer和Voas[2016]采访的应用研究人员和实践者对FM在实践中的应用前景表示乐观，并强调了改进IT安全的潜力，特别是在网络物理系统中。Chong等人[2016]认为，FMs是实现可接受的可靠和安全系统的最有前途的方法。他们列出的安全领域的挑战与我们在RAS保证中看到的挑战类似:FM集成、可靠的抽象技术、组合保证和可持续转移的证据。
+- Kim Schaffer and Jeffrey Voas. 2016. What happened to formal methods for security? Computer 49, 8 (2016), 70–79. DOI:https://doi.org/10.1109/mc.2016.228
+- Stephen Chong, Joshua Guttman, Anupam Datta, Andrew Myers, Benjamin Pierce, Patrick Schaumont, Tim Sherwood, and Nickolai Zeldovich. 2016. Report on the NSF Workshop on Formal Methods for Security. Technical Report. National Science Foundation.
+
+Schaffer和Voas[2016]采访的应用研究人员和实践者对FM在实践中的应用前景表示乐观，并强调了改进IT安全的潜力，特别是在网络物理系统中。Chong等人[2016]认为，形式化方法是实现可接受的可靠和安全系统的最有前途的方法。他们列出的安全领域的挑战与我们在RAS保证中看到的挑战类似:FM集成、可靠的抽象技术、组合保证和可持续转移的证据。
 
 With their survey of FMs for RAS verification, Luckcuck et al. [2018] identified difficulties of applying FMs in the robotics domain and summarised research results and their limitations. They conclude (i) that formalisation remains the most critical and most difficult task, (ii) that the surveyed approaches do not provide “sufficient evidence for public trust and certification”, and (iii) that iFMs would be highly desirable if the current lack of translations between the most relevant of the surveyed techniques (e.g., model checking) could be overcome. We complement their observations with a further analysis of the lack of unification of FMs and of the missing empirical evidence for the effectiveness of FMs and iFMs. Additionally, we provide a research road map.
 
-Luckcuck等[2018]通过对FMs进行RAS验证的调查，发现了形式化方法在机器人领域应用的困难，总结了研究结果及其局限性。他们的结论是(i)正规化仍然是最关键和最困难的任务,(ii)调查方法不提供“足够的证据对公众信任和认证”,和(3),ifm将高度可取,如果当前之间缺乏翻译最相关的调查技术(例如,模型检测)可能被克服。我们通过进一步分析FMs缺乏统一性以及缺少FMs和iFMs有效性的经验证据来补充他们的观察。此外，我们还提供了一份研究路线图。
+- Matt Luckcuck, Marie Farrell, Louise Dennis, Claire Dixon, and Michael Fisher. 2018. Formal specification and verification of autonomous robotic systems: A survey. ArXiv e-prints (2018). arxiv:cs.FL/1807.00048
+
+Luckcuck等[2018]通过对FMs进行RAS验证的调查，发现了形式化方法在机器人领域应用的困难，总结了研究结果及其局限性。他们的结论是
+(i)正规化仍然是最关键和最困难的任务,
+(ii)调查方法不提供“足够的证据对公众信任和认证”,和
+(3),ifm将高度可取,如果当前之间缺乏翻译最相关的调查技术(例如,模型检测)可能被克服。我们通过进一步分析FMs缺乏统一性以及缺少FMs和iFMs有效性的经验证据来补充他们的观察。此外，我们还提供了一份研究路线图。
 
 # 3 STRENGTHS AND WEAKNESSES OF FORMAL METHODS FOR ASSURANCE
 
@@ -192,6 +240,8 @@ Following the guidelines for strengths, weaknesses, opportunities, and threats (
 - evidence of effectiveness (Section 3.3), 
 - expressivity (Section 3.4), and 
 - integration and coordination (Section 3.5).
+
+- Nigel Piercy and William Giles. 1989. Making SWOT analysis work. Marketing Intelligence & Planning 7, 5/6 (1989), 5–7. DOI:https://doi.org/10.1108/eum0000000001042
 
 根据Piercy和Giles[1989]的《优势、劣势、机会和威胁(SWOT)分析指南》，我们提供了FMs的优势和劣势的概述
 - 声誉、证明文化、教育、培训和使用(第3.1节)，
@@ -204,21 +254,55 @@ Following the guidelines for strengths, weaknesses, opportunities, and threats (
 
 In the guest editor’s introduction of the “50 Years of Software Engineering” IEEE Software special theme issue [Erdogmus et al. 2018], the question “Are formal methods essential, or even useful, or are they just an intellectual exercise that gets in the way of building real-world systems?” invited us to deliberate on this topic and summarise its highlights. Applied researchers have raised the issue of limited effectiveness and productivity of FMs, particularly in large practical systems with changing requirements [Glass 2002; Parnas 2010]. FMs are known to be difficult to apply in practice, and bad communication between theorists and practitioners sustains the issue that FMs are taught but rarely applied [Glass 2002]. In contrast, they are considered to have significant potential to cope with the toughest recent engineering problems: certifiable RAS assurance [Farrell et al. 2018].
 
+- Hakan Erdogmus, Nenad Medvidovic, and Frances Paulisch. 2018. 50 years of software engineering. IEEE Software 35, 5 (2018), 20–24. DOI:https://doi.org/10.1109/ms.2018.3571240
+- Robert L. Glass. 2002. Facts and Fallacies of Software Engineering. Pearson Education (US).
+- David Lorge Parnas. 2010. Really rethinking ‘formal methods’. IEEE Computer 43, 1 (2010), 28–34. DOI:https://doi.org/10. 1109/mc.2010.22
+- Marie Farrell, Matt Luckcuck, and Michael Fisher. 2018. Robotics and integrated formal methods: Necessity meets opportunity. In Proceedings of the 14th International Conference on Integrated Formal Methods (iFM), Lecture Notes in Computer Science (LNCS), vol. LNCS 11023. Springer, 161–171.
+
 在“软件工程50年”IEEE软件专题[Erdogmus et al. 2018]的嘉宾编辑介绍中，问题是“正式方法是必需的，甚至是有用的，还是它们只是妨碍构建真实世界系统的智力练习?”“邀请我们对这个主题进行讨论并总结其亮点。应用研究人员提出了FMs的有效性和生产率有限的问题，特别是在需求不断变化的大型实际系统中[Glass 2002;帕尔曼党注册2010]。众所周知，FMs很难在实践中应用，理论家和实践者之间的沟通不畅导致了FMs被教授却很少被应用的问题[Glass 2002]。相比之下，它们被认为有巨大的潜力来应对最近最棘手的工程问题:可认证的RAS保证(Farrell等，2018年)。
 
 Studying the sociology of proof, MacKenzie [2001] identified three sources of knowledge about a system’s dependability: induction (i.e., from observation), authority (e.g., expert opinion), and deduction (i.e., inference from models) which is possibly the most powerful. Since the beginning of software engineering there has been a debate on the style of deductive reasoning about programs and on the usefulness of FMs. De Millo et al. [1979] argued that proof is a social process. Long and difficult-to-read computer-produced verification evidence cannot be subject to such a process and is not genuine proof. Dijkstra [1978] countered, albeit not as a supporter of mechanisation, to change from a personal trust-based culture of proof to the formalisation of proof steps. Fetzer [1988] doubted that verification based on a model of the program can yield any knowledge about the dependability of an implementation of that program. According to Naur [1994], it is not the degree of formalisation making a proof convincing but the way the argument is organised. MacKenzie tried to arbitrate this debate between rigorous proof in ordinary mathematics and formal mechanised proof. He suggested that proof assistants have the potential to use formal methods [Jones 2003] to the maximum benefit. Daylight [2013] concluded from a discussion with Tony Hoare that formalist and empiricist perspectives, while still causing controversies between research and practice, complement each other in a fruitful way.
+
+- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/ mitpress/4529.001.0001
+- Richard A. De Millo, Richard J. Lipton, and Alan J. Perlis. 1979. Social processes and proofs of theorems and programs. Commun. ACM 22, 5 (5 1979), 271–280. DOI:https://doi.org/10.1145/359104.359106
+- Edsger W. Dijkstra. 1978. On a political pamphlet from the middle ages. ACM SIGSOFT Software Engineering Notes 3, 2 (4 1978), 14–16. DOI:https://doi.org/10.1145/1005888.1005890
+- James H. Fetzer. 1988. Program verification: The very idea. Commun. ACM 31, 9 (8 1988), 1048–1063. DOI:https://doi.org/10.1145/48529.48530
+- Peter Naur. 1994. Proof versus formalization. BIT 34, 1 (3 1994), 148–164. DOI:https://doi.org/10.1007/bf01935023
+- Cliff B. Jones. 2003. The early search for tractable ways of reasoning about programs. IEEE Annals of the History of Computing 25, 2 (4 2003), 26–49. DOI:https://doi.org/10.1109/mahc.2003.1203057
+- Edgar G. Daylight. 2013. From mathematical logic to programming-language semantics: A discussion with Tony Hoare. Journal of Logic and Computation 25, 4 (2 2013), 1091–1110. DOI:https://doi.org/10.1093/logcom/exs071
 
 MacKenzie[2001]研究了证明的社会学，确定了关于系统可靠性的三个知识来源:归纳法(即。、权威(如专家意见)和演绎(如专家意见)。这可能是最强大的。自从软件工程开始以来，关于程序演绎推理的风格和FMs的有效性一直存在争议。De Millo等人[1979]认为，证据是一个社会过程。长而难读的计算机生成的验证证据不能经过这样的过程，也不是真正的证据。Dijkstra[1978]反对，尽管不是机械化的支持者，从个人信任为基础的证明文化到证明步骤的形式化。Fetzer[1988]怀疑基于程序模型的验证能否产生关于程序实现可靠性的任何知识。根据Naur[1994]的研究，证明的说服力不是正式化的程度，而是论证的组织方式。MacKenzie试图在普通数学中的严格证明和正式的机械化证明之间进行仲裁。他认为，证据助理有潜力使用正式的方法[琼斯2003]的最大利益。Daylight[2013]通过与Tony Hoare的讨论得出结论，虽然形式主义和经验主义的观点仍然会在研究和实践之间引起争议，但是它们是相辅相成的。
 
 Nevertheless, FMs have shown to be well suited to substantially improve modelling precision, requirements clarity, and verification confidence. FM applications in requirements engineering such as the “Software Cost Reduction” tool set [Heitmeyer et al. 1995] even carry the hypothesis of FM cost-effectiveness in its name. By the 1990s, FM researchers had already started to examine FM usefulness with the aim to respond to critical observations of practitioners [Barroca and McDermid 1992; Bowen and Hinchey 1995; Hall 1990; Knight et al. 1997; Littlewood et al. 1998]. Some of these efforts culminated in empirical studies [Pfleeger and Hatton 1997; Sobel and Clarkson 2002] suggesting high error detection effectiveness, though with some controversy also caused by employed research designs [Berry and Tichy 2003; Sobel and Clarkson 2003].
 
+- Constance Heitmeyer, A. Bull, C. Gasarch, and B. Labaw. 1995. SCR: A toolset for specifying and analyzing requirements. In Proceedings of the 10th Annual Conference on Computer Assurance, Systems Integrity, Software Safety, and Process Security - COMPASS’95 (1995). IEEE. DOI:https://doi.org/10.1109/cmpass.1995.521891
+- Leonor M. Barroca and John A. McDermid. 1992. Formal methods: Use and relevance for the development of safety-critical systems. Comp. J. 35, 6 (1992), 579-599. DOI:https://doi.org/10.1093/comjnl/35.6.579
+- Jonathan Bowen and Michael G. Hinchey. 1995. Seven more myths of formal methods. IEEE Software 12, 4 (1995), 34–41. DOI:https://doi.org/10.1109/52.391826
+- Anthony Hall. 1990. Seven myths of formal methods. IEEE Software 7, 5 (1990), 11–19. DOI:https://doi.org/10.1109/52.57887
+- John C. Knight, Colleen L. DeJong, Matthew S. Gibble, and Luís G. Nakano. 1997. Why are formal methods not used more widely? In Proceedings of the 4th NASA Formal Methods Workshop. 1–12.
+- Bev Littlewood, I. Bainbridge, and R. E. Bloomfield. 1998. The use of computers in safety-critical applications. http:// openaccess.city.ac.uk/1955/
+- Shari L. Pfleeger and Les Hatton. 1997. Investigating the influence of formal methods. Computer 30, 2 (1997), 33–43. DOI:https://doi.org/10.1109/2.566148
+- Ann E. K. Sobel and M. R. Clarkson. 2002. Formal methods application: An empirical tale of software development. IEEE Transactions on Software Engineering 28, 3 (2002), 308–320. DOI:https://doi.org/10.1109/32.991322
+- Dan M. Berry and Walter F. Tichy. 2003. Comments on “Formal methods application: An empirical tale of software development”.
+IEEE Transactions on Software Engineering 29, 6 (2003), 567–571. DOI:https://doi.org/10.1109/tse.2003.1205183
+- Ann E. Kelley Sobel and M. R. Clarkson. 2003. Response to comments on ”Formal methods application: An empirical tale of software development”. IEEE Transactions on Software Engineering 29, 6 (2003), 572–575. DOI:https://doi.org/10.1109/tse.2003.1205184
+
 尽管如此，FMs已被证明非常适合大幅度地提高建模精度、需求明确性和验证信心。FM在需求工程中的应用，如“软件成本降低”工具集[Heitmeyer et al. 1995]，甚至在其名称中包含FM成本效益的假设。到20世纪90年代，FM的研究人员已经开始检查FM的有效性，目的是响应实践者的批判性观察[Barroca和McDermid 1992;Bowen和Hinchey, 1995;大厅1990;奈特等人，1997;Littlewood等人，1998]。其中一些努力在实证研究中达到顶峰[Pfleeger和Hatton 1997;Sobel和Clarkson 2002]表明了很高的错误检测效率，尽管也有一些争议是由采用的研究设计引起的[Berry和Tichy 2003;索贝尔和克拉克森2003年。
 
 Jones and Bonsignour [2011, Sec. 3.2, Tab. 3.2] observe that the combination of formal7 inspection, static analysis, and formal testing has been the best approach to defect prevention with up to 99% of accumulated defect removal efficiency. FMs can be seen as a rigorous and systematic form of this approach, though less often applied. In Appendix A, we make a brief excursion to the relationship between FMs and formal inspection and try to roughly estimate the population size of FM users.
 
-Jones和Bonsignour[2011，第3.2节，表3.2]指出，将正式的检查、静态分析和正式的测试相结合是预防缺陷的最佳方法，其累积缺陷清除效率最高可达99%。FMs可以被看作是这种方法的一种严格的和系统的形式，尽管很少被应用。在附录A中，我们简要介绍了FMs和正式检查之间的关系，并尝试粗略估计FM用户的总体大小。
+- Capers Jones and Olivier Bonsignour. 2011. The Economics of Software Quality. Addison-Wesley Professional.
+
+Jones和Bonsignour[2011，第3.2节，表3.2]指出，将正式的检查、静态分析和正式的测试相结合是预防缺陷的最佳方法，其累积缺陷清除效率最高可达99%。FMs可以被看作是这种方法的一种严格的和系统的形式，尽管很少被应用。在附录A中，我们简要介绍了形式化方法和形式化检查之间的关系，并尝试粗略估计形式化方法用户的总体大小。
 
 From two larger surveys, one in the early 1990s [Austin and Parkin 1993] and another one in the late 2000s [Bicarregui et al. 2009;Woodcock et al. 2009], we obtain a more comprehensive picture of the typical advantages of FM use and barriers to FM adoption as seen by practitioners and practical FM researchers. In two recent surveys [Gleirscher and Marmsoler 2018; Gleirscher and Nyokabi 2018], we made two, not necessarily surprising but empirically supported, observations underpinning the main findings of the former studies: many practitioners view FMs as promising instruments with high potential, and would use these instruments to their maximum benefit, whether directly or through FM-based tools. However, the beneficial use of FMs is still hindered by severe obstacles (e.g., FMs are considered hard to learn, difficult to integrate in existing processes, too expensive, prone to invalid abstractions, and difficult to maintain).
+
+- Stephen Austin and Graeme Parkin. 1993. Formal Methods: A Survey. Technical Report. National Physical Laboratory, Teddington,
+Middlesex, UK.
+- J. C. Bicarregui, John S. Fitzgerald, Peter Gorm Larsen, and Jim Woodcock. 2009. Industrial practice in formal methods: A review. In FM 2009: Formal Methods, Ana Cavalcanti and Dennis R. Dams (Eds.). Springer Berlin, Berlin, 810–813.
+- Jim Woodcock, Peter Gorm Larsen, Juan Bicarregui, and John Fitzgerald. 2009. Formal methods: Practice and experience. Comput. Surveys 41, 4, Article 19 (2009), 19:1–19:36 pages. DOI:https://doi.org/10.1145/1592434.1592436
+- Mario Gleirscher and Diego Marmsoler. 2018. Formal Methods in Dependable Systems Engineering: A Survey of Professionals from Europe and North America.Working paper. Department of Computer Science, University of York. arxiv:cs.SE/1812.08815 https://eprints.whiterose.ac.uk/149642/
+- Mario Gleirscher and Anne Nyokabi. 2018. System Safety Practice: An Interrogation of Practitioners about Their Activities, Challenges, and Views with a Focus on the European Region.Working paper. Department of Computer Science, University of York. arxiv:cs.SE/1812.08452 https://eprints.whiterose.ac.uk/149641/
 
 从两个大的调查,一个在1990年代早期(1993年奥斯汀和帕金),另一个在2000年代末(Bicarregui et al . 2009;丘鹬et al . 2009],我们获得一个更全面的图片FM调频使用和障碍的典型优点收养所看到的从业者和实际调频人员。最近的两项调查[Gleirscher和Marmsoler 2018;Gleirscher和Nyokabi 2018]，我们做了两个，不一定是令人惊讶的，但有经验支持的观察，支持了之前研究的主要发现:许多从业者认为FMs是有前途的工具，具有很高的潜力，并将使用这些工具，无论是直接或通过基于FMs的工具，最大限度地获益。然而，FMs的有益使用仍然受到严重障碍的阻碍(例如，FMs被认为难于学习、难以集成到现有流程中、太昂贵、容易产生无效的抽象和难于维护)。
 
@@ -607,7 +691,7 @@ Threat 2. The main threat is discontinuous and disintegrated FM education, trans
 
 Remedy 2. To reduce this threat, continuous adaptation and improvement of education through teaching, of transfer through training, application, and feedback, and of tool development through regulated interface standards are necessary.
 
-2的威胁。主要的威胁是教育、迁移和工具开发的不连续和不整合。
+威胁2。主要的威胁是教育、迁移和工具开发的不连续和不整合。
 
 方法2。为了减少这种威胁，有必要通过教学、通过培训、应用和反馈进行转移、通过规范的接口标准进行工具开发，从而不断适应和改进教育。
 
@@ -669,10 +753,187 @@ Remedy 5. To reduce this threat, an improvement of education and strong incentiv
 
 补救措施5。为了减少这种威胁，教育的改善和强有力的奖励措施可以在这方面发挥重要作用(参看第5.2和5.3节)。
 
+## 6 A VISION OF INTEGRATED FORMAL METHODS FOR ASSURANCE
+
+The following discussion applies to many domains of dependability assurance. However, the complexity of robots and autonomous systems forms a key opportunity for the progress of iFM research and for its successful transfer. Accordingly, Table 1 summarises the discussion in Section 3 to 5 with an interpretation into RAS assurance practice. Based on the strengths and opportunities described in Sections 3 and 4, we formulate our vision in terms of working hypotheses:
+
+下面的讨论适用于可靠性保证的许多领域。然而，机器人和自主系统的复杂性为iFM研究的进展及其成功转移提供了关键的机遇。因此，表1总结了第3至5节的讨论，并对RAS保证实践进行了解释。基于第3节和第4节所描述的优势和机会，我们根据工作假设来制定我们的愿景:
+
+- (H1) From Section 4.1: Software tools for the construction of arguments and production of evidence using iFMs can meet the challenge of assuring RAS safe. Computer-assisted assurance cases supported by heterogeneous formal models will increase confidence in their sufficiency, and also aid in maintenance and evolution through modularisation of arguments and evidence.
+- (H2) From Sections 4.1 and 4.3: iFMs, in particular modern verification tools, will enable automation of the evidence gathering process, and highlight potential problems when an assurance case changes or when an incident occurs.
+- (H3) From Sections 4.1 and 4.3: There is no stable path to assured autonomy without the use of iFMs. Acceptable safety will be much more likely achieved with iFMs than without them.
+- (H4) From Section 3.5: The success of iFMs depends on the ability to integrate a variety of FMs for different aspects of RAS (e.g., HCI, safety-security interaction, missing human fallback, environment/world modelling, uncertain prediction/behaviour), which is not currently possible. 
+- (H5) From Sections 3.4 and 3.5: Sophisticated techniques for model integration and synchronisation are necessary to support MDE with iFMs. This way, iFMs will make it easier to express consistent RAS models covering all relevant aspects, make their modelling assumptions explicit, and improve future assurance practices.
+- (H6) From Sections 3.1 to 3.3 and 5.3: iFMs can be beneficial in the short term. However, an important engineering principle is to be conservative [Perlis 1969] and, therefore, not to change procedures unless there is compelling evidence that iFMs are effective. Such evidence can be delivered through empirical research [e.g., Jeffery et al. 2015; Pfleeger and Hatton 1997; Sobel and Clarkson 2002; Woodcock et al. 2009] and collaboration of academia and industry. That evidence is required to re-evaluate research and foster research progress and transfer. 
+- (H7) From Section 4.2: The demonstration of cost effectiveness in addition to technical effectiveness of new iFMs is necessary to justify further research. 
+- (H8) From Section 4.4: Norms are a lever of public interest in dependability [Feitelson 2019]. Current norms seem to deviate from the state of the art and may fail to guarantee product certification procedures that satisfy the public interest.
+
+- (H1)第4.1节:使用iFMs构建论点和产生证据的软件工具可以满足保证RAS安全的挑战。由异构形式模型支持的计算机辅助保证案例将增加对其充分性的信心，并通过参数和证据的模块化来帮助维护和改进。
+
+- (H2)从第4.1和4.3节:iFMs，特别是现代的验证工具，将启用证据收集过程的自动化，并突出潜在的问题时，保证案件的变化或事故发生。
+
+- (H3)从第4.1和4.3节:没有使用iFMs就没有稳定的路径来确保自治。使用iFMs比不使用它们更有可能达到可接受的安全性。
+
+- (H4)来自第3.5节:iFMs的成功依赖于为RAS的不同方面(例如，HCI、安全-安全交互、缺失的人类备份、环境/世界建模、不确定的预测/行为)集成各种FMs的能力，这在目前是不可能的。
+
+- (H5)来自第3.4和3.5节:模型集成和同步的复杂技术是支持MDE与iFMs的必要条件。通过这种方式，iFMs将使表达覆盖所有相关方面的一致的RAS模型变得更容易，使它们的建模假设更明确，并改进未来的保证实践。
+
+- (H6)从第3.1至3.3和5.3节:iFMs在短期内是有益的。然而，一个重要的工程原则是保守[Perlis 1969]，因此，除非有令人信服的证据表明iFMs是有效的，否则不改变程序。这些证据可以通过实证研究来提供。， Jeffery et al. 2015;Pfleeger和Hatton 1997;2002年;Woodcock等人2009]和学术界与产业界的合作。需要这些证据来重新评估研究并促进研究进展和转移。
+
+- (H7)第4.2节:除了新的综合管理服务系统的技术效率外，还必须证明其成本效益，以证明进一步研究的必要性。
+
+- (H8)来自第4.4条:规范是可靠性的公共利益杠杆[Feitelson 2019]。目前的标准似乎偏离了目前的技术水平，可能无法保证满足公众利益的产品认证程序。
+
+Figure 3 assigns these hypotheses to the relationships between foundational and transferdirected iFM research by example of the RAS domain. Overall, we believe that iFMs have great potential and can improve assurance but practitioners do not use them accordingly.
+
+图3以RAS域为例，将这些假设分配给基础研究和转移导向iFM研究之间的关系。总的来说，我们相信iFMs有很大的潜力，可以改善保险，但是从业者没有相应地使用它们。
+
+Opportunity 5. We could take and enhance credible measures to convince assurance practitioners of our results and effectively transfer these results. For this to happen, we have to answer further research questions.
+
+机遇5。我们可以采取和提高可靠的措施有效地说服保证从业者的我们的结果和转移这些结果。要做到这一点，我们必须回答进一步的研究问题。
+
+## 7 EMPIRICAL, APPLIED, AND FOUNDATIONAL RESEARCH
+
+Based on the aforementioned working hypotheses, we state several objectives for foundational and transfer-directed iFM research, formulate research questions, and show our expectations on desirable outcomes of such research.
+
+基于上述工作假设，我们为基础研究和转移导向的iFM研究提出了几个目标，提出了研究问题，并展示了我们对此类研究理想结果的期望。
+
+### 7.1 Research Objectives and Tasks
+
+To validate and transfer our research results, we need to
+• evaluate how assurance case construction and management for certifiable RASs can be improved
+by iFMs [Gleirscher et al. 2019].
+• debunk or justify arguments against the use of FMs or FM-based tools in RAS assurance.
+• foster a culture of successful FM research transfer to industries performing RAS assurance.
+
+Taking an iFM foundational point of view, we need
+• foundational research on the integration and unification of FMs to tackle the complexity of
+RASs [Farrell et al. 2018].
+• a unified semantic foundation for the plethora of notations in RAS assurance, to enable
+method and tool integration. There are a number of promising research directions still being
+investigated [Hoare and He 1998; Rosu and Serbanuta 2010].
+
+Taking an evidence-based point of view, as already highlighted in 1993 by Bowen and Stavridou
+[1993], we need to
+• understand the difference between the state of assurance practice and assurance research.
+• understand in which ways current RAS assurance practices fail, and suggest effective approaches
+from assurance research. In this way, we can be sure that assurance practice is
+equipped with state-of-the-art assurance technology for defence against potential liability
+claims, and that assurance practitioners do not fail in fulfilling their obligations.
+• understand how results from assurance research can be validated to be sure that research
+follows promising directions with high potential of success in assurance practice.
+
+Based on that, we need to
+• set concrete directions for empirical FM research in RAS assurance.
+• train FM researchers in applying empirical research designs in their work on rigorous assurance
+cases. Woodcock et al. [2009] corroborated this objective by saying that “formal
+methods champions need to be aware of the need to measure costs”.
+• avoid biases as found in various branches of scientific research. For example, in the social
+and biomedical sciences, researchers identified such biases through meta-analyses and
+suggested measures for bias avoidance [e.g., Fanelli et al. 2017; Franco et al. 2014].
+• increase the level of evidence of FM research to level 2 according to the hierarchy in Goues
+et al. [2018, Tab. 2].
+• avoid knowledge gaps about whether (a) RAS practice is keeping up with the state of the
+assurance art, and (b) whether recent academic or industrial research is going in the right
+direction. In this way, we can be sure that we do our best to inform and serve the society.
+
+Using appropriate research designs, we need to
+• invite the RAS industry to enhance their efforts in engaging with recent iFM research.
+• foster goal-oriented interaction (a) between assurance practitioners and researchers and
+(b) between FM researchers and assurance researchers. In this way, we can be sure to do
+everything to keep researchers up to date with respect to practical demands.
+• join the FM research and applied assurance research communities (Figure 1 on page 3), both
+vital for the progress and transfer of assurance research into RAS assurance practice. This
+way,we can be sure to foster necessary knowledge transfer between these two communities.
+• summarise achievements in practical applications of iFMs for constructing assurance cases.
+• suggest improvements of curricula for RAS assurance.
+• guide the RAS industry in process improvement, training, and tool support.
+• guide vendors of FM-based assurance tools to assess and improve their tools and services.
+
+### 7.2 Some Research Questions Addressing These Objectives
+
+The research questions below are relevant for FMs in general. We consider these questions as
+crucial to be answered for RAS assurance to address the aforementioned objectives:
+
+(Q1) What is the true extent of computer-related accidents up to 2019 [MacKenzie 1994]?
+What would these figures mean for the RAS domain?
+(Q2) Does the use of formalism detect severe errors to a larger extent than without the use
+of formalism [Pfleeger and Hatton 1997; Sobel and Clarkson 2002]?
+(Q3) Does the use of formalism detect severe errors earlier than without using formalism?
+(Q4) Why would such errors be a compelling argument for the use of FMs?
+(Q5) Apart from error avoidance and removal, which other benefits of iFMs in practice are
+evident and can be utilised for method tradeoffs?
+(Q6) Which criteria play a central role in measuring iFM effectiveness? Particularly, how
+can FM-based tools be used at scale?
+(Q7) Howwould Commercial-off-the-Shelf and System-Element-out-of-Context verification
+by iFMs pay off?
+(Q8) Which hurdles need to be overcome to use iFMs in practice to the maximum benefit?
+(Q9) How do we know when these hurdles are actually overcome?
+(Q10) How can FMs (from different disciplines) be used together (iFMs, unification)?
+(Q11) How can FMs be used to assure systems (e.g., computer vision in road vehicles) involving
+artificial intelligence (AI) techniques like machine learning and deep neural
+networks?
+(Q12) How can FMs be integrated into assurance cases to support certification against international
+safety and security standards?
+(Q13) How can we best combine formal and informal methods? For example, how can we
+deal with the issue of the validity of specifications that proofs rely on Jones [2003].
+(Q14) How can we best present formal requirements, evidence, and artefacts in an assurance
+case?
+(Q15) How can empirical research help in successfully demonstrating the capabilities of iFMs
+for rigorous and certifiable autonomy assurance?
+
+This list of research questions can easily be extended by further more detailed empirical questions
+from the settings discussed in Jones and Bonsignour [2011, Sec. 4.4].
+
+### 7.3 Some Envisaged Research Outcomes
+
+Our vision of rigorous RAS assurance implies foundational iFM research to result in
+• novel semantic frameworks unifying best practice methods, models, and formalisms established
+in RAS.
+• new concepts for iFM-based development environments.
+• new computational theories to support formal modelling and verification of RAS.
+• evaluations of
+—assurance tools, languages, frameworks, or platforms used in practice regarding their
+support of iFMs;
+—the integration of iFMs into modelling and programming techniques, assurance methods,
+and assurance processes;
+—languages for linking informal requirements with evidence from iFMs;
+—(automated) abstraction techniques used in assurance and certification.
+• opinions, positions, and visions on FM integration and unification for rigorous practical
+assurance.
+
+Our vision of rigorous RAS assurance implies applied and empirical iFM research to result in
+• comparisons of
+—projects applying iFMs in assurance practice with similar practical projects applying noniFM
+approaches.
+—iFM-based (embedded software) assurance with assurance approaches in traditional engineering
+disciplines.
+• checklists, metrics, and benchmarks (for and beyond tool performance) for
+—the evaluation and comparison of iFM-based assurance approaches (e.g., confidence
+level).
+—relating error removal and incident root cause data (e.g., efficiency and effectiveness in
+removal of severe errors or in avoidance of severe accidents, cf. MacKenzie [1994]).
+—usability and maturity assessment of iFMs (e.g., abstraction effort, proof complexity, assurance
+case complexity, productivity).
+—the evaluation of FM budget cases (cf. Darbari [2018] in electronic hardware development).
+• experiences in or surveys (e.g., systematic mappings and reviews of assurance case research,
+interview studies with assurance practitioners, cf. Section A) of
+—iFM transfers and applications (e.g., case studies in assurance and certification projects).
+—challenges, limitations/barriers, and benefits of iFMs in assurance and certification
+projects.
+• research designs (e.g., for controlled field experiments) for the practical validation of iFMs
+in assurance and certification projects.
+• opinions, positions, and visions on future research, education, and training in the use of
+iFMs in assurance and certification.
+
 ## 8 SUMMARY
 
 Along the lines of Hoare et al. [2009], we analysed strengths, weaknesses, opportunities, and threats to determine the potential of integrated formal methods to improve the practice of dependability assurance. Emphasising robots and autonomous systems as an area in the spotlight of dependability assurance, we express our expectations of research progress and transfer. From these expectations, we derived a research and research transfer agenda with the objective of (i) enhancing the foundations of integrated formal methods, (ii) collecting evidence on the effectiveness of integrated formal methods in practice, (iii) successfully transferring integrated formal methods into the assurance practice, with a short-term focus on robots and autonomous systems, and (iv) fostering research progress, education, and training from the results of this transfer effort.
 
 - Charles Antony Richard Hoare, Jayadev Misra, Gary T. Leavens, and Natarajan Shankar. 2009. The verified software initiative. Comput. Surveys 41, 4 (2009), 1–8. DOI:https://doi.org/10.1145/1592434.1592439
 
-按照Hoare等人[2009]的思路，我们分析了优势、劣势、机会和威胁，以确定集成形式方法改进可靠性保证实践的潜力。我们强调机器人和自主系统是可靠性保障的重点领域，并表达了我们对研究进展和转移的期望。从这些期望,我们得到一个研究和研究议程的目标转移(i)提高综合形式方法的基础,(ii)收集证据的有效性综合正式的方法在实践中,(3)成功地集成形式方法转移到保证实践,短期关注机器人和自治系统,及(iv)培养研究进展,教育和训练的结果转移工作。
+按照Hoare等人[2009]的思路，我们分析了优势、劣势、机会和威胁，以确定集成形式方法改进可靠性保证实践的潜力。我们强调机器人和自主系统是可靠性保障的重点领域，并表达了我们对研究进展和转移的期望。从这些期望,我们得到一个研究和研究议程的目标转移
+- (i)提高综合形式方法的基础,
+- (ii)收集证据的有效性综合正式的方法在实践中,
+- (iii)成功地集成形式方法转移到保证实践,短期关注机器人和自治系统,及
+- (iv)培养研究进展,教育和训练的结果转移工作。
