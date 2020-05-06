@@ -131,5 +131,46 @@ Manually constructed test programs have been used since the early days of compil
 
 Popular compilers, such as GCC [38], compiler infrastructures, such as LLVM [39], implementations of the Java platform, such as OpenJDK [40], and browsers, such as Chromium [37], use extensive manually written test suites to test their implementations. For example, GCC comes with several test suites for both the runtime libraries and the language front ends. The documentation of OpenJDK 6, GCC 7 and Chromium 8 all have guides for developers on how a test case should be written. In addition, there are independently developed conformance test suites, such as the Plum Hall Validation Suite [62] for C and C++ and Test262 for ECMAScript [46].
 
+流行的编译器(如GCC[38])、编译器基础设施(如LLVM[39])、Java平台的实现(如OpenJDK[40])和浏览器(如Chromium[37])都使用大量的手动编写的测试套件来测试它们的实现。例如，GCC为运行库和语言前端提供了几个测试套件。OpenJDK 6、GCC 7和Chromium 8的文档都为开发人员提供了关于如何编写测试用例的指南。此外，还有独立开发的一致性测试套件，如用于C和c++的Plum Hall Validation Suite[62]和用于ECMAScript[46]的Test262。
 
+Although popular in practice, there has been very limited academic work on manually constructing test programs for testing compilers. One exception is by Callahan et al. [17], who describe the manual construction of 100 Fortran loops for testing a vectorizing compiler. Such compilers should be able to determine if a loop can be expressed using hardware-supported vector operations, i.e., if a loop can be vectorized. The primary goal of the test programs manually constructed by Callahan et al. is to check whether the compiler vectorizes vectorizable loops rather than to test the correctness of the generated code. To this end, each of the manually written loop contains some code that can be vectorized by the compiler. When passing these loops to compilers, Callahan et al. find that some compilers miss vectorizable loop statements.
 
+尽管在实践中很流行，但是在为测试编译器手工构建测试程序方面的学术工作非常有限。一个例外是Callahan等人的[17]，他们描述了用于测试向量化编译器的100个Fortran循环的手工构造。这样的编译器应该能够确定一个循环是否可以用硬件支持的向量操作来表示，即，如果循环可以向量化。Callahan等人手工构建的测试程序的主要目标是检查编译器是否向量化了可向量化的循环，而不是测试生成的代码的正确性。为此，每个手动编写的循环都包含一些可以由编译器向量化的代码。当将这些循环传递给编译器时，Callahan等人发现一些编译器遗漏了可向量化的循环语句。
+
+Another description of manually constructing test programs is by Dongarra et al. [44], who collect subroutines and loops that contain parallelism opportunities written by other developers. Additionally, they themselves also manually write programs containing parallelism opportunities. The end goal is to measure if Fortran compilers automatically parallelize the loops.
+
+Dongarra等人对手工构建测试程序的另一种描述是[44]，他们收集包含其他开发人员编写的并行机会的子例程和循环。此外，他们自己也手动编写包含并行机会的程序。最终目标是测量Fortran编译器是否自动并行化循环。
+
+Wolf et al. [120] describe their experience of manually constructing test programs based on a natural language specification of the programming language. Their approach is to study the specification sentence by sentence, and to create a test program for every testable requirement given in the specification. Their work targets the Arden language, a domain-specific programming language to describe medical knowledge.
+
+Wolf等人[120]描述了他们基于编程语言的自然语言规范手工构建测试程序的经验。他们的方法是逐句研究规范，并为规范中给出的每个可测试需求创建测试程序。他们的工作目标是Arden语言，一种描述医学知识的领域特定的编程语言。
+
+### 3.3 Test Program Generation
+
+Although effective, writing test programs manually needs significant effort. As a result, there have been constant efforts towards designing automatic test program generators for testing compilers. These efforts can be broadly classified into three categories: grammar-directed, grammar-aided and other approaches. We explain these approaches in the following.
+
+尽管有效，手动编写测试程序需要大量的工作。因此，人们一直致力于为测试编译器设计自动测试程序生成器。这些努力大致可分为三类:语法指导、语法辅助和其他方法。我们将在下面解释这些方法。
+
+#### 3.3.1 Grammar-directed Approaches.
+
+Grammar-directed approaches for test program generation take a language grammar as their input and generate programs based on this grammar. Grammardirected approaches are the first approaches proposed for automatic test program generation to test compilers. Given the context-free grammar of a language, it is natural to walk over its productions to generate strings of the language. To this end, Purdom [96] presents an approach to testing the correctness of parsers and grammars based on context-free grammars. The primary focus is to validate parsers that are automatically generated from context-free grammars and to find non-reduced grammars (where the grammar contains symbols that cannot be used for a sentence derivation). The generation starts from a unique start symbol and proceeds by applying left-right rewriting rules from the grammar. The approach uses some heuristics to generate short sentences by recursively going over the grammar. For testing parsers, it is desirable that the generated programs cover different states and transitions of the parser. Purdom evaluates his approach on automatically generated LALR(1) parsers and shows that in many cases, the generated test programs are able to cover multiple states and transitions of the parser.
+
+以语法为导向的测试程序生成方法以语言语法为输入，并根据该语法生成程序。语法指导方法是第一个被提出的用于自动测试程序生成到测试编译器的方法。考虑到语言的上下文无关语法，很自然地要遍历其结果以生成语言的字符串。为此，Purdom[96]提出了一种基于上下文无关语法来测试解析器和语法正确性的方法。主要的重点是验证从上下文无关语法自动生成的解析器，并找到非简化语法(其中语法包含不能用于句子派生的符号)。生成从一个独特的开始符号开始，并通过应用来自语法的左右重写规则进行。该方法使用一些启发式方法通过递归遍历语法来生成短句子。对于测试解析器，生成的程序最好覆盖解析器的不同状态和转换。Purdom在自动生成的LALR(1)解析器上评估他的方法，并显示在许多情况下，生成的测试程序能够覆盖解析器的多个状态和转换。
+
+Purdom’s [96] test program generation based on context-free grammar faces shortcomings when the objective is to test all parts of a compiler. By only using a context-free grammar, it is difficult to express context-sensitive features of a language. Since the end goal of Purdom is to test parsers that do not expect semantically correct programs, this shortcoming does not affect the approach.
+
+当目标是测试编译器的所有部分时，Purdom[96]基于上下文无关语法的测试程序生成面临着缺陷。仅使用上下文无关的语法很难表达语言的上下文敏感特性。由于Purdom的最终目标是测试那些不期望语义正确的程序的解析器，所以这个缺点并不影响该方法。
+
+Approaches that focus on testing harder-to-reach parts of the compiler, instead of only the parser, use different ways to address context sensitivity during test program generation. The initial attempts at generating compilable programs based on language grammars tend to extend the context-free productions with context-sensitive features. The extended grammars form a family of grammars known as two-level grammars and are introduced by Adriaan van Wijngaarden to specify ALGOL 68 [118]. Generation of test programs for the goal of testing compilers use three particular two-level grammars, namely W-grammars, attribute grammars and affix grammars. The following gives a brief introduction of these three variants of two-level grammars and also explains the approaches that use each of them. For a comprehensive description about these three types of grammars, readers are referred to a tutorial by Koster [69].
+
+专注于测试难以触及的编译器部分的方法，而不是只测试解析器，在测试程序生成期间使用不同的方法来处理上下文敏感性。基于语言语法生成可编译程序的最初尝试倾向于使用上下文敏感的特性来扩展上下文无关的结果。扩展语法形成了一个语法家族，称为两级语法，由Adriaan van Wijngaarden引入，以指定ALGOL 68[118]。以测试编译器为目标的测试程序的生成使用了三种特殊的两级语法，即W-grammars、attribute grammars和affix grammars。下面简要介绍两级语法的这三种变体，并解释使用它们的方法。对于这三种语法的全面描述，读者可以参考Koster的教程[69]。
+
+## 9 CONCLUSION
+
+This article provides a survey of approaches for testing compilers. Given the importance of compilers as a basic part of every developer’s tool chain and the disastrous consequences of compiler bugs, testing compilers is an extremely important topic. Recent years have seen significant improvements and activities in the field of compiler testing. Our article enables interested outsiders to obtain an overview of this thriving field, and may enable experts to fill any gaps in their knowledge of the state-of-the-art. Based on our discussion of existing work, we conclude compiler testing has evolved into a mature field that has already made significant impacts on real-world compiler development.
+
+本文介绍了测试编译器的方法。考虑到编译器作为每个开发人员的工具链的基本部分的重要性和编译器错误的灾难性后果，测试编译器是一个非常重要的主题。近年来，编译器测试领域出现了显著的改进和活动。我们的文章使感兴趣的局外人获得这一蓬勃发展的领域的概述，并可能使专家填补他们的最新知识的任何空白。基于我们对现有工作的讨论，我们得出结论，编译器测试已经发展成为一个成熟的领域，已经对真实世界的编译器开发产生了重大影响。
+
+Despite all the advances on compiler testing, there remain several interesting challenges to be addressed in the future, including how to generalize existing approaches and how to further improve both their effectiveness and efficiency. We hope that our survey allows researchers to make progress towards these goals.
+
+尽管在编译器测试方面取得了很多进步，但在未来仍有几个有趣的挑战需要解决，包括如何推广现有的方法以及如何进一步提高它们的有效性和效率。我们希望我们的调查能让研究人员朝着这些目标取得进展。
