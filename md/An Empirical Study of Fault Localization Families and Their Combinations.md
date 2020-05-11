@@ -55,19 +55,33 @@ Some techniques compute a suspiciousness score for each program element and can 
 
 The performance of fault localization is critical to its adoption in practice. Fault localization techniques are helpful only when the root causes are ranked at a high absolute position [14], [15]; the position should be within the top 5 [16]. A number of empirical studies [17], [18], [19], [20] have evaluated the performance of SBFL and MBFL. However, no empirical study has evaluated the performance of other techniques on real-world defects, as far as we know.
 
+- [14] C. Parnin and A. Orso, “Are automated debugging techniques actually helping programmers?” in Proceedings of the 2011 international symposium on software testing and analysis. ACM, 2011, pp. 199–209.
+- [15] X. Xia, L. Bao, D. Lo, and S. Li, “”automated debugging considered harmful” considered harmful: A user study revisiting the usefulness of spectra-based fault localization techniques with professionals using real bugs from large systems,” in Software Maintenance and Evolution (ICSME), 2016 IEEE International Conference on. IEEE, 2016, pp. 267–278.
+- [16] P. S. Kochhar, X. Xia, D. Lo, and S. Li, “Practitioners’ expectations on automated fault localization,” in Proceedings of the 25th International Symposium on Software Testing and Analysis. ACM, 2016, pp. 165–176.
+- [17] S. Pearson, J. Campos, R. Just, G. Fraser, R. Abreu, M. D. Ernst, D. Pang, and B. Keller, “Evaluating & improving fault localization techniques,” in ICSE’17, Proceedings of the 39th International Conference on Software Engineering, May 24–26, 2017. 
+- [18] J. A. Jones and M. J. Harrold, “Empirical evaluation of the tarantula automatic fault-localization technique,” in Proceedings of the 20th IEEE/ACM international Conference on Automated software engineering. ACM, 2005, pp. 273–282. 
+- [19] R. Abreu, P. Zoeteweij, R. Golsteijn, and A. J. Van Gemund, “A practical evaluation of spectrum-based fault localization,” Journal of Systems and Software, vol. 82, no. 11, pp. 1780–1792, 2009. 
+- [20] M. J. Harrold, G. Rothermel, R. Wu, and L. Yi, “An empirical investigation of program spectra,” in Acm Sigplan Notices, vol. 33, no. 7. ACM, 1998, pp. 83–90.
+
 故障定位的性能是故障定位在实际应用中的关键。故障定位技术只有在根本原因处于[14]、[15]较高的绝对位置时才有帮助;位置应该在前5[16]以内。[17]、[18]、[19]、[20]等多项实证研究对SBFL和MBFL的性能进行了评价。然而，据我们所知，还没有实证研究评估其他技术在真实缺陷上的性能。
 
 This paper reports on an empirical study of fault localization techniques. Our study aims to include a wide range of fault localization techniques from different families, including SBFL, MBFL, program slicing, predicate switching, stack trace analysis, information retrieve-based fault localization, and history-based fault localization. Following the insight from existing work [17] that the performance of fault localization techniques may differ between real faults and artificial faults, our study is based on 357 real-world faults from the Defects4J dataset [21].
+
+- [21] R. Just, D. Jalali, and M. D. Ernst, “Defects4j: A database of existing faults to enable controlled testing studies for java programs,” in Proceedings of the 2014 International Symposium on Software Testing and Analysis. ACM, 2014, pp. 437–440.
 
 本文对故障定位技术进行了实证研究。我们的研究旨在包括来自不同家族的广泛的故障定位技术，包括SBFL、MBFL、程序切片、谓词切换、堆栈跟踪分析、基于信息检索的故障定位和基于历史的故障定位。根据现有工作[17]的观点，故障定位技术的性能可能在真实故障和人工故障之间有所不同，我们的研究基于来自于Defects4J数据集[21]的357个真实故障。
 
 In contrast to previous studies, our study explores mainly two novelty aspects. First, since techniques in different families use different information sources, it is interesting to know how much these techniques are correlated to each other. We measured the correlation between different pairs of techniques and explored the possibility of combining these techniques using learning to rank model [22]. In contrast, previous work usually considers techniques in one or a few families, e.g., combining different formulae in SBFL [23] or combining SBFL and history-based techniques [25], and our work is the first to explore the combinations of a wide range of techniques that rely on different information sources.
 
+- [22] C. Burges, T. Shaked, E. Renshaw, A. Lazier, M. Deeds, N. Hamilton, and G. Hullender, “Learning to rank using gradient descent,” in Proceedings of the 22nd international conference on Machine learning. ACM, 2005, pp. 89–96. 
+- [23] Y. Wang, Z. Huang, Y. Li, and B. Fang, “Lightweight fault localization combined with fault context to improve fault absolute rank,” SCIENCE CHINA Information Sciences, vol. 60, no. 9, p. 092113,2017.
+- [25] J. Sohn and S. Yoo, “Fluccs: using code and change metrics to improve fault localization,” in Proceedings of the 26th ACM SIGSOFT International Symposium on Software Testing and Analysis. ACM, 2017, pp. 273–283.
+
 与以往的研究相比，我们的研究主要探索了两个新颖性方面。首先，由于不同家庭中的技术使用不同的信息源，所以了解这些技术之间的相互关系是很有趣的。我们测量了不同技术对之间的相关性，并探索了利用学习对模型[22]进行排序来结合这些技术的可能性。相比之下，以前的工作通常只考虑一个或几个系列的技术，例如，组合SBFL[23]中的不同公式或组合SBFL和基于历史的技术[25]，而我们的工作是第一个探索依赖于不同信息源的各种技术的组合。
 
 The second novelty is that we measured the time cost of different fault localization techniques. Existing studies have shown that efficiency and scalability are both critical to the adoption of fault localization techniques [16]. Thus, a good fault localization approach must balance between localization performance and cost. We have considered different usage scenarios to find the best balance in practice.
 
-与以往的研究相比，我们的研究主要探索了两个新颖性方面。首先，由于不同家庭中的技术使用不同的信息源，所以了解这些技术之间的相互关系是很有趣的。我们测量了不同技术对之间的相关性，并探索了利用学习对模型[22]进行排序来结合这些技术的可能性。相比之下，以前的工作通常只考虑一个或几个系列的技术，例如，组合SBFL[23]中的不同公式或组合SBFL和基于历史的技术[25]，而我们的工作是第一个探索依赖于不同信息源的各种技术的组合。
+第二个新奇之处是我们测量了不同故障定位技术的时间成本。现有的研究表明，效率和可扩展性都是采用故障定位技术[16]的关键。因此，一个好的故障定位方法必须在定位性能和成本之间取得平衡。为了在实践中找到最佳的平衡，我们考虑了不同的使用场景。
 
 Finally, we have released our experimental infrastructure. This experimental infrastructure can be used by other researchers to evaluate fault localization techniques and to combine different fault localization techniques.
 
@@ -114,6 +128,10 @@ The rest of the paper is organized as follows. Section 2 introduces the backgrou
 
 Commonly, a fault localization technique takes as input a faulty program and a set of test cases with at least one failed test, and generates as output a potentially ranked list of suspicious program elements. Recently, some approaches [11], [13], [27] considered other input information, such as the bug report or the develop history. This paper also considers these approaches. The common levels of granularity for program elements are statements, methods, and files. This paper uses statements as program elements, except for Section 4.5 which compares results for different granularities.
 
+- [11] J. Zhou, H. Zhang, and D. Lo, “Where should the bugs be fixed? more accurate information retrieval-based bug localization based on bug reports,” in Software Engineering (ICSE), 2012 34th International Conference on. IEEE, 2012, pp. 14–24.
+- [13] F. Rahman, D. Posnett, A. Hindle, E. Barr, and P. Devanbu, “Bugcache for inspections: hit or miss?” in Proceedings of the 19th ACM SIGSOFT symposium and the 13th European conference on Foundations of software engineering. ACM, 2011, pp. 322–331.
+- [27] X. Li and L. Zhang, “Transforming programs and tests in tandem for fault localization,” Proceedings of the ACM on Programming Languages, vol. 1, no. OOPSLA, p. 92, 2017.
+
 通常，故障定位技术将错误的程序和一组至少有一个失败测试的测试用例作为输入，并生成可疑程序元素的潜在排序列表作为输出。最近，一些方法[11]、[13]、[27]考虑了其他输入信息，如错误报告或开发历史。本文也考虑了这些方法。程序元素的常见粒度级别是语句、方法和文件。本文使用语句作为程序元素，除了4.5节比较了不同粒度的结果。
 
 This section first introduces seven families of fault localization techniques, and then introduces the learning to rank model for combining different techniques.
@@ -122,11 +140,17 @@ This section first introduces seven families of fault localization techniques, a
 
 A program spectrum is a measurement of run-time behavior, such as code coverage [3]. Collofello and Cousins proposed that program spectra be used for fault localization [28]. Comparing program spectra on passed and failed test cases enable ranking of program elements. The more frequently an element is executed in failed tests, and the less frequently it is executed in passed tests, the more suspicious the element is.
 
+- [3] M. J. Harrold, G. Rothermel, K. Sayre, R.Wu, and L. Yi, “An empirical investigation of the relationship between spectra differences and regression faults,” Software Testing Verification and Reliability, vol. 10, no. 3, pp. 171–194, 2000.
+- [28] M. Wen, R. Wu, and S.-C. Cheung, “Locus: Locating bugs from software changes,” in Automated Software Engineering (ASE), 2016 31st IEEE/ACM International Conference on. IEEE, 2016, pp. 262–273.
+
 程序频谱是对运行时行为(如代码覆盖率[3])的度量。Collofello和Cousins提出将程序谱用于故障定位[28]。比较通过和失败测试用例上的程序谱可以对程序元素进行排序。一个元素在失败的测试中执行的频率越高，在通过的测试中执行的频率越低，这个元素就越可疑。
 
 Typically, an SBFL approach calculates suspiciousness scores using a ranking metric [29], or risk evaluation formula [1], [30], based on four values collected from the executions of the tests, as shown in Table 1. For example, Ochiai [2] is an effective SBFL technique [30] using the formula:
 
 $Ochiai(element)=\frac{}{}$
+
+- [29] J. S. Collofello and L. Cousins, “Towards automatic software fault location through decision-to-decision path analysis,” in National Computer Conference. IEEE, 1986, p. 539.
+
 
 通常，SBFL方法使用排名度量[29]或风险评估公式[1]、[30]来计算可疑性分数，该公式基于从执行测试中收集的四个值，如表1所示。例如，Ochiai[2]是一种有效的SBFL技术[30]，其公式为:
 
@@ -142,9 +166,12 @@ the recommendation from Wong et al. [31].
 
 ### 2.2 Mutation-Based Fault Localization
 
-Mutation-based fault localization uses information from mutation analysis [33], rather than from regular program execution, as inputs to its ranking metric or risk evaluation formula. While SBFL techniques consider whether a statement is executed or not, MBFL techniques consider whether the execution of a statement affects the result of a test [17]. If a program statement affects failed tests more frequently and affects passed tests more rarely, it is more suspicious.
+Mutation-based fault localization uses information from mutation analysis [36], rather than from regular program execution, as inputs to its ranking metric or risk evaluation formula. While SBFL techniques consider whether a statement is executed or not, MBFL techniques consider whether the execution of a statement affects the result of a test by injecting mutants. A mutant typically changes one expression or statement by replacing one operand or expression with another [17]. If a program statement affects failed tests more frequently and affects passed tests more rarely, it is more suspicious.
 
-基于突变的故障定位使用来自突变分析[33]的信息，而不是来自常规程序执行的信息，作为其排名指标或风险评估公式的输入。当SBFL技术考虑语句是否被执行时，MBFL技术考虑语句的执行是否会影响测试[17]的结果。如果一个程序语句更频繁地影响失败的测试，更少地影响通过的测试，那么它就更值得怀疑。
+- [36] Y. Jia and M. Harman, “An analysis and survey of the development of mutation testing,” IEEE transactions on software engineering, vol. 37, no. 5, pp. 649–678, 2011.
+- [17] S. Pearson, J. Campos, R. Just, G. Fraser, R. Abreu, M. D. Ernst, D. Pang, and B. Keller, “Evaluating & improving fault localization techniques,” in ICSE’17, Proceedings of the 39th International Conference on Software Engineering, May 24–26, 2017.
+
+基于突变的故障定位使用来自突变分析[36]的信息，而不是来自常规程序执行的信息，作为其排名指标或风险评估公式的输入。当SBFL技术考虑语句是否被执行时，MBFL技术考虑语句的执行是否通过注入突变体而影响测试的结果。突变体通常通过用另一个[17]替换一个操作数或表达式来改变一个表达式或语句。如果一个程序语句更频繁地影响失败的测试，更少地影响通过的测试，那么它就更值得怀疑。
 
 A mutant is said to be killed by a test case if the test case has different execution results on the mutant and the original program [34]. A test case that kills mutants may carry diagnostic information. MBFL injects mutants into the program under test. MUSE [5] and Metallaxis-FL [4] are two state-of-the-art MBFL techniques. For a statement s, a MBFL technique:
 

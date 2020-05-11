@@ -64,7 +64,7 @@ Acceleration in hardware capacity has been fully matched by improvements in the 
 
 Established competitions exist between the builders of rival proof tools to evaluate their capabilities and speed. These are continuing drivers of measurable advance. The rules of a competition require the use of certain standard interfaces. These are already being further exploited to construct links for the interworking and cooperation of tools; they allow tool builders with varying backgrounds to collaborate in provision of services for their users. We expect that competition and cooperation will play significant roles in the VSI project.
 
-硬件容量的加速已经被执行构造证明的基本任务的算法和程序的改进完全匹配。在一个定理证明器的一些基本内部循环中，在大约10年的时间里，速度和容量增加了1000倍，这是在硬件速度增加的基础上实现的。硬件和软件的改进可能会继续。
+已建立的竞争存在于竞争证明工具的建设者之间，以评估他们的能力和速度。这些都是可衡量进步的持续动力。比赛规则要求使用特定的标准接口。已经在进一步利用这些技术来为工具的相互作用和合作建立联系;它们允许具有不同背景的工具构建者协作为用户提供服务。我们期待竞争与合作在VSI项目中发挥重要作用。
 
 The open source movement shows the power of collective idealism in the development of high-quality software. It gives an example of collaborative evolution of programs, which should be followed in the implementation and evolution of a verification toolset. The open source software provides a wealth of freely published source material, in the form of programs that can be subjected to analysis and verification.
 
@@ -92,10 +92,7 @@ The current evaluation and reward structure in academic Computing departments fa
 
 目前学术计算部门的评价和奖励结构有利于快速发表会议论文，阐述作者的最新研究思路。这样的论文很少被实践的软件工程师研究。在现代社会，通过集成的工具集，研究结果通常对工程师和科学家都是可访问的。致力于开发和增强科学工具集的工作没有得到当前基于公众的计算机科学家奖励结构的充分承认。根据他人开发的工具和基准进行实验工作的科学家得到的认可更少。
 
-The main scientific risk to the success of the project is that there is so much variation
-in computing application and technology that verification experience cannot readily be
-transferred from one program to the next; thus, no single tool will be able to meet all
-the demands placed on it.
+The main scientific risk to the success of the project is that there is so much variation in computing application and technology that verification experience cannot readily be transferred from one program to the next; thus, no single tool will be able to meet all the demands placed on it.
 
 该项目成功的主要科学风险在于，计算应用和技术上有太多的变化，验证经验不能轻易地从一个程序转移到下一个程序;因此，没有一种工具能够满足对它的所有要求。
 
