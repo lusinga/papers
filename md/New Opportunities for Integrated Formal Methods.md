@@ -58,9 +58,7 @@ safety arguments. In Proceedings of the 24th International System Safety Confere
 
 In spite of the weaknesses of current FMs, and encouraged by their strengths, we believe that their coordinated use within established processes can reduce critical deficits observable in dependable systems engineering. Farrell et al. [2018] state that “there is currently no general framework integrating formal methods for robotic systems”. The authors highlight the use of what are called integrated formal method (iFMs) in the construction of assurance cases and the production of evidence as a key opportunity to meet current RAS challenges. Particularly, computer-assisted assurance techniques [Wei et al. 2019], supported by evidence provided by iFMs, can greatly increase confidence in the sufficiency of assurance cases, and also aid in their maintenance and evolution through automation. Moreover, the use of modern FM-based tools to support holistic simulation, prototyping, and verification activities, at each stage of system, hardware, and software development, can lead to systems that are demonstrably safe, secure, and trustworthy.
 
-- Marie Farrell, Matt Luckcuck, and Michael Fisher. 2018. Robotics and integrated formal methods: Necessity meets opportunity.
-In Proceedings of the 14th International Conference on Integrated Formal Methods (iFM), Lecture Notes in Computer
-Science (LNCS), vol. LNCS 11023. Springer, 161–171.
+- Marie Farrell, Matt Luckcuck, and Michael Fisher. 2018. Robotics and integrated formal methods: Necessity meets opportunity. In Proceedings of the 14th International Conference on Integrated Formal Methods (iFM), Lecture Notes in Computer Science (LNCS), vol. LNCS 11023. Springer, 161–171.
 
 - Ran Wei, Tim Kelly, X. Dai, S. Zhao, and Richard Hawkins. 2019. Model based system assurance using the structured
 assurance case metamodel. Journal of Software and Systems 154 (8 2019), 211–233.
@@ -132,13 +130,13 @@ The need for dependability often arises from the embedding of software into a cy
 By formal methods, we refer to the use of formal (i.e., mathematically precise and unambiguous) modelling languages to describe system elements, such as software, hardware, and the environment, and the subjection of models written in these languages to analysis [Jones 2003; MacKenzie 2001], the results of which are targeted at assurance [Clarke and Wing 1996; RTCA 2011]. FMs always require the use of both formal syntax and formal semantics (i.e., the mapping of syntax into a mathematical structure). Semantics that allow the verification of refinement or conformance across different FMs is said to be unifying [Hoare and He 1998; van Glabbeek 2001]. iFMs allow the coordinated application of several potentially heterogeneous FMs, supported by interrelated layers of formal semantics [Börger et al. 2008; Grieskamp et al. 2000].
 
 - Cliff B. Jones. 2003. The early search for tractable ways of reasoning about programs. IEEE Annals of the History of Computing 25, 2 (4 2003), 26–49. DOI:https://doi.org/10.1109/mahc.2003.1203057
-- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/ mitpress/4529.001.0001
+- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/mitpress/4529.001.0001
 - Edmund M. Clarke and Jeannette M. Wing. 1996. Formal methods: State of the art and future directions. Comput. Surveys 28, 4 (1996), 626–643. DOI:https://doi.org/10.1145/242223.242257
 - RTCA. 2012. Formal Methods Supplement to DO-178C and DO-278A. Technical Report DO-333. Radio Technical Commission for Aeronautics (RTCA).
 - Charles Antony Richard Hoare and Jifeng He. 1998. Unifying Theories of Programming. Pearson College Div.
 - Robert J. van Glabbeek. 2001. Handbook of Process Algebra. Elsevier, Chapter 1. “The Linear Time - Branching Time Spectrum I: The Semantics of Concrete, Sequential Processes”, 3–99.
 - Egon Börger, Michael Butler, Jonathan P. Bowen, and Paul Boca (Eds.). 2008. Abstract State Machines, B and Z. Lecture Notes in Computer Science, vol. 5238. Springer Berlin. DOI:https://doi.org/10.1007/978-3-540-87603-8
-- Wolfgang Grieskamp, Thomas Santen, and Bill Stoddart (Eds.). 2000. Proceedings of the 2nd International Conference on Integrated Formal Methods, Lecture Notes in Computer Science, (LNCS), vol. 1945. Springer Berlin. DOI:https://doi.org/ 10.1007/3-540-40911-4
+- Wolfgang Grieskamp, Thomas Santen, and Bill Stoddart (Eds.). 2000. Proceedings of the 2nd International Conference on Integrated Formal Methods, Lecture Notes in Computer Science, (LNCS), vol. 1945. Springer Berlin. DOI:https://doi.org/10.1007/3-540-40911-4
 
 通过形式化方法，我们指的是使用形式化 (i.e.,数学上精确和明确的) 建模语言来描述系统元素，如软件、硬件和环境，以及用这些语言编写的模型对分析的服从 [Jones 2003; macKenzie 2001],其结果针对保证 [Clarke and Wing 1996; RTCA 2011]。FMs 总是需要使用形式语法和形式语义 (即，将语法映射到数学结构中)。允许验证不同 FMs 的细化或一致性的语义据说是统一的 [Hoare 和 He 1998; van glambeek 2001]。IFMs 允许几个潜在的异构 FMs 的协调应用，由形式语义的相互关联层支持 [Börger et al. 2008; Grieskamp et al. 2000]。
 
@@ -384,7 +382,7 @@ Whether used as ab-initio or post-facto tools, strong evidence for the efficacy 
 - Shari L. Pfleeger and Les Hatton. 1997. Investigating the influence of formal methods. Computer 30, 2 (1997), 33–43.
 DOI:https://doi.org/10.1109/2.566148
 
-无论是用作从头开始还是事后工具，FMs 在实践中的有效性的有力证据仍然稀缺 [e.g.,pfleeger 和 Hatton 1997] 和更多轶事 [e.g.Aicreneg 和 Maibaum 2003; Boulanger 2012; Gnesi 和 margaria 2013; Schaffer 和 Voas 2016]，很少来自比较研究 [e.g.,Pfleeger 和 Hatton 1997; Sobel 和 Clarkson 2002]，通常主要在研究实验室进行 [e.g.,chudnov 等人。2018; 加洛韦等人。1998]，或最近不足以反映验证工具研究的最新成果 [e.g.,卡塔尼奥和惠斯曼 2002]。我们观察到，根据 Goues 等人 [2018，表 1，FM 有效性的大部分经验证据可以归类为 6 级或 7 级。2]，即太弱，无法得出有效结论。
+无论是用作从头开始还是事后工具，形式化方法在实践中的有效性的有力证据仍然稀缺 [e.g.,pfleeger 和 Hatton 1997] 和更多轶事 [e.g.Aicreneg 和 Maibaum 2003; Boulanger 2012; Gnesi 和 margaria 2013; Schaffer 和 Voas 2016]，很少来自比较研究 [e.g.,Pfleeger 和 Hatton 1997; Sobel 和 Clarkson 2002]，通常主要在研究实验室进行 [e.g.,chudnov 等人。2018; 加洛韦等人。1998]，或最近不足以反映验证工具研究的最新成果 [e.g.,卡塔尼奥和惠斯曼 2002]。我们观察到，根据 Goues 等人 [2018，表 1，FM 有效性的大部分经验证据可以归类为 6 级或 7 级。2]，即太弱，无法得出有效结论。
 
 Jackson et al. [2007, p. 39] aswell as Jones and Bonsignour [2011, Sec. 4.4, p. 220], two researchers from the software engineering measurement community, support this observation. Jones and Bonsignour state that “there is very little empirical data on several topics that need to be well understood if proofs of correctness are to become useful tools for professional software development as opposed to academic experiments”. Moreover, the controversies about proof culture summarised in Section 3.1 contain little data to resolve practitioners’ doubts.
 
