@@ -27,5 +27,18 @@ Mathematical correctness proofs of programs go back to at least the 1960s, but f
 - 28. Leroy, X. Formal verification of a realistic compiler. Commun. ACM 52, 7 (July 2009), 107–115.
 - 22. Klein, G., Andronick, J., Elphinstone, K., Murray, T., Sewell, T., Kolanski, R., and Heiser, G. Comprehensive formal verification of an OS microkernel. ACM Transactions on Computer Systems 32, 1 (Feb. 2014), 2:1–2:70.
 - 23. Klein, G., Elphinstone, K., Heiser, G., Andronick, J., Cock, D., Derrin, P., Elkaduwe, D., Engelhardt, K., Kolanski, R., Norrish, M., Sewell, T., Tuch, H., and Winwood, S. seL4: Formal verification of an OS kernel. In Proceedings of the 22nd ACM Symposium on Operating Systems Principles (Big Sky, MT, Oct. 11–14). ACM Press, New York, 2009, 207–220.
+- 33. seL4 microkernel code and proofs; https://github.com/seL4/
+- 21. Kanav, S., Lammich, P., and Popescu, A. A conference management system with verified document confidentiality. In Proceedings of the 26th International Conference on Computer Aided Verification (Vienna, Austria, July 18–22). ACM Press, New York, 2014, 167–183.
+- 25. Kumar, R., Myreen, M., Norrish, M., and Owens, S. CakeML: A verified implementation of ML. In Proceedings of the 41st ACM SIGPLAN-SIGACT Symposium on Principles of Programming Languages (San Diego, CA, Jan. 22–24). ACM Press, New York, 2014, 179–191.
+- 9. Davis, J. and Myreen, M.O. The reflective Milawa theorem prover is sound (down to the machine code that runs it). Journal of Automated Reasoning 55, 2 (Aug. 2015), 117–183.
+- 24. Kumar, R., Arthan, R., Myreen, M.O., and Owens, S. Self-formalisation of higher-order logic: Semantics, soundness, and a verified implementation. Journal of Automated Reasoning 56, 3 (Apr. 2016), 221–259.
+- 5. Chen, H., Ziegler, D., Chajed, T., Chlipala, A., Frans Kaashoek, M., and Zeldovich, N. Using Crash Hoare logic for certifying the FSCQ file system. In Proceedings of the 25th ACM Symposium on Operating Systems Principles (Monterey, CA, Oct. 5–7). ACM Press, New York, 2015, 18–37.
+- 19. Hawblitzel, C., Howell, J., Kapritsos, M., Lorch, J.R., Parno, B., Roberts, M.L., Setty, S.T.V., and Zill, B. IronFleet: Proving practical distributed systems correct. In Proceedings of the 25th ACM Symposium on Operating Systems Principles (Monterey, CA, Oct. 5–7). ACM Press, New York, 2015, 1–17.
+- 17. Gu, R., Shao, Z., Chen, H., Wu, X.(N.)., Kim, J., Sjöberg, V., and Costanzo, C. CertiKOS: An extensible architecture for building certified concurrent OS kernels. In Proceedings of the 12th USENIX Symposium on Operating Systems Design and Implementation (Savannah, GA, Nov. 2–4). ACM Press, New York, 2016.
 
-程序的数学正确性证明至少可以追溯到20世纪60年代，但是在很长一段时间内，它们对软件开发的实际好处在规模和深度上是有限的。然而,近年来许多令人印象深刻的突破已经在正式进行代码级验证的一个真实系统中,从C编译器验证CompCert seL4微核验证,验证CoCon会议系统,验证了ML编译器CakeML,验证交互式定理验证Milawa,蜡烛,文件系统崩溃FSCQ验证,验证分布式系统IronFleet,和验证并发CertiKOS内核框架,以及重要的数学定理，包括四色定理，开普勒猜想的机械化证明，和奇阶定理。这些都不是玩具系统。例如，Comp-Cert是一个商业产品，seL4微内核被用于航空航天、自主航空和物联网平台，而CoCon系统被用于多个大型科学会议。
+程序的数学正确性证明至少可以追溯到20世纪60年代，但是在很长一段时间内，它们对软件开发的实际好处在规模和深度上是有限的。然而,近年来许多令人印象深刻的突破已经在正式进行代码级验证的一个真实系统中,从C编译器验证CompCert seL4微核验证,验证CoCon会议系统,验证了ML编译器CakeML,验证交互式定理验证Milawa,蜡烛,文件系统崩溃FSCQ验证,验证分布式系统IronFleet,和验证并发CertiKOS内核框架,以及重要的数学定理，包括四色定理，开普勒猜想的机械化证明，和奇阶定理。这些都不是玩具系统。例如，CompCert是一个商业产品，seL4微内核被用于航空航天、自主航空和物联网平台，而CoCon系统被用于多个大型科学会议。
+
+These verification projects required significant effort, and for verification to be practical for widespread use, the effort needs to decrease. Here, we demonstrate how strategically combining formal and informal techniques, partially automating the formal ones, and carefully architecting the software to maximize the benefits of isolated components, allowed us to dramatically increase the assurance of systems whose overall size and complexity is ordersof- magnitude greater than that of the systems mentioned earlier.
+
+这些核查项目需要作出重大努力，而要使核查切实可行并得到广泛使用，则需要减少这种努力。这里,我们演示相结合战略正式和非正式技术,部分正式的自动化,并谨慎地设计软件的好处最大化隔离组件,允许我们大大增加的保证系统的整体规模和复杂性是订单数量级比前面提到的系统。
+
