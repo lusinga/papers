@@ -1,0 +1,7 @@
+# Pinpoint: Fast and Precise Sparse Value Flow Analysis for Million Lines of Code
+
+## Abstract
+
+When dealing with millions of lines of code, we still cannot have the cake and eat it: sparse value-flow analysis is powerful in checking source-sink problems, but existing work cannot escape from the "pointer trap" - a precise points-to analysis limits its scalability and an imprecise one seriously undermines its precision.We present Pinpoint, a holistic approach that decomposes the cost of high-precision points-to analysis by precisely discovering local data dependence and delaying the expensive inter-procedural analysis through memorization. Such memorization enables the on-demand slicing of only the necessary inter-procedural data dependence and path feasibility queries, which are then solved by a costly SMT solver. Experiments show that Pinpoint can check programs such as MySQL (around 2 million lines of code) within 1.5 hours. The overall false positive rate is also very low (14.3% - 23.6%). Pinpoint has discovered over forty real bugs in mature and extensively checked open source systems. And the implementation of Pinpoint and all experimental results are freely available.
+
+当处理数百万行代码,我们仍不能有蛋糕和食用方法:稀疏的价值流分析是强大的检查源库问题,但现有的工作不能逃离“指针陷阱”——一个精确的指向分析限制了其可伸缩性和一个不精确的严重削弱了其精度。我们提出了精确定位，一种整体的方法，通过精确地发现局部数据依赖，并通过记忆延迟昂贵的程序间分析，将高精度点的成本分解为分析。这种记忆只允许按需切片必要的过程间数据依赖和路径可行性查询，然后由昂贵的SMT求解器解决。实验表明，查明可以在1.5小时内检查MySQL(大约200万行代码)等程序。总体假阳性率也很低(14.3% - 23.6%)。查明已经在成熟的和广泛检查的开源系统中发现了超过40个真正的bug。并且实现了精确定位，所有的实验结果都是免费提供的。

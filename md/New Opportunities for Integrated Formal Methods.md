@@ -254,14 +254,14 @@ In the guest editor’s introduction of the “50 Years of Software Engineering�
 
 - Hakan Erdogmus, Nenad Medvidovic, and Frances Paulisch. 2018. 50 years of software engineering. IEEE Software 35, 5 (2018), 20–24. DOI:https://doi.org/10.1109/ms.2018.3571240
 - Robert L. Glass. 2002. Facts and Fallacies of Software Engineering. Pearson Education (US).
-- David Lorge Parnas. 2010. Really rethinking ‘formal methods’. IEEE Computer 43, 1 (2010), 28–34. DOI:https://doi.org/10. 1109/mc.2010.22
+- David Lorge Parnas. 2010. Really rethinking ‘formal methods’. IEEE Computer 43, 1 (2010), 28–34. DOI:https://doi.org/10.1109/mc.2010.22
 - Marie Farrell, Matt Luckcuck, and Michael Fisher. 2018. Robotics and integrated formal methods: Necessity meets opportunity. In Proceedings of the 14th International Conference on Integrated Formal Methods (iFM), Lecture Notes in Computer Science (LNCS), vol. LNCS 11023. Springer, 161–171.
 
 在“软件工程50年”IEEE软件专题[Erdogmus et al. 2018]的嘉宾编辑介绍中，问题是“正式方法是必需的，甚至是有用的，还是它们只是妨碍构建真实世界系统的智力练习?”“邀请我们对这个主题进行讨论并总结其亮点。应用研究人员提出了FMs的有效性和生产率有限的问题，特别是在需求不断变化的大型实际系统中[Glass 2002;帕尔曼党注册2010]。众所周知，FMs很难在实践中应用，理论家和实践者之间的沟通不畅导致了FMs被教授却很少被应用的问题[Glass 2002]。相比之下，它们被认为有巨大的潜力来应对最近最棘手的工程问题:可认证的RAS保证(Farrell等，2018年)。
 
 Studying the sociology of proof, MacKenzie [2001] identified three sources of knowledge about a system’s dependability: induction (i.e., from observation), authority (e.g., expert opinion), and deduction (i.e., inference from models) which is possibly the most powerful. Since the beginning of software engineering there has been a debate on the style of deductive reasoning about programs and on the usefulness of FMs. De Millo et al. [1979] argued that proof is a social process. Long and difficult-to-read computer-produced verification evidence cannot be subject to such a process and is not genuine proof. Dijkstra [1978] countered, albeit not as a supporter of mechanisation, to change from a personal trust-based culture of proof to the formalisation of proof steps. Fetzer [1988] doubted that verification based on a model of the program can yield any knowledge about the dependability of an implementation of that program. According to Naur [1994], it is not the degree of formalisation making a proof convincing but the way the argument is organised. MacKenzie tried to arbitrate this debate between rigorous proof in ordinary mathematics and formal mechanised proof. He suggested that proof assistants have the potential to use formal methods [Jones 2003] to the maximum benefit. Daylight [2013] concluded from a discussion with Tony Hoare that formalist and empiricist perspectives, while still causing controversies between research and practice, complement each other in a fruitful way.
 
-- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/ mitpress/4529.001.0001
+- Donald A. MacKenzie. 2001. Mechanizing Proof: Computing, Risk, and Trust. The MIT Press. DOI:https://doi.org/10.7551/mitpress/4529.001.0001
 - Richard A. De Millo, Richard J. Lipton, and Alan J. Perlis. 1979. Social processes and proofs of theorems and programs. Commun. ACM 22, 5 (5 1979), 271–280. DOI:https://doi.org/10.1145/359104.359106
 - Edsger W. Dijkstra. 1978. On a political pamphlet from the middle ages. ACM SIGSOFT Software Engineering Notes 3, 2 (4 1978), 14–16. DOI:https://doi.org/10.1145/1005888.1005890
 - James H. Fetzer. 1988. Program verification: The very idea. Commun. ACM 31, 9 (8 1988), 1048–1063. DOI:https://doi.org/10.1145/48529.48530
@@ -287,7 +287,7 @@ IEEE Transactions on Software Engineering 29, 6 (2003), 567–571. DOI:https://d
 
 尽管如此，FMs已被证明非常适合大幅度地提高建模精度、需求明确性和验证信心。FM在需求工程中的应用，如“软件成本降低”工具集[Heitmeyer et al. 1995]，甚至在其名称中包含FM成本效益的假设。到20世纪90年代，FM的研究人员已经开始检查FM的有效性，目的是响应实践者的批判性观察[Barroca和McDermid 1992;Bowen和Hinchey, 1995;大厅1990;奈特等人，1997;Littlewood等人，1998]。其中一些努力在实证研究中达到顶峰[Pfleeger和Hatton 1997;Sobel和Clarkson 2002]表明了很高的错误检测效率，尽管也有一些争议是由采用的研究设计引起的[Berry和Tichy 2003;索贝尔和克拉克森2003年。
 
-Jones and Bonsignour [2011, Sec. 3.2, Tab. 3.2] observe that the combination of formal7 inspection, static analysis, and formal testing has been the best approach to defect prevention with up to 99% of accumulated defect removal efficiency. FMs can be seen as a rigorous and systematic form of this approach, though less often applied. In Appendix A, we make a brief excursion to the relationship between FMs and formal inspection and try to roughly estimate the population size of FM users.
+Jones and Bonsignour [2011, Sec. 3.2, Tab. 3.2] observe that the combination of formal inspection, static analysis, and formal testing has been the best approach to defect prevention with up to 99% of accumulated defect removal efficiency. FMs can be seen as a rigorous and systematic form of this approach, though less often applied. In Appendix A, we make a brief excursion to the relationship between FMs and formal inspection and try to roughly estimate the population size of FM users.
 
 - Capers Jones and Olivier Bonsignour. 2011. The Economics of Software Quality. Addison-Wesley Professional.
 
@@ -295,8 +295,7 @@ Jones和Bonsignour[2011，第3.2节，表3.2]指出，将正式的检查、静�
 
 From two larger surveys, one in the early 1990s [Austin and Parkin 1993] and another one in the late 2000s [Bicarregui et al. 2009;Woodcock et al. 2009], we obtain a more comprehensive picture of the typical advantages of FM use and barriers to FM adoption as seen by practitioners and practical FM researchers. In two recent surveys [Gleirscher and Marmsoler 2018; Gleirscher and Nyokabi 2018], we made two, not necessarily surprising but empirically supported, observations underpinning the main findings of the former studies: many practitioners view FMs as promising instruments with high potential, and would use these instruments to their maximum benefit, whether directly or through FM-based tools. However, the beneficial use of FMs is still hindered by severe obstacles (e.g., FMs are considered hard to learn, difficult to integrate in existing processes, too expensive, prone to invalid abstractions, and difficult to maintain).
 
-- Stephen Austin and Graeme Parkin. 1993. Formal Methods: A Survey. Technical Report. National Physical Laboratory, Teddington,
-Middlesex, UK.
+- Stephen Austin and Graeme Parkin. 1993. Formal Methods: A Survey. Technical Report. National Physical Laboratory, Teddington,Middlesex, UK.
 - J. C. Bicarregui, John S. Fitzgerald, Peter Gorm Larsen, and Jim Woodcock. 2009. Industrial practice in formal methods: A review. In FM 2009: Formal Methods, Ana Cavalcanti and Dennis R. Dams (Eds.). Springer Berlin, Berlin, 810–813.
 - Jim Woodcock, Peter Gorm Larsen, Juan Bicarregui, and John Fitzgerald. 2009. Formal methods: Practice and experience. Comput. Surveys 41, 4, Article 19 (2009), 19:1–19:36 pages. DOI:https://doi.org/10.1145/1592434.1592436
 - Mario Gleirscher and Diego Marmsoler. 2018. Formal Methods in Dependable Systems Engineering: A Survey of Professionals from Europe and North America.Working paper. Department of Computer Science, University of York. arxiv:cs.SE/1812.08815 https://eprints.whiterose.ac.uk/149642/
@@ -310,11 +309,11 @@ FMs can improve RAS modelling, the specification of RAS requirements, and the au
 
 FMs可以改进RAS建模、RAS需求说明和RAS验证的自动化，促进RAS设计中系统错误的早期检测。许多保险从业人员认为FM的有用性是积极的。
 
-Weakness 1. 
+Weakness 1.
 
 FMs have shown to be difficult to learn and apply. Many assurance practitioners perceive the ease of use of FMs as negative. Moreover, research has been ineffectively communicated in FM teaching and training.
 
-FMs已被证明很难学习和应用。许多保险从业人员认为FMs的易用性是负面的。此外，在FM教学和培训中，研究交流的效果不佳。
+形式化方法已被证明很难学习和应用。许多保险从业人员认为形式化方法的易用性是负面的。此外，在FM教学和培训中，研究交流的效果不佳。
 
 ### 3.2 Transfer Efforts
 
@@ -375,12 +374,15 @@ Strength 2. There exist many transfer re-entry points from a range of insightful
 
 Weakness 2. The number of practical (comparative) case studies using (ab-initio) FMs or iFMs, particularly on RASs, is still too low to draw useful and firm conclusions on FM effectiveness.
 
+强度2。在工业和学术实验室中，存在着许多有见地的FM案例研究的转学再入点。FMs被证明是许多静态分析和MDE工具的有用基础。
+
+缺点2。使用FMs或iFMs的实际(比较)案例研究(ab-initio)的数量，特别是在RASs上，仍然太少，无法得出有关FM有效性的有用和可靠的结论。
+
 ### 3.3 Evidence of Effectiveness
 
 Whether used as ab-initio or post-facto tools, strong evidence for the efficacy of FMs in practice is still scarce [e.g., Pfleeger and Hatton 1997] and more anecdotal [e.g. Aichernig and Maibaum 2003; Boulanger 2012; Gnesi andMargaria 2013; Schaffer and Voas 2016], rarely drawn from comparative studies [e.g., Pfleeger and Hatton 1997; Sobel and Clarkson 2002], often primarily conducted in research labs [e.g., Chudnov et al. 2018; Galloway et al. 1998], or not recent enough to reflect latest achievements in verification tool research [e.g., Cataño and Huisman 2002]. We observe that a large fraction of empirical evidence for FM effectiveness can be classified as level 6 or 7 according to Goues et al. [2018, Tab. 2], that is, too weak to draw effective conclusions.
 
-- Shari L. Pfleeger and Les Hatton. 1997. Investigating the influence of formal methods. Computer 30, 2 (1997), 33–43.
-DOI:https://doi.org/10.1109/2.566148
+- Shari L. Pfleeger and Les Hatton. 1997. Investigating the influence of formal methods. Computer 30, 2 (1997), 33–43. DOI:https://doi.org/10.1109/2.566148
 
 无论是用作从头开始还是事后工具，形式化方法在实践中的有效性的有力证据仍然稀缺 [e.g.,pfleeger 和 Hatton 1997] 和更多轶事 [e.g.Aicreneg 和 Maibaum 2003; Boulanger 2012; Gnesi 和 margaria 2013; Schaffer 和 Voas 2016]，很少来自比较研究 [e.g.,Pfleeger 和 Hatton 1997; Sobel 和 Clarkson 2002]，通常主要在研究实验室进行 [e.g.,chudnov 等人。2018; 加洛韦等人。1998]，或最近不足以反映验证工具研究的最新成果 [e.g.,卡塔尼奥和惠斯曼 2002]。我们观察到，根据 Goues 等人 [2018，表 1，FM 有效性的大部分经验证据可以归类为 6 级或 7 级。2]，即太弱，无法得出有效结论。
 
@@ -396,6 +398,10 @@ Strength 3. For (comparative) studies of FM effectiveness, there are several res
 
 Weakness 3. FMs have been suffering from fragile effectiveness and productivity in dependability engineering in general. There is a lack of convincing evidence of FM effectiveness, particularly, of ab-initio FMs. RAS engineering and assurance are likely to be affected by these weaknesses.
 
+强度3。对于FM有效性的(比较)研究，可以从科学文献中找到一些研究设计和基准示例。在附录A中，我们评估了相应的定性和定量研究的努力和可行性。
+
+缺点3。在可靠性工程中，柔性制造系统的效率和生产率普遍较低。对于FM的有效性，特别是ab-initio FMs，缺乏令人信服的证据。RAS工程和保证可能会受到这些弱点的影响。
+
 ### 3.4 Expressivity
 
 An often quoted weakness of MBD, particularly when applied to RASs, is the “reality gap” [Brooks 1992; Jakobi et al. 1995] that can exist between a naively constructed model and its corresponding real-world artefact. According to Brooks [1992], over-reliance on simulation to test behaviour using naive and insufficiently validated models can lead to effort being applied to solving problems that do not exist in the real world. Worse, programs for robotic controllers developed in a model-based setting may fail when executed on real-world hardware, because “it is very hard to simulate the actual dynamics of the real-world” [Brooks 1992]. This problem is not only true of simulation, but any form of model-based analysis, including reasoning in FMs [Fetzer 1988].
@@ -409,6 +415,10 @@ The fundamental problem here is that it is impossible to model the behaviour of 
 Strength 4. FMs allow and foster the use of specific abstractions to specifically inform engineers of RAS properties critical for their assurance.
 
 Weakness 4. The effectiveness of formal models is fragile and can be significantly reduced because of uncontrollable gaps between models and their implementations.
+
+强度4。FMs允许并促进特定抽象的使用，以明确地告知工程师RAS属性对于他们的保证至关重要。
+
+弱点4。正式模型的有效性是脆弱的，并且由于模型和它们的实现之间的不可控的差距而显著降低。
 
 ### 3.5 Integration and Coordination
 
@@ -651,13 +661,13 @@ We discuss these threats and barriers in more detail in the following:
 
 通过
 
-•缺乏对领域特定和跨域FM集成的良好语义基础的共识(第5.1和5.2节)，
-•缺少对广泛使用和已建立的工具的支持(第5.2节)，
-•FM研究者对实际问题缺乏兴趣(5.3节)，
-•FM研究人员缺乏参与当前实践的动机，软件从业者缺乏参与最近理论结果的动机(第5.3节)，
-•从业者和应用研究人员之间的坏名声(第5.3节)，
-•有缺陷或不缩放的证明(第5.4节)，
-•对可靠性的追求压倒了对有用性的追求(第5.5节)。
+- 缺乏对领域特定和跨域FM集成的良好语义基础的共识(第5.1和5.2节)，
+- 缺少对广泛使用和已建立的工具的支持(第5.2节)，
+- FM研究者对实际问题缺乏兴趣(5.3节)，
+- FM研究人员缺乏参与当前实践的动机，软件从业者缺乏参与最近理论结果的动机(第5.3节)，
+- 从业者和应用研究人员之间的坏名声(第5.3节)，
+- 有缺陷或不缩放的证明(第5.4节)，
+- 对可靠性的追求压倒了对有用性的追求(第5.5节)。
 我们将在以下详细讨论这些威胁和障碍:
 
 ### 5.1 Difficulties and Misconceptions of Unification
