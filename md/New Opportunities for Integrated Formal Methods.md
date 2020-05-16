@@ -325,7 +325,7 @@ FMs can be effective in two ways, ab-initio (i.e., before implementation) and po
 - Daniel Kästner, Stephan Wilhelm, Stefana Nenova, Patrick Cousot, Radhia Cousot, Jérôme Feret, Laurent Mauborgne, Antoine Miné, and Xavier Rival. 2010. Astrée: Proving the absence of runtime errors. In Proceedings of Embedded Real Time Software and Systems (ERTS2) (2010), Vol. 9.
 - K. Rustan M. Leino. 2017. Accessible software verification with Dafny. IEEE Software 34, 6 (2017), 94–97. DOI:https://doi.org/10.1109/ms.2017.4121212
 
-FMs有两种有效的方式，从头开始(也就是从头开始)。、实施前和实施后(即后,实现)。FMs的从头到尾的使用旨在减少后期的错误成本，例如，通过正式的原型设计、逐步细化、正式的测试驱动的开发、在编程之前制作模块断言，或者正式的基于契约的开发。一旦一个初始的形式化(例如，不变量)是可用的，对于类似系统的家族来说，从第二个或第三个FM应用程序开始，拥有形式化的好处超过了将形式化维持到数量级的累积努力[Jackson et al. 2007;米勒1998年;Miller等人，1999]。这个论点也涉及到敏捷设置，因为迭代或增量指的是类似的系统。FMs的事后使用可以通过从现有人工制品中提取知识和使用自动化工具(例如，正式的或基于模型的事后测试工具或事后使用代码断言检查器)来实现[Kastner et al. 2010;Leino 2017]。总的来说，使用FMs的第二种方法被认为与日常软件实践更兼容。
+FMs有两种有效的方式，从头开始(也就是从头开始)、实施前和实施后(即后,实现)。FMs的从头到尾的使用旨在减少后期的错误成本，例如，通过正式的原型设计、逐步细化、正式的测试驱动的开发、在编程之前制作模块断言，或者正式的基于契约的开发。一旦一个初始的形式化(例如，不变量)是可用的，对于类似系统的家族来说，从第二个或第三个FM应用程序开始，拥有形式化的好处超过了将形式化维持到数量级的累积努力[Jackson et al. 2007;米勒1998年;Miller等人，1999]。这个论点也涉及到敏捷设置，因为迭代或增量指的是类似的系统。FMs的事后使用可以通过从现有人工制品中提取知识和使用自动化工具(例如，正式的或基于模型的事后测试工具或事后使用代码断言检查器)来实现[Kastner et al. 2010;Leino 2017]。总的来说，使用FMs的第二种方法被认为与日常软件实践更兼容。
 
 Achievements collected by Aichernig and Maibaum [2003], Boulanger [2012], and Gnesi and Margaria [2013] show that many researchers have been working towards successful FM transfer. Moreover, researchers experienced in particular FMs draw positive conclusions from FM applications, especially in scaling FMs through adequate tool support for continuous reasoning in agile software development [Miller et al. 2010; O’Hearn 2018]. Other researchers report about progress in theorem proving of system software of industrial size [e.g., Klein et al. 2018] and about FM-based tools for practical use [e.g., Bicarregui et al. 2009; Kästner et al. 2010; Peleska and Huang 2016]. MBD and MDE have a history of wrapping FMs into software tools to make access to formalisms easier and to help automating tedious tasks via domain-specific language (DSLs) and visual notations.
 
@@ -782,7 +782,7 @@ On the one hand, the usefulness of the calculi underlying FMs is directly propor
 
 一方面，FMs下的算法的有效性只与其完整性成正比，并且(传统上)失效的精度小于1。换句话说，我们通常尽量避免使用可以推导出错误定理的计算器。另一方面，半正式模式检查器显示出了广泛的，有时是不可接受的，范围的精度和回忆他们的发现。实用的基于fm的工具的有用性可能介于经典的微积分和精度/回忆值较差的bug查找工具之间。
 
-Threat 5. Themain threat is the struggle of academia and tool vendors to provide adequate tools, suited to adapt to novel scientific insights, to be integrated with other tools, and to be maintained in a flexible and independent manner.
+Threat 5. The main threat is the struggle of academia and tool vendors to provide adequate tools, suited to adapt to novel scientific insights, to be integrated with other tools, and to be maintained in a flexible and independent manner.
 
 Remedy 5. To reduce this threat, an improvement of education and strong incentives can play an important role here (cf. Sections 5.2 and 5.3).
 
