@@ -33,4 +33,4 @@ Sparse value-flow analysis (SVFA) [9, 35, 43, 45, 47] mitigates this performance
 
 In this work, we make no claims of breakthroughs to the innate scalability limitations of points-to analysis and solving path conditions using SMT solvers. However, we note that the conventional “layered” approaches can significantly exacerbate the impact of these limitations on the perceived performance of SVFA, for which we are able to address. Our key insight is that an independent points-to analysis is unaware of the high-level properties being checked and, thus, causes a great deal of redundancy in computing pointer relations.
 
-在这项工作中，我们没有声称突破了点的固有可伸缩性限制——使用SMT求解器分析和解决路径条件。然而，我们注意到传统的“分层”方法会极大地加剧这些限制对SVFA感知性能的影响，而我们能够解决这些问题。我们的主要观点是，独立的point -to分析不知道要检查的高级属性，因此会在计算指针关系中造成大量的冗余。
+在这项工作中，我们没有声称突破了点的固有可伸缩性限制——使用SMT求解器分析和解决路径条件。然而，我们注意到传统的“分层”方法会极大地加剧这些限制对SVFA感知性能的影响，而我们能够解决这些问题。我们的主要观点是，独立的points-to分析不知道要检查的高级属性，因此会在计算指针关系中造成大量的冗余。

@@ -18,5 +18,16 @@ Despite the tremendous research progress in recent decades [1]–[9], the detect
 - [6] M. Orlovich and R. Rugina, “Memory Leak Analysis by Contradiction,” Proceedings of International Static Analysis Symposium SAS06, 2006. 
 - [7] Y. Jung, “Practical Memory Leak Detector Based on Parameterized Procedural Summaries,” in Proceedings of the 7th International Symposium on Memory Management, 2008. 
 - [8] S. Cherem, L. Princehouse, and R. Rugina, “Practical memory leak detection using guarded value-flow analysis,” in Proceedings of the 28th ACM SIGPLAN Conference on Programming Language Design and Implementation, ser. PLDI ’07. New York, NY, USA: ACM, 2007, pp. 480–491. [Online]. Available: http://doi.acm.org.lib.ezproxy.ust.hk/10.1145/1250734.1250789
+- [9] Y. Sui, D. Ye, and J. Xue, “Detecting memory leaks statically with
+full-sparse value-flow analysis,” IEEE Transactions on Software Engineering,
+vol. 40, no. 2, pp. 107–122, Feb 2014.
 
 尽管近几十年来[1]-[9]的研究取得了巨大的进展，但工业规模的内存泄漏检测仍然是一个未解决的问题。在2018年上半年，Firefox[10]和Chrome[11]中已经报告了超过680个内存泄漏漏洞。2017年超过240个CVE(常见漏洞和暴露)条目是内存泄漏bug[12]。显然，随着现代软件[13]中代码大小和复杂性的爆炸式增长，一个实用的内存检测器需要具有高度的可伸缩性，在几分钟内检查数百万行代码，并且在[14]、[15]的误报率低于30%的情况下精确地理解复杂的路径条件。
+
+The state-of-the-art approaches suffer from the scalability and precision paradox. One category of the approaches [4]–[9] give up path sensitivity for scalability, inevitably introducing imprecise results. For example, we observed that, SABER [9], a recent path-insensitive memory leak detection technique, incurs a false positive rate of 66.7% in our evaluation. Another category [1]–[3] traverse the control flow graph and use the path-sensitive analysis to achieve high precision. However, they are known to easily suffer from scalability issues, especially for the whole-program analysis. For example, SATURN [3] is reported to have spent more than 23 hours in checking memory leaks for a 5MLoC code base. Our experiment shows that CSA [1] and INFER [2] fail to analyze large projects of over 2MLoC in two hours.
+
+最先进的方法受到可伸缩性和精确性悖论的影响。其中一类方法[4]-[9]放弃了对可伸缩性的路径敏感性，不可避免地引入了不精确的结果。例如，我们观察到，SABER[9]，一种最近的路径不敏感内存泄漏检测技术，在我们的评估中产生了66.7%的假阳性率。另一类[1]-[3]遍历控制流图，采用路径敏感分析，实现高精度。但是，他们很容易遇到可伸缩性问题，尤其是整个程序分析。例如，据报道SATURN[3]在检查5MLoC代码库的内存泄漏方面花费了超过23个小时。我们的实验表明，CSA[1]和INFER[2]无法在两小时内分析超过2MLoC的大型项目。
+
+Our idea to resolve this paradox is based on an observation that, in real programs, only a small proportion of program paths lead to memory leaks. Therefore, instead of using a sledge hammer, i.e., the expensive path-sensitive analysis, for all paths, we use a two-staged analysis by first computing a succinct set of candidate memory leak paths through a novel scalable and path-insensitive method, followed by a more precise and heavy-weight verification of the feasibility of these paths, in order to achieve path-sensitivity.
+
+我们解决这个矛盾的想法是基于这样一个观察:在真实的程序中，只有一小部分程序路径会导致内存泄漏。而不是使用大锤，例如。代价昂贵的路径敏感分析，对于所有路径，我们使用两阶段分析，首先通过一种新的可伸缩的路径不敏感方法计算一组候选内存泄漏路径，然后对这些路径的可行性进行更精确和重量级的验证，以实现路径敏感。
