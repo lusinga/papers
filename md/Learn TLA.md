@@ -390,37 +390,353 @@ Your `define` block must come before the `begin`.
 
 ### EXPRESSIONS
 
+We’ve been implicitly using expressions up until now; we just haven’t clarified them. For our purposes, an expression is anything that follows a ==, =, :=, or \in. In this section we’ll cover some general expression modifiers.
+
+到目前为止，我们一直在隐式地使用表达式;我们只是还没有澄清它们。对于我们的目的，表达式是在==、=、:=或\in之后的任何内容。在本节中，我们将介绍一些通用表达式修饰符。
+
+We’ve used these for a while now: `/\` is “and”, `\/` is “or”. We can join expressions with them. The one subtlety is that this is the only case where TLA+ is whitespace sensitive. If you start a line with an indented junction, TLA+ considers that the start of a subclause. For example,
+
+```
+/\ TRUE
+  \/ TRUE
+/\ FALSE \* (T \/ T) /\ F
+
+/\ TRUE
+  \/ TRUE
+  \/ FALSE \* (T \/ T \/ F)
+
+\/ TRUE
+\/ TRUE
+  /\ FALSE \* T \/ (T /\ F)
+```
+
+Etc. As a general rule of thumb:
+
+- If two logical operators are on the same level of indentation, they are part of the same level of expression.
+- If a logical operator is on a higher level of indentation, it’s part of the previous operator statement.
+- Use only one type of operator per level of indentation.
+
+一般的经验法则是:
+
+- 如果两个逻辑运算符位于同一缩进级别，则它们是同一表达式级别的一部分。
+- 如果一个逻辑运算符在更高的缩进级别，它是前一个运算符语句的一部分。
+- 每层缩进只使用一种类型的运算符。
+
+Generally if you mess this up the spec will crash, so you’re unlikely to get a logic bug through this.
+
+一般来说，如果你搞砸了，规范就会崩溃，所以你不太可能通过这个得到一个逻辑错误。
+
+#### LET-IN
+
+Any expression can use LET-IN to add local operators and definitions to just that expression alone.
+
+任何表达式都可以使用LET-IN仅向该表达式添加本地操作符和定义。
+
+```
+LET IsEven(x) == x % 2 = 0
+IN  IsEven(5)
+
+LET IsEven(x) == x % 2 = 0
+    Five == 5
+IN  IsEven(Five)
+
+LET IsEven(x) == LET Two == 2
+                     Zero == 0
+                 IN x % Two = Zero
+    Five == 5
+IN  IsEven(Five)
+```
+
+The whitespace does not matter: we can write `LET IsEven(x) == x % 2 = 0 Five == 5 IN IsEven(Five)` and it will correctly parse it as two separate operators in the LET. You should use newlines though, because you care about legibility.
+
+空格并不重要:我们可以写' LET IsEven(x) == x % 2 = 0 Five == 5 IN IsEven(5) '，它将正确地将其解析为LET中的两个独立的操作符。但是您应该使用换行，因为您关心可读性。
+
+#### IF-THEN-ELSE
+
+This is exactly what you expect it to be.
+
+```
+IsEven(x) == IF x % 2 = 0 
+             THEN TRUE
+             ELSE FALSE
+```
+
+As before, alignment doesn’t matter, but you should align them anyway unless you really hate your coworkers.
+
+#### CASE
+
+Case is mostly how you’d expect it to act, with one subtle difference.
+
+```
+CASE x = 1 -> TRUE
+  [] x = 2 -> TRUE
+  [] x = 3 -> 7
+  [] OTHER -> FALSE
+```
+
+OTHER is the default. If none of the cases match and you leave out an OTHER, TLC considers that an error. If more than one match, though, TLC will pick one for you and not branch. In other words, the following code
+
+```
+CASE TRUE -> FALSE
+  [] TRUE -> TRUE
+```
+
+May or may not be true. Be careful.
+
+#### Nesting
+
+All parts of expressions are expressions or identifiers, so you can put expressions inside other expressions. Additionally, all expressions can be used inside PlusCal code.
+
 ### TUPLES AND STRUCTURES
+
+#### Tuples
+
+#### Sets of Tuples
+
+#### Structures
+
+#### Type Composition
+
+#### Example
 
 ### SETS
 
+#### Filtering
+
+#### Mapping
+
+#### CHOOSE
+
+#### Set Operators
+
 ### LOGIC
+
+In this section, we’ll introduce the basics of propositional logic. Even if you’re unfamiliar with the idea, you’ve almost certainly used it in programming before.
+
+#### `\E`
+
+#### `\A`
+
+#### `=>` and `<=>`
+
+#### CHOOSE
 
 ### FUNCTIONS
 
+#### Function Sets
+
+#### Using Functions
+
 ## MODELS
+
+In the past few chapters, we covered how to write complex specifications. However, our models have always been fairly crude: drop an operator or expression into Invariants and check that it’s satisfied. This is useful, but as you can probably guess by now, there’s also a lot more we can do with them. This chapter will cover some of the tools TLC provides to manage larger and more complex models.
+
+在前几章中，我们讨论了如何编写复杂的规范。然而，我们的模型一直是相当粗糙的:将一个运算符或表达式放入不变量中，并检查它是否满足要求。这很有用，但正如你现在可能猜到的那样，我们还可以用它们做更多的事情。本章将介绍TLC提供的一些工具，用于管理更大更复杂的模型。
 
 ### CONSTANTS
 
 ### MODEL VALUES
 
+#### Assumptions
+
 ### EXAMPLE: ARBITRAGE
 
 ## CONCURRENCY
 
+This chapter will cover concurrent systems: ones where multiple processes, sharing a global state, run simultaneously. As a simple example of a concurrent system, you have one model and three different kinds of jobs that can affect the state of that model, all running in an asynchronous worker pool. How do you guarantee that just the right ordering of run jobs doesn’t cause data to somehow break?
+
+本章将介绍并发系统:共享全局状态的多个进程同时运行的系统。作为并发系统的一个简单示例，您有一个模型和三种不同的作业，这些作业可能会影响模型的状态，所有这些作业都运行在异步工作者池中。如何保证正确的运行作业顺序不会导致数据中断?
+
+Reasoning about concurrent systems gets intractable quickly, which is why we get a model checker to reason about it for us.
+
+关于并发系统的推理很快就变得难以处理，这就是为什么我们需要一个模型检查器来为我们进行推理。
+
 ### PROCESSES
 
+Our old code ran everything in a single process- that’s the begin block. If we wanted have several things happen simultaneously, we use multiple processes. We set it up like this:
+
+```
+---- MODULE module_name ----
+\* TLA+ code
+
+(* --algorithm algorithm_name
+variables global_variables
+
+process p_name = foo
+variables local_variables
+begin
+  \* pluscal code 
+end process
+
+process p_group \in bar \* set
+variables local_variables
+begin
+  \* pluscal code 
+end process
+
+end algorithm; *)
+====
+```
+
+All processes must be assigned a value. There are two ways to do this. First, you can say `process = foo`, which will create one copy of that process. Or you could say `process \in bar`, in which case it will create one copy of that process for each element in `bar`. So if you write `process \in {1, 3, 5}`, you have three copies of that process running your behavior.
+
+必须为所有进程分配一个值。有两种方法可以做到这一点。首先，您可以说' process = foo '，这将创建该进程的一个副本。或者你可以说' process \in bar '，在这种情况下，它会为' bar '中的每个元素创建一个该进程的副本。因此，如果编写“进程\in{1, 3, 5}”，那么就有该进程的三个副本在运行您的行为。
+
+Process values are used to select which process to run, so all processes in a behavior must be comparable and should be unique. If you write `process = 1`, you can’t have a second defined as `process bar = 'bar'` because 1 and ‘bar’ are not comparable. Additionally, you shouldn’t have a second process also defined as `process = 1` because when 1 is selected the first process will always run and the second process will always be ignored.
+
+流程值用于选择要运行的流程，因此行为中的所有流程必须是可比较的，并且应该是惟一的。如果写入“process = 1”，则不能将第二个定义为“process bar = 'bar'”，因为1和'bar'是不可比较的。此外，您不应该将第二个进程定义为“process = 1”，因为当选择1时，第一个进程将始终运行，而第二个进程将始终被忽略。
+
+This is a case where model values and model sets can be very useful, since every model value is comparable to everything else (it’s unequal to everything except itself).
+
+在这种情况下，模型值和模型集可能非常有用，因为每个模型值都可以与其他任何值进行比较(除了自身之外，它不等于其他任何值)。
+
+You can get a process’s value with `self`:
+
+```
+process foo = "bar"
+begin
+  print self; \* prints "bar"
+end process
+```
+
+Variables declared outside of a process have global scope: any process can read and modify them. Variables declared in a process scope are local to that process. So if you have multiple processes defined in a set, each one will have it’s own private variable scope. If you use \in for the variables, TLC will create one state for each combination of initial states in each process. For example:
+
+```
+process p \in 1..3
+variable x \in 1..4
+begin
+  A:
+    skip
+end process;
+```
+
+TLC can choose in which order to run the possible steps, where each step corresponds to all of the code in one label of one process. If any of these paths breaks an invariant, then TLC raise it as usual.
+
+```
+variables x = 0;
+process one = 1
+begin
+  A:
+    x := x - 1;
+  B:
+    x := x * 3;
+end process
+
+process two = 2
+begin
+  C:
+    x := x + 1;
+  D:
+    assert x /= 0;
+end process
+```
+
+This will fail, as the sequence C -> A -> B -> D sets x as 0 + 1 -> 1 - 1 -> 0 * 3 -> 0 /= 0.
+
+If there are multiple instances of the same process, TLC advances them one at a time.
+
+```
+(* --algorithm foo
+variables x = 0;
+process cycle \in 1..3
+begin
+  A:
+    x := x + 1;
+  B:
+    x := 0;
+  C:
+    assert x /= 2;
+end process
+end algorithm; *)
+```
+
+This fails on the path `A[1] -> B[1] -> A[2] -> A[3] -> C[1]`.
+
+#### Await
+
+Is there a way to prevent a step from running? We can do this with await:
+
+```
+process one = 1
+begin
+  A:
+    x := x - 1;
+  B:
+    x := x * 3;
+end process
+
+process two = 2
+begin
+  C:
+    await x < -1;
+    x := x + 1;
+  D:
+    assert x /= 0;
+end process
+```
+
+In this case, the entire C step is blocked until the await is true. So the only path that can happen is `A -> B -> C -> D`, which is valid.
+
+A troubling problem here: if we can say “don’t run this step unless X is true”, can we have a situation where we can’t run any steps? For example, if we instead did `await x > 1`, we’d be able to do `A -> B` and then get stuck. This is called a deadlock. This is almost certainly a serious bug and TLC will flag this as an error in your algorithm.
+
+If a deadlock is not an error in your system, then you can disable that check in the model.
+
+#### Example
+
 ### PROCEDURES AND MACROS
+
+#### Macros
+
+#### Procedures
+
+#### Order of operations
+
+#### Example
 
 ### LABELS
 
 ### CONCURRENT INVARIANTS
 
+Sometimes, we want to enforce invariants between processes. For example, only one thread may have a lock at the same time, or the total values across all processes must be less than a certain threshold. Here’s one example:
+
+有时，我们希望在进程之间强制使用不变量。例如，只有一个线程可能同时具有一个锁，或者所有进程的总值必须小于某个阈值。这里有一个例子:
+
+```
+process foo \in 1..2
+variable x \in 1..2
+begin
+  Skip:
+    skip
+end process
+```
+
+How do we assert the variant “the sum of x between the two processes is not 4?” With a single process algorithm, we could write `x /= 4`. But to do the same with multiple processes, we have to let the PlusCal abstraction leak.
+
+我们如何断言变量“两个进程之间的x的和不是4?”“使用一个单一的过程算法，我们可以写出‘x /= 4’。但是要对多个进程做同样的事情，我们必须让PlusCal抽象泄漏。
+
+When we translate an algorithm, TLA+ will create all of the corresponding variables. When we have multiple processes, TLA+ will instead create a function with a domain on the process identifiers and the range the actual values of x per process. So instead of having for example `x \in 1..2`, we instead have `x == [ProcSet -> 1..2]`. So in this case, the appropriate invariant is `x[1] + x[2] /= 4`.
+
+当我们转换算法时，TLA+将创建所有相应的变量。当我们有多个进程时，TLA+将在进程标识符上创建一个域函数，并在每个进程的实际x值范围内创建一个域函数。而不是像' x \in 1..2 '，我们改为' x == [ProcSet -> 1..2] '。在这种情况下，合适的不变式是' x[1] + x[2] /= 4 '
+
 ### EXAMPLE: RATE LIMITING
 
 ## TEMPORAL PROPERTIES
 
+When I said we were barely going to cover TLA+, I wasn’t kidding.
+
+当我说我们几乎不能覆盖TLA+的时候，我不是在开玩笑。
+
+Temporal Properties are the heart and soul of TLA+. It’s how the language does anything in the first place. Which is why it’s kind of depressing that I’m going to spend almost no time on it. That’s because of PlusCal abstracts away most of it for us. This section explains a little bit of the parts we, as startup folk, might find useful, and assuage my guilt at not covering a pretty major part of the system.
+
+时间属性是TLA+的核心和灵魂。这就是语言最初的作用。这就是为什么我几乎不会在这上面花时间的原因。这是因为PlusCal为我们抽象了大部分内容。这一节解释了一些我们，作为创业者，可能会发现有用的部分，并减轻我的内疚，因为我没有覆盖系统的大部分。
+
 ### TEMPORAL OPERATORS
+
+#### Liveness
+
+Whenever we write invariants, we’re saying “for an arbitrary state, this will never happen.” And this has been very useful. But safety only tells us that bad things won’t happen. Sometimes, we want to ask a whether good things do happen. Will the trade eventually happen? Does every thread at some point get priority? Does our algorithm finish?
+
+
 
 ### USING TEMPORAL PROPERTIES
 
