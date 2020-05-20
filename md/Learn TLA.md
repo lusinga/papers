@@ -736,6 +736,10 @@ Temporal Properties are the heart and soul of TLA+. It’s how the language does
 
 Whenever we write invariants, we’re saying “for an arbitrary state, this will never happen.” And this has been very useful. But safety only tells us that bad things won’t happen. Sometimes, we want to ask a whether good things do happen. Will the trade eventually happen? Does every thread at some point get priority? Does our algorithm finish?
 
+当我们写不变量时，我们说的是，对于任意的状态，这永远不会发生。“这是非常有用的。但安全只告诉我们，坏事不会发生。有时候，我们想问a是否有好事发生。交易最终会发生吗?每个线程在某个时候都有优先级吗?我们的算法完成了吗?
+
+We call these properties Liveness. To specify these temporal properties, we use a few new operators.
+
 
 
 ### USING TEMPORAL PROPERTIES
