@@ -740,15 +740,222 @@ Whenever we write invariants, we’re saying “for an arbitrary state, this wil
 
 We call these properties Liveness. To specify these temporal properties, we use a few new operators.
 
+我们称这些属性为活性。为了指定这些时间属性，我们使用了一些新的操作符。
 
+#### `[]`
+
+`[]P` means that P is true for all states. In other words, an invariant. When you put P in the invariant box, TLC interprets that as the temporal property `[]P`. The only difference is that TLC is hyper-optimized to handle invariants, so the entire invariants box is basically a convenience thing. So while `[]` implicitly powers all of our invariants, we almost never need to write it explicitly.
+
+`[]P`表示P对所有状态都成立。换句话说，一个不变式。当您将P放入固定框时，TLC将其解释为时间属性`[]P`。唯一的区别是TLC是处理不变量的超优化，所以整个不变量框基本上是一个方便的东西。因此，虽然`[]`隐式地为所有不变量提供了幂，但我们几乎不需要显式地写它。
+
+#### `<>`
+
+`<>` means eventually: `<>P` means that for every possible behavior, at least one state has P as true. For example, the following code is wrong under the temporal property `<>(x = 1)`
+
+' <> '意味着最终:' <>P '意味着对于每一个可能的行为，至少有一个状态P为真。例如，下面的代码在时态属性“<>(x = 1)”下是错误的
+
+```
+(* --algorithm example
+variables x = 3
+begin
+  while x > 0 do
+  with decrement \in {1, 2} do
+    x := x - decrement
+  end with;
+  end while;
+end algorithm; *)
+```
+
+There exists one timeline where x never passes through 1: “x = 3 -> x = 2 -> x = 0”. So it’s not true that ‘eventually, x is 1’. As long as every behavior has at least one state satisfying the statement, an eventually is true.
+
+存在一个x从未经过1的时间轴:“x = 3 -> x = 2 -> x = 0”。所以x最终等于1是不正确的。只要每一种行为都至少有一种状态能满足这一陈述，最终都是正确的。
+
+#### `~>`
+
+`~>` means leads to: `P ~> Q` implies that if P ever becomes true, at some point afterwards Q must be true. For example:
+
+```
+(* --algorithm example
+variables x = 4, decrement \in {1, 2}
+begin
+  while x > 0 do
+    x := x - decrement
+  end while;
+end algorithm; *)
+```
+
+' ~> '的意思是导致:' P ~> Q '意味着，如果P曾经成为真的，在某一点后，Q一定是真的。例如:
+
+As with before, `<>(x = 1)` is not true: we can do 4 -> 2 -> 0. But the temporal property `(x = 3) ~> (x = 1)` is true: there’s no way to pass through 3 without also passing through 1 (disregarding stuttering).
+
+和前面一样，' <>(x = 1) '不正确:我们可以执行4 -> 2 -> 0。但是时间属性‘(x = 3) ~> (x = 1)’是正确的:没有办法通过3而不同时通过1(不考虑口吃)。
+
+#### `<>[]`
+
+`<>[]` means stays as: `<>[]P` says that at some point P becomes true and then stays true. If your program terminates, the final state has to have P as true. Note that P can switch between true and false, as long as it eventually becomes permanently true.
+
+`<>[]`的意思是保持:`<>[]P`表示在某一点P变为真，然后保持真。如果程序终止，则最终状态必须使P为真。注意，P可以在真和假之间切换，只要它最终变成永久的真。
+
+#### Example
+
+Let’s go back to the dining philosopher’s algorithm we wrote in the last chapter. Here’s what the code looks like with the release:
+
+让我们回到上一章写的用餐哲学家算法。下面是这个版本的代码:
+
+```
+fair process philosopher \in 1..NP
+variables hungry = TRUE;
+begin P:
+  while hungry do
+    either
+     with fork \in AvailableForks(self) do
+       forks[fork] := self;
+     end with;
+    or
+     await AvailableForks(self) = {};
+     with fork \in HeldForks(self) do
+      forks[fork] := NULL;
+     end with;
+    end either;
+    Eat:
+      if Cardinality(HeldForks(self)) = 2 then
+        hungry := FALSE;
+        forks[LeftFork(self)] := NULL ||
+        forks[RightFork(self)] := NULL;
+      end if;
+  end while;
+end process;
+```
+
+The only change to the code is that we made the process fair, so as to avoid stuttering. We can guarantee in here that the system never deadlocks; at any point, at least one philosopher can do something. However, that’s not quite enough: can we guarantee that every philosopher finishes eating? Normal invariants aren’t enough to model that. But we can do that with a temporal operator:
+
+对代码的唯一更改是我们使过程变得公平，以避免出现口吃。我们可以在这里保证系统永远不会死锁;在任何时候，至少有一个哲学家可以做一些事情。然而，这还不够:我们能保证每个哲学家都吃完饭吗?正态不变量不足以对其进行建模。但我们可以用一个时间算子来做:
+
+```
+<>(\A p \in 1..NP: ~hungry[p])
+```
+
+Checks that at some point in every behavior, every philosopher is not hungry. However, this doesn’t check they remain not hungry, and if something flips them back, it’d still be a valid spec. We could instead use []<> to get that extra guarantee, but there’s no need for that here. If we put that into our temporal properties to check and run the spec, we get a very long error:
+
+在每个行为的某个时刻，每个哲学家都不会感到饥饿。但是，这并不能检查它们是否仍然不饿，如果有东西将它们翻转回来，这仍然是一个有效的规范。我们可以使用[]<>来获得额外的保证，但是这里不需要这样做。如果我们把它放到我们的时间属性中去检查并运行规范，我们会得到一个很长的错误:
+
+Each philosopher can put their fork down and immediately pick it back up again, which prevents anybody else from having two forks. This is a livelock. How could rewrite the algorithm to prevent livelocks? Does your solution scale to three or more philosophers?
+
+每个哲学家都可以放下他们的叉子，然后马上把它捡起来，这就防止了其他人拥有两把叉子。这是一把活锁。如何重写算法来防止活锁?你的解决方案是否适用于三位或三位以上的哲学家?
 
 ### USING TEMPORAL PROPERTIES
 
+Most often, you’re not interested in checking temporal properties. If you are, though, here are some things to watch out for.
+
+#### Liveness is Slow
+
+It’s easy to check that reachable states satisfy invariants. But to check liveness, how you reach those states also matters. If a thousand routes lead through state S, that’s 1,000 routes that need to be checked for liveness and only one state that needs to be checked for safety. So liveness is intrinsically much, much slower than checking invariants.
+
+检查可达状态是否满足不变量是很容易的。但要检查你的活性，如何达到这些状态也很重要。如果有1000条路径经过状态S，那么就有1000条路径需要检查活性，而只有一个状态需要检查安全性。所以活性本质上比检查不变量慢得多。
+
+#### Temporal Properties are Very Slow
+
+The Toolbox has a number of optimizations to make it easier to check invariants: multithreading, model symmetry sets, cloud computing, etc. These all assume, though, that we only care about individual states. None of these apply to temporal properties. So it’s even slower to check than you’d think at first.
+
+工具箱中有许多优化，可以更容易地检查不变量:多线程、模型对称集、云计算等等。这些都假设，我们只关心单个的状态。这些都不适用于时间属性。所以它比你一开始想的还要慢。
+
+An especially important one to watch out for are symmetric models. TLC can check them for temporal properties. However, the symmetry properties can provide false negatives: it can say that your spec satisfies the properties when it actually doesn’t.
+
+需要特别注意的是对称模型。TLC可以检查它们的时间属性。然而，对称属性可以提供错误的否定:它可以说您的规范满足属性，但实际上并不满足。
+
+#### Stuttering and Fairness
+
+Regular processes can stutter. Sometimes this is part of what you expect in your system- maybe you can’t rely on the message queue always being available. If not, though, you need to explicitly use fair process.
+
+常规流程可能会出现故障。有时，这是您在系统中所期望的内容的一部分—可能您不能总是依赖于消息队列。如果不是，那么您需要明确地使用公平过程。
+
+#### Recommendations
+
+- Use separate models for invariants and temporal properties.
+- Use smaller sets of model values to check invariants than you do for temporal properties.
+- Consider testing the same temporal property among several models with different setups.
+- Do not use symmetric model sets when testing liveness.
+
+- 对不变量和时间属性使用单独的模型。
+- 使用比时间属性更小的模型值集来检查不变量。
+- 考虑在不同设置的几个模型中测试相同的时间属性。
+- 测试活性时不要使用对称模型集。
+
 ### TERMINATION
+
+Will the following PlusCal snippet ever finish?
+
+下面的PlusCal片段会结束吗?
+
+```
+EXTENDS TLC, Integers
+
+(* --algorithm counter
+variable x = 0;
+begin
+  while x < 10 do
+    x := x + 1;
+  end while;
+end algorithm; *)
+```
+
+The most common temporal logic you’ll want to check is Termination, and TLC provides a handy button to test just that.
+
+您要检查的最常见的时间逻辑是终止，TLC提供了一个方便的按钮来测试这一点。
+
+This will succeed if, for all behaviors, the spec ends. Let’s see what happens when we run this:
+
+Well, that was certainly unexpected! This is called stuttering. The problem is that the system can choose not to run any step at all. This has never been a problem before because we were making sure things didn’t break if time passed, but now things break if time doesn’t pass.
+
+嗯，这确实出乎意料!这叫做口吃。问题是系统可以选择根本不运行任何步骤。这在以前从来都不是一个问题，因为我们要确保事情不会因为时间的流逝而中断，但现在如果时间没有流逝，事情就会中断。
+
+How do we get around this? What we want is something called fairness: the property that if a given label is always enabled, we will eventually run it. We make this happen by specifying the process as a `fair process`.
+
+我们该如何解决这个问题?我们想要的是所谓的公平性:如果一个给定的标签总是启用，我们最终将运行它的属性。我们通过将流程指定为“公平流程”来实现这一点。
+
+```
+EXTENDS TLC, Integers
+
+(* --algorithm counter
+variable x = 0;
+
+fair process counter = "counter"
+begin Count:
+  while x < 10 do
+    x := x + 1;
+  end while;
+end process;
+
+end algorithm; *)
+```
+
+Confirm this works as expected.
+
+Note: There’s a way to enforce fairness for a single process app, but it’s a bit finicky so I’m leaving it out.
+
+注意:有一种方法可以增强单个进程应用程序的公平性，但是它有点麻烦，所以我就省略了它。
 
 ## TECHNIQUES
 
+While TLA+ is a powerful tool, it does not provide a lot of guidance on how to write good specifications. This section will cover some of the problems you might run into with your specs, as well as ways around them.
+
+虽然TLA+是一个强大的工具，但是它并没有提供很多关于如何编写好的规范的指导。本节将介绍在使用配置时可能遇到的一些问题，以及解决这些问题的方法。
+
 ### CONDITIONAL STEPS
+
+Sometimes you may want to combine either with labels, so that branching steps are possible. For example:
+
+```
+either
+  Push:
+    \* code
+or
+  Pop:
+    \* code
+end either
+After:
+    \* code
+```
 
 ### MERGING FUNCTIONS
 
@@ -756,7 +963,4 @@ We call these properties Liveness. To specify these temporal properties, we use 
 
 ### MULTISTEP INVARIANTS
 
-
-
 ## APPENDIX
-
