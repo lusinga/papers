@@ -143,3 +143,66 @@ end algorithm; *)
 ```
 
 ### Multiprocess Algorithm
+
+### Summary
+
+We verified single-process algorithms were correct and some additional nonfunctional properties about them, such as their worst-case performance and that they didn’t overflow our computer’s maximum value. We also briefly summarized how to extend these ideas to multiprocess algorithms, using temporal properties instead of bare assertions.
+
+我们验证了单进程算法是正确的，以及关于它们的一些附加的非功能属性，例如最坏情况下的性能，以及它们没有超出我们计算机的最大值。我们还简要总结了如何将这些思想扩展到多进程算法，使用时间属性而不是简单的断言。
+
+Many algorithms are defined for specific data structures. And many specs for systems are designed assuming you have your data organized in a specific way. In the next chapter, we will show how to write reusable data structures for algorithms and specifications.
+
+许多算法是为特定的数据结构定义的。而且许多系统规范都是在假设您以特定的方式组织数据的情况下设计的。在下一章中，我们将展示如何为算法和规范编写可重用的数据结构。
+
+## CHAPTER 8 Data Structures
+
+When we want to write a specification involving some data structure, we need some sort of definition of the data structure. Further, we need one that’s independent of the algorithm. That means we should write data structures as separate modules that are extended or instantiated in our spec. We’ll use the example of linked lists (LL), in a file we’ll call LinkedLists.tla.
+
+当我们想要编写一个包含一些数据结构的规范时，我们需要一些数据结构的定义。此外，我们需要一个独立于算法的。这意味着我们应该将数据结构编写为独立的模块，这些模块在我们的规范中被扩展或实例化。
+
+Warning: If you’re making a new specification for this, do not make LinkedLists.tla the root file. Instead, make the root file something else, such as main.tla, and add LinkedLists.tla as a secondary module. This will make it easier to test later. You can do this under File > Open Module > Add TLA+ Module.
+
+A linked list is a low-level data structure where each element (node) of the LL is a data structure containing the data and a pointer to the next node. The last node in the list points to a null element, which is how we know it’s the last one. Critically, though, the LL might not have a last element that points to null. Instead, what would be the “last” element could instead point to an earlier memory address. This is called having a cycle.
+
+链表是一种低级数据结构，其中LL的每个元素(节点)都是一个数据结构，包含数据和指向下一个节点的指针。列表中的最后一个节点指向一个null元素，这就是我们知道它是最后一个元素的原因。但关键的是，LL可能没有指向null的最后一个元素。相反，“最后一个”元素可以指向更早的内存地址。这叫做循环。
+
+In most cases, LLs with cycles are unwanted and indicate there is a bug in the system. This gives us several uses for speccing them: we may want to ensure some algorithm never produces LLs with cycles, or we may want to write an algorithm that detects cycles, or we may want to ensure a system still works properly even if fed a cyclic LL. To support all of these use cases, we want LinkedLists.tla to generate all possible LLs and let us select the subset that has the properties we need for our spec.
+
+在大多数情况下，带有循环的LLs是不需要的，这表明系统中存在错误。这为我们提供了几种指定它们的用途:我们可能希望确保某些算法永远不会产生带有循环的LLs，或者我们可能希望编写一个检测循环的算法，或者我们可能希望确保即使使用循环LL，系统仍然正常工作。为了支持所有这些用例，我们需要linkedlist。tla生成所有可能的LLs，并让我们选择具有我们的规范所需属性的子集。
+
+In TLA+, we generally represent data structures as functions or structures (which are also functions). By convention the module should have a LinkedLists(Nodes) operator that generates all matching functions where Nodes is the set of memory addresses.
+
+在TLA+中，我们通常将数据结构表示为函数或结构(它们也是函数)。按照惯例，模块应该有一个LinkedLists(Nodes)操作符，该操作符生成所有匹配函数，其中节点是内存地址集。
+
+While LL’s have data in them, that data is not central to the core topology of a linked list. All that matters for the base case is that, for a given node, we know what the next node will be. Then our linked list will be some element of the function set [Nodes -> Nodes]. We’ll start by defining all possible mappings between nodes.
+
+虽然LL中有数据，但这些数据不是链表核心拓扑的中心。对于基本情况，最重要的是，对于给定的节点，我们知道下一个节点是什么。那么我们的链表将是函数集[Nodes -> Nodes]中的某个元素。我们首先定义节点之间所有可能的映射。
+
+```
+PointerMaps(Nodes) == [Nodes -> Nodes]
+LinkedLists(Nodes) == \* ...
+```
+
+Next, we need a concept of a final node. It’s simply a node that points to a null value, which means we need a null value. We can add a NULL constant and then assert that none of the nodes are in NULL. This means using TLC to get Assert. We will use LOCAL INSTANCE instead of EXTENDS, so that any spec extending LinkedLists.tla does not also import the TLC operators.
+
+接下来，我们需要一个最终节点的概念。它只是一个指向null值的节点，这意味着我们需要一个null值。我们可以添加一个NULL常量，然后断言所有节点都不是NULL。这意味着使用TLC获取断言。我们将使用本地实例而不是扩展，这样任何扩展linkedlist的规范都可以使用。tla也不导入TLC操作符。
+
+Here’s what we have so far:
+
+```
+CONSTANT NULL
+LOCAL INSTANCE TLC \* For Assert
+PointerMaps(Nodes) == [Nodes -> Nodes \union {NULL}]
+LinkedLists(Nodes) ==
+IF NULL \in Nodes THEN Assert(FALSE, "NULL cannot be in Nodes") ELSE
+\* ...
+```
+
+Almost there. PointerMaps is the set of possible memory mappings. But not all possible mappings are LLs. Consider the mapping [n \in Nodes |-> NULL] (Figure 8-1). That’s not a single LL, that’s multiple disjoint LLs, each one element long. We need some way of restricting our function space to “actual” LLs. That’s one where, if you start from the appropriate initial element and keep going to the next node, you eventually reach all of the other nodes and eventually either cycle or hit NULL.
+
+差不多了。PointerMaps是一组可能的内存映射。但并非所有可能的映射都是LLs。考虑节点|-> NULL的映射' [n \in Nodes |-> NULL] '(图8-1)。它不是单个的LL，而是多个不相交的LLs，每个LLs都是一个元素长。我们需要一些方法来将函数空间限制为“实际的”LLs。在这种情况下，如果从适当的初始元素开始，一直到下一个节点，最终会到达所有其他节点，最终要么循环，要么命中NULL。
+
+How do we collect the subset of nodes reachable from a given starting point? One way is to use a recursive operator, such as PT!ReduceSet. We’d begin to add some first node, then whatever add first connects to, then whatever that connects to, and so on. But recursive operators are messy and hard to get right, plus we would need some way of finding first before we even start.
+
+我们如何从给定的起始点收集可到达的节点的子集?一种方法是使用递归运算符，例如PT!ReduceSet。我们开始添加第一个节点，然后添加第一个连接到的节点，然后添加第一个连接到的节点，然后添加第一个连接到的节点，以此类推。但是递归运算符是混乱的，很难得到正确的结果，而且在开始之前我们需要先找到一些方法。
+
