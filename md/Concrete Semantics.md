@@ -80,16 +80,75 @@ begin\\
 definitions, theorems\ and\ proofs\\
 end\\
 $
+where $T_1\ ... \ T_n$ are the names of existing theroies that T is based on. The $T_i$ are the direct parent theories of T. Everything defined in the parent theories(and their parents, recursively) is automatically visible. Each theory T must reside in a theory file named T.thy. 
+
+HOL addition to the theory Main, the union of all the basic predefined theories like arithmetic, lists, sets, etc. Unless you know what you are doing, always include Main as a direct or indirect parent of all your theories. 
+
+In addition to the theories that come with the Isabelle/HOL distribution (see https://isabelle.in.tum.de/library/HOL) there is also the Archive of Formal Proofs at https://isa-afp.org, a growing collection of Isabelle theories that everybody can contribute to.
 
 #### 2.1.3 Quotation Marks
 
+The textual definition of a theory follows a fixed syntax with keywords like begin and datatype. Embedded in this syntax are the types and formulas of HOL. To distinguish the two levels, everything HOL-specific(terms and types) must be enclosed in quotation marks:"...". Quotation marks around a single identifier can be dropped. When Isabelle prints a syntax error message, it refers to the HOL syntax as the inner syntax and the enclosing theory language as the outer syntax. 
+
+理论的文本定义遵循固定的语法，其中包含begin和datatype等关键字。嵌入在该语法中的是HOL的类型和公式。为了区分这两个层次，所有特定于霍尔的东西(术语和类型)都必须用引号括起来:“…”。可以删除单个标识符周围的引号。当Isabelle打印一个语法错误消息时，它将HOL语法作为内部语法，将封闭的理论语言作为外部语法。
+
 ### 2.2 Types bool, nat and list
+
+There are the most important predefined types. We go through them one by one. Based on examples we learn how to define (possible recursive) functions and prove theorems about them by induction and simplification.
+
+有一些最重要的预定义类型。我们一个接一个地讲。基于例子，我们学习如何定义(可能的递归)函数，并通过归纳和简化证明关于它们的定理。
 
 #### 2.2.1 Type bool
 
+The type of boolean values is a predefined datatype
+$datatype\ bool = True | False$
+with the two values True and False and with many predefined functions: $\lnot, \land, \lor, \rightarrow$, etc. Here is how conjunction could be defined by pattern matching:
+$
+fun\ conj::"bool \Rightarrow bool \Rightarrow bool" where\\
+"conj \ True \ True = True" | \\
+"conj \_\_ = False"
+$
+
+Both the datatype and function definitions roughly follow the syntax of functional programming language.
+
 #### 2.2.2 Type nat
 
+Natural numbers are another predefined datatype: 
+$
+datatype\ nat=0 | Suc\ nat
+$
+All values of type nat are generated bhy the constructors 0 and Suc. Thus the values of type nat are 0, Suc 0, Suc(Suc(0)),etc. There are many predefined functions: +, *, $\leq$, etc. Here is hwo you could define your own addition:
+$
+fun add :: "nat \Rightarrow nat \Rightarrow nat" where \\
+"add\ 0\ n = n" | \\
+"add\ (Suc\ m)\ n" = Suc(add\ m\ n) \\
+$
+And here is a proof of the fact that add m 0 = m:
+$
+lemma add_02: "add m 0 = m"\\
+apply (induction m)\\
+apply (auto)\\
+done
+$
+
+The lemma command starts the proof and gives the lemma a name, add_02. Properties of recursively defined functions need to be established be induction in most cases. Command apply(induction m) instructs Isabelle to start a proof by induction on m. In response, it will show the following proof state:
+1. Add 0 0 = 0
+2. $\Lambda$m. add m 0 = m $\Rightarrow$ add (Suc m) 0 = Suc m
+
+The numbered lines are known as subgoals. The first subgoal is the base case, the second one is the induction step. The prefix ^m. is Isabelle's way of saying "for an arbitrary but fixed m". The $\Rightarrow$ separetes assumptions from the conclusion. The command apply(auto) instructs Isabelle to try and prove all subgoals automatically, essentially by simplifying them. Because both subgoals are easy, Isabelle can do it. The base case add 0 0 = 0 holds by definition of add, and the induction step is almost as simple: add (Suc m) 0 = Suc(add m 0) = Suc m using first the definition of add and then the induction hypothesis. In summary, both subproofs rely on simplification with function definitions and the induction hypothesis. As a result of that final done, Isabelle associates the lemma just proved with its name. You can now inspect the lemma with the command
+
+The free variable m has been replaced by the unknown ?m. There is no logical difference between the two but there is an operational one: unknowns can be instantiated, which is what you want after some lemma has been proved. 
+
+We have now seen three proofs of add m 0 = 0: the Isabelle one, the terse four lines explaining the base case and the induction step, and just now a model of a traditional inductive proof. The three proofs differ in the level of detail given and the intended reader: the Isabelle proof is for the machine, the informal proofs are for humans. Although this book concentrates on Isabelle proofs, it is important to be able to rephrase those proofs as informal text comprehensible to a reader familiar with traditional mathematical proofs. Later on we will introduce an Isabelle proof language that is closer to traditional informal mathematical language and is often directly readable.
+
+我们现在已经看到了三个证明:伊莎贝尔证明，简洁的四行解释基本情况和归纳步骤，以及刚才的一个传统的归纳证明模型。三种证明在给出的细节水平和目标读者上有所不同:伊莎贝尔证明是给机器的，非正式证明是给人的。虽然这本书集中在伊莎贝尔证明，它是重要的，能够重新措辞这些证明作为非正式文本易于理解的读者熟悉传统数学证明。稍后我们将介绍一种Isabelle证明语言，它更接近于传统的非正式数学语言，通常是直接可读的。
+
 #### 2.2.3 Type list
+
+Although lists are already predefined, we define our own copy for demostration purpose:
+$datatype 'a\ list = Nil | Cons 'a "'a\ list"$
+
+- Type 'a list is the type of lists over elements of type 'a. Because 'a is a type variable, lists are in fact polymporphic. 
 
 #### 2.2.4 The Proof Process
 
