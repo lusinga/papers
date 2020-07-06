@@ -105,7 +105,7 @@ Our study has the following main findings:
 我们的研究有以下主要发现:
 
 - 在真实世界的故障中，除了故障点以外的所有技术都将6%以上的故障定位在前10位，而最好的家族SBFL将44%的故障定位在前10位。
-- 我们研究的大多数技术，特别是不同家庭的技术，相关性较弱，表明它们有结合的潜力。
+- 我们研究的大多数技术，特别是不同家族的技术，相关性较弱，表明它们有结合的潜力。
 - 组合技术显著提高了性能:与最好的单机技术相比，前1/3/5/10局部缺陷增加了200/63/51/31%，检测元素减少了48%。
 - 该组合技术也比四种最先进的故障定位方法MULTRIC[23]、Savant[24]、cs[25]和TraPT[26]分别高出133%、167%、11%和18%。
 - 不同故障定位族的时间成本可以分为几个层次。当在一个时间成本级别上使用一种技术时，它不会影响运行时，但是会提高故障定位的效率，包括前面级别的所有技术。
@@ -181,12 +181,17 @@ A mutant is said to be killed by a test case if the test case has different exec
 
 ### 2.3 Program Slicing
 
-A program slice is a subset of program elements that potentially affect the slicing criterion: a set of specific variables [35]. For example, a slicing criterion could be a pair hl, V i, where l is a program location and V is a set of variables. Program slicing determines the program elements that have a direct or indirect effect on the values of variables in V at the program location l. 
+A program slice is a subset of program elements that potentially affect the slicing criterion: a set of specific variables [35]. For example, a slicing criterion could be a pair `<l, V>`, where l is a program location and V is a set of variables. Program slicing determines the program elements that have a direct or indirect effect on the values of variables in V at the program location l. 
+
+- [35] B. Xu, J. Qian, X. Zhang, Z. Wu, and L. Chen, “A brief survey of program slicing,” ACM SIGSOFT Software Engineering Notes, vol. 30, no. 2, pp. 1–36, 2005.
+
+程序切片是可能影响切片条件的程序元素的子集:一组特定的变量[35]。例如，一个切片标准可以是一对<l, V>，其中l是一个程序位置，V是一组变量。程序切片确定对程序位置l上的V中的变量值有直接或间接影响的程序元素。
+
 Program slicing was introduced as a debugging tool to reduce a program to a minimal form while still maintaining a given behavior [36]. Static slicing only uses the source code and accounts for all possible executions of the program. 
 Dynamic slicing focuses on one execution for a specific input [37]. A dynamic slice contains all statements that may affect the values in the slicing criterion for a specific execution. The key difference between dynamic slicing and static slicing is that dynamic slicing only includes executed statements for specific input, but static slicing includes possiblyexecuted statements for all potential inputs. Since dynamic slices are significantly smaller, they are more suitable and effective for program debugging [38]. 
 The following example shows the difference between static slicing and dynamic slicing.
 
-程序切片是可能影响切片条件的程序元素的子集:一组特定的变量[35]。例如，一个切片标准可以是一对hl, V i，其中l是一个程序位置，V是一组变量。程序切片确定对程序位置l上的V中的变量值有直接或间接影响的程序元素。
+
 
 程序切片是作为一种调试工具引入的，它可以在保持给定行为[36]的同时将程序缩减到最小的形式。静态切片仅使用源代码和帐户的所有可能执行的程序。
 

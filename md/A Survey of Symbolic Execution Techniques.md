@@ -1,0 +1,27 @@
+# A Survey of Symbolic Execution Techniques
+
+Many security and software testing applications require checking whether certain properties of a program hold for any possible usage scenario. For instance, a tool for identifying software vulnerabilities may need to rule out the existence of any backdoor to bypass a program’s authentication. One approach would be to test the program using different, possibly random inputs. As the backdoor may only be hit for very specific program workloads, automated exploration of the space of possible inputs is of the essence. Symbolic execution provides an elegant solution to the problem, by systematically exploring many possible execution paths at the same time without necessarily requiring concrete inputs. Rather than taking on fully specified input values, the technique abstractly represents them as symbols, resorting to constraint solvers to construct actual instances that would cause property violations. Symbolic execution has been incubated in dozens of tools developed over the past four decades, leading to major practical breakthroughs in a number of prominent software reliability applications. The goal of this survey is to provide an overview of the main ideas, challenges, and solutions developed in the area, distilling them for a broad audience.
+
+许多安全和软件测试应用程序需要检查程序的某些属性是否适用于任何可能的使用场景。例如，一个识别软件漏洞的工具可能需要排除任何后门的存在，以绕过程序的认证。一种方法是使用不同的，可能是随机的输入来测试程序。由于后门可能只针对非常特定的程序工作负载，因此自动探索可能输入的空间是非常重要的。符号执行通过同时系统地探索多种可能的执行路径而不需要具体的输入，为这个问题提供了一个优雅的解决方案。该技术并没有采用完全指定的输入值，而是抽象地将它们表示为符号，并求助于约束求解器来构造可能导致违反属性的实际实例。在过去的四十年中，符号执行已经在数十种开发的工具中得到孵化，导致了许多突出的软件可靠性应用程序的重大实际突破。本调查的目标是提供该领域的主要思想、挑战和解决方案的概述，并将其提炼出来供广大读者使用。
+
+## 1 INTRODUCTION
+
+Symbolic execution is a popular program analysis technique introduced in the mid ’70s to test whether certain properties can be violated by a piece of software [16, 58, 67, 68]. Aspects of interest could be that no division by zero is ever performed, no NULL pointer is ever dereferenced, no backdoor exists that can bypass authentication, and so on.While, in general, there is no automated way to decide some properties (e.g., the target of an indirect jump), heuristics and approximate analyses can prove useful in practice in a variety of settings, including mission-critical and security applications.
+
+符号执行是70年代中期引入的一种流行的程序分析技术，用来测试软件是否会侵犯某些属性[16,58,67,68]。有趣的方面可能是，从来没有执行过除零，从来没有解引用空指针，没有可以绕过身份验证的后门，等等。通常，没有自动的方法来决定某些属性(例如，间接跳转的目标)，但启发式和近似分析在实践中可以证明在各种设置中是有用的，包括关键任务和安全应用程序。
+
+In a concrete execution, a program is run on a specific input and a single control flow path is explored. Hence, in most cases, concrete executions can only under-approximate the analysis of the property of interest. In contrast, symbolic execution can simultaneously explore multiple paths that a program could take under different inputs. This paves the road to sound analyses that can yield strong guarantees on the checked property. The key idea is to allow a program to take on symbolic—rather than concrete—input values. Execution is performed by a symbolic execution engine, which maintains for each explored control flow path: (i) a first-order Boolean formula that describes the conditions satisfied by the branches taken along that path, and (ii) a symbolic memory store that maps variables to symbolic expressions or values. Branch execution updates the formula, while assignments update the symbolic store. A model checker, typically based on a satisfiability modulo theories (SMT) solver [13], is eventually used to verify whether there are any violations of the property along each explored path and if the path itself is realizable, i.e., if its formula can be satisfied by some assignment of concrete values to the program’s symbolic arguments.
+
+在一个具体的执行，一个程序运行在一个特定的输入和单一的控制流路径被探索。因此，在大多数情况下，具体执行只能低于近似分析的利益属性。相反，符号执行可以同时探索程序在不同输入条件下可能采取的多条路径。这为可靠的分析铺平了道路，可以对被检查的属性提供强有力的担保。其关键思想是让程序具有符号输入值，而不是具体输入值。执行由符号执行引擎执行，它维护每个已探索的控制流路径:(i)一个一阶布尔公式，描述沿着该路径所带的分支所满足的条件;(ii)一个符号内存存储，将变量映射到符号表达式或值。分支执行更新公式，而赋值更新符号存储。模型检查器，通常基于可满足模理论(SMT)求解器[13]，最终用于验证沿每条探索路径是否有任何违反性质，以及路径本身是否可实现，即。，如果它的公式可以通过给程序的符号参数赋一些具体值来满足。
+
+Symbolic execution techniques have been brought to the attention of a heterogeneous audience since DARPA announced in 2013 the Cyber Grand Challenge, a two-year competition seeking to create automatic systems for vulnerability detection, exploitation, and patching in near realtime [95]. More remarkably, symbolic execution tools have been running 24/7 in the testing process of many Microsoft applications since 2008, revealing, for instance, nearly 30% of all the bugs discovered by file fuzzing during the development of Windows 7, which other program analyses and blackbox testing techniques missed [53].
+
+自从美国国防部高级研究计划局在2013年宣布网络大挑战(Cyber Grand Challenge)以来，符号执行技术就引起了不同群体的注意。网络大挑战是一项为期两年的竞赛，旨在创建用于漏洞检测、开发和近实时修补的自动系统[95]。更引人注目的是，自2008年以来，符号执行工具在许多微软应用程序的测试过程中24/7地运行，例如，在Windows 7开发过程中，有近30%的bug是由文件模糊发现的，而其他程序分析和黑盒测试技术都漏掉了[53]。
+
+In this article,we survey themain aspects of symbolic execution and discuss the most prominent techniques employed, for instance, in software testing and computer security applications. Our discussion is mainly focused on forward symbolic execution, where a symbolic engine analyzes many paths simultaneously, starting its exploration from the main entry point of a program.
+
+在本文中，我们考察了符号执行的主要方面，并讨论了在软件测试和计算机安全应用程序中使用的最突出的技术。我们的讨论主要集中在前向符号执行上，即符号引擎同时分析许多路径，从程序的主入口点开始探索。
+
+We start with a simple example that highlights many of the fundamental issues addressed in the remainder of the article.
+
+我们从一个简单的示例开始，该示例突出了本文其余部分要解决的许多基本问题。
