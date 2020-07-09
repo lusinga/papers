@@ -148,23 +148,118 @@ We have now seen three proofs of add m 0 = 0: the Isabelle one, the terse four l
 Although lists are already predefined, we define our own copy for demostration purpose:
 $datatype 'a\ list = Nil | Cons 'a "'a\ list"$
 
-- Type 'a list is the type of lists over elements of type 'a. Because 'a is a type variable, lists are in fact polymporphic. 
+- Type 'a list is the type of lists over elements of type 'a. Because 'a is a type variable, lists are in fact polymporphic: the elements of a list can be of arbitrary type(but mjust all be of the same type).
+- Lists have two constuctors: Nil, the empty list, and Cons, which puts an element (of type 'a) in front of a list(of type 'a list). Hence all lists are of the form Nil, or Cons x Nil, or Cons x (Cons y Nil), etc. 
+- datatype requires no quotation marks on the left-hand side, but on the right-hand side each of the argument types of a constructor needs to be enclosed in quotation marks, unless it is just an identifier(e.g. nat or 'a)
+
+We also define two standard functions, append and reverse:
+$
+fun\ app :: "'a\ list \Rightarrow 'a\ list \Rightarrow 'a\ list" where\\
+"app\ Nil\ ys = ys" | \\
+"app(Cons\ x\ xs) ys = Cons x (app xs ys)"
+$
+
+```
+fun app :: "'a list \<Rightarrow>'a list \<Rightarrow> 'a list " where
+"app Nil ys = ys" |
+"app (Cons x xs) ys = Cons x (app xs ys)"
+fun rev :: "'a list \<Rightarrow> 'a list" where
+"rev Nil = Nil" |
+"rev (Cons x xs) = app (rev xs) (Cons x Nil)"
+```
 
 #### 2.2.4 The Proof Process
 
+We will now demostrate the typical proof process, which involves the formulation and proof of auxiliary lemmas. Our goal is to show that reversing a list twice produces the original list. 
+
 #### 2.2.5 Predefined Lists
+
+Isabelle's predefined lists are the same as the ones above, but with more syntactic sugar:
+- [] is Nil
+- x # xs is Cons x xs
+- $[x_1, ... , x_n] is\ x_1 \# ... \# x_n$
+- xs @ ys is app xs ys
 
 ### 2.3 Type and Function Definitions
 
+Type synonyms are abbreviations for existing types, for example
+```
+type_synoyms string = "char list"
+```
+
+Type synonyms are expanded after parsing and are not present in internal representation and output. They are mere conveniences for the reader. 
+
+类型同义词在解析后展开，不会出现在内部表示和输出中。它们只不过是为了方便读者。
+
 #### 2.3.1 Datatypes
+
+The general form of a datatype definition looks like this: 
+$datatype('a_1,...,'a_n)t = C_1 "\tau_{1,1}"..."\tau_{1,n_1}" | ... | C_k "\tau_{k,1}"..."\tau_{k,n_k}"$
+
+It introduces the constructors $C_i :: \tau_{i,1} \Rightarrow ... \Rightarrow \tau_{i,n_i} \Rightarrow ('a_1,...'a_n)t$ and expresses that any value of this type is built from these constructors in a unique manner. Uniqueness is implied by the following properties of the constructors:
+- Distinctness: $C_i ... \neq C_j ... if\ i\neq j$
+- Injectivity: $(C_i x_1 ... x_{n_i})=(x_1 = y_1 \land ... \land x_{n_i} = y_{n_i})$
+
+The fact that any value of the datatype is built from the constructors implies the stuctural induction rule: to show P x for all x of type $('a_1,...,'a_n)t$ one need to show $P(C_i x_1 ... x_n)$(for each i) assuming $P(x_j)$ for all j where $\tau_{i,j}=('a_1,...,'a_n)t$. Distinctness and injectivity are applied automatically by auto and other proof methods. Induction must be applied explicitly by auto and other proof methods. Induction must be applied explicitly. 
+Like in functional programming language, datatype values can be taken apart with case expression, for example
+$(case\ xs\ of [] \Rightarrow 0 | x \# \_ \Rightarrow Suc\ x)$
+Case expression must be enclosed in parentheses. 
+As an example of a datatype beyond nat and list, consider binary tress: 
+```
+datatype 'a tree = Tip | Node "'a tree" 'a "'a tree"
+fun mirror :: "'a tree ⇒ 'a tree" where
+"mirror Tip = Tip" | 
+"mirror (Node l a r) = Node(mirror r) a (mirror l)"
+lemma "mirror(mirror t) = t"
+  apply(induction t)
+  apply(auto)
+  done
+```
+
+A very simple but also very useful datatype is the predefined
+```
+datatype 'a option = None | Some 'a
+```
+
+Its sole purpose is to add a new element None to an existing type 'a. To make sure that None is distinct from all the elements of 'a, you wrap them up in Some and call the new type a' option. A typical application is a lookup function on a list of key-value pairs, often called an association list
 
 #### 2.3.2 Definitions
 
+Non-recursive functions can be defined as in the following example:
+```
+definition sq :: "nat => nat" where
+"sq n = n * n"
+```
+
+Such definitions do not allow pattern matching but only $f x_1 ... x_n = t$, where f does not occur in t. 
+
 #### 2.3.3 Abbreviations
+
+Abbreviations are similar to definitions:
+$
+abbreviation sq' :: "nat \Rightarrow nat" where 
+"sq' n \equiv n * n" 
+$
+The key difference is that sq' is only syntactic sugar: after parsing, sq' t is replaced by t*t; before printing, every occurrence of u*u is replaced by sq' u. Internally, sq' does not exist. This is the advantage of abbreviations over definitions: definitions need to be expanded explicitly whereas abbreviations are already expanded upon parsing. However, abbreviations should be introduced sparingly: if abused, they can lead to confusing discrepancy between the internal and external view of a term. 
+The ASCII representation of $\equiv$ is == or \<equiv>
 
 #### 2.3.4 Recursive Functions
 
+Recursive functions are defined with fun by pattern matching over datatype constructors. The order of equations matters, as in functional programming languages. However, all HOL functions must be total. This simplifies the logic - terms are always defined - but means that recursive functions must terminate. Otherwise one could define a function f n = f n +1 and conclude 0 = 1 by subtracting f n on both sides. 
+
+Isabelle's automatic termination checker requires that the arguments of recursive calls on the right-hand side must be strictly smaller than the arguments on the left-hand side. In the simplest case, this means that one fixed argument position decreases in size with each recursive call. The size is measured as the number of constructors(excluding 0-ary ones, e.g. Nil). Lexicograhic combinations are also recognized. In more complicated situations, the user may have to prove termination by hand. 
+
 ### 2.4 Induction Heuristics
+
+We have already noted that theorems about recursive functions are proved by induction. In case the function has more than one argument, we have followed the following heuristic in the proofs about the append function:
+
+我们已经注意到关于递归函数的定理是用归纳法证明的。如果函数有多个参数，我们在证明附加函数时遵循以下启发式方法:
+
+Perform induction on argument number i
+if the function is defined by recursion on argument number i.
+
+The key heuristic, and the main point of this section, is to generalize the goal before induction. The reason is simple: if the goal is too specific, the induction hypothesis is too weak to allow the induction step to go through. Let us illustrate the idea with an example.
+
 
 ### 2.5 Simplification
 
@@ -180,4 +275,123 @@ $datatype 'a\ list = Nil | Cons 'a "'a\ list"$
 
 #### 2.5.6 Case Splitting With simp
 
+## 3. Case Study: IMP Expressions
 
+The methods of the previous chapter suffice to define the arithmetic and boolean expressions of the programming language IMP that is the subject of this book. In this chapter we define their syntax and semantics, write little optimizers for them and show how to compile arithmetic expressions to a simple stack machine. Of course we also prove the correctness of the optimizers and compiler!
+
+上一章的方法足以定义编程语言IMP的算术和布尔表达式，这也是本书的主题。在本章中，我们将定义它们的语法和语义，为它们编写小的优化器，并展示如何将算术表达式编译到一个简单的堆栈机器上。当然，我们也证明了优化器和编译器的正确性!
+
+### 3.1 Arithmetic Expressions
+
+### 3.2 Boolean Expressions
+
+### 3.3 Stack Machine and Compilation
+
+## 4 Logic and Proof Beyond Equality
+
+### 4.1 Formulas
+
+### 4.2 Sets
+
+### 4.3 Proof Automation
+
+### 4.4 Single Step Proofs
+
+### 4.5 Inductive Definitions
+
+## 5 Isar: A Language for Structured Proofs
+
+### 5.1 Isar by Example
+
+### 5.2 Proof Patterns
+
+### 5.3 Streamlining Proofs
+
+### 5.4 Case Analysis and Induction
+
+# Semantics
+
+## Introduction
+
+## 7 IMP: A Simple Imperative Language
+
+### 7.1 IMP Commands
+
+### 7.2 Big-Step Semantics
+
+### 7.3 Small-Step Semantics
+
+### 7.4 Summary and Further Reading
+
+## 8 Compiler
+
+### 8.1 Introductions and Stack Machine
+
+### 8.2 Reasoning about machine executions
+
+### 8.3 Compilation
+
+### 8.4 Preservation of Semantics
+
+### 8.5 Summary and Further Reading
+
+## 9 Types
+
+### 9.1 Typed IMP
+
+### 9.2 Security Type Systems
+
+### 9.3 Summary adn Further Reading
+
+## 10 Program Analysis
+
+### 10.1 Definite Initialization Analysis
+
+### 10.2 Constant Folding and Propagation
+
+### 10.3 Live Variable Analysis
+
+### 10.4 True Liveness
+
+## 11 Denotational Semantics
+指称语义
+
+### 11.1 A Relational Denotational Semantics
+
+### 11.2 Summary and Further Reading
+
+## 12 Hoare Logic
+
+### 12.1 Proof via Operational Semantics
+
+### 12.2 Hoare Logic for Partial Correctness
+
+### 12.3 Soundness and Completeness
+
+### 12.4 Verification Condition Generation
+
+### 12.5 Hoare Logic for Total Correctness
+
+### 12.6 Summary and Further Reading
+
+## 13 Abstract Interpretation
+
+### 13.1 Informal Introduction
+
+### 13.2 Annotated Commands
+
+### 13.3 Collecting Semantics
+
+### 13.4 Abstract Values
+
+### 13.5 Generic Abstract Interpreter
+
+### 13.6 Executable Abstract States
+
+### 13.7 Analysis of Boolean Expression
+
+### 13.8 Interval Analysis
+
+### 13.9 Widening and Narrowing
+
+### 13.10 Summary and Further Reading
