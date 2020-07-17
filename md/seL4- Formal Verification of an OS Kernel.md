@@ -198,43 +198,179 @@ The seL4 kernel uses a model of memory allocation that exports control of the in
 
 seL4内核使用内存分配模型，该模型将内核内分配的控制导出到经过适当授权的应用程序[20]。虽然这个模型主要是为了精确保证内存消耗，但它也有利于验证。模型将分配策略推到内核之外，这意味着我们只需要证明该机制有效，而不需要证明用户级策略有意义。显然，将内存分配模块转移到用户空间并不会改变内存分配模块是可信计算基础的一部分这一事实。但是，这确实意味着这样的模块可以单独验证，并且可以依赖已验证的内核属性。
 
-The correctness of the allocation algorithm involves checks
-that new objects are wholly contained within an untyped
-(free) memory region and that they do not overlap with
-any other objects allocated from the region. Our memory
-allocation model keeps track of capability derivations in a treelike
-structure, whose nodes are the capabilities themselves.
+The correctness of the allocation algorithm involves checks that new objects are wholly contained within an untyped (free) memory region and that they do not overlap with any other objects allocated from the region. Our memory allocation model keeps track of capability derivations in a treelike structure, whose nodes are the capabilities themselves.
 
-Before re-using a block of memory, all references to this
-memory must be invalidated. This involves either finding
-all outstanding capabilities to the object, or returning the
-object to the memory pool only when the last capability is
-deleted. Our kernel uses both approaches.
+分配算法的正确性包括检查新对象是否完全包含在一个无类型(空闲)内存区域中，以及它们是否与从该区域分配的任何其他对象重叠。我们的内存分配模型在树形结构中跟踪能力的派生，其节点就是能力本身。
 
-In the first approach, the capability derivation tree is used
-to find and invalidate all capabilities referring to a memory
-region. In the second approach, the capability derivation tree
-is used to ensure, with a check that is local in scope, that
-there are no system-wide dangling references. This is possible
-because all other kernel objects have further invariants on
-their own internal references that relate back to the existence
-of capabilities in this derivation tree.
+Before re-using a block of memory, all references to this memory must be invalidated. This involves either finding all outstanding capabilities to the object, or returning the object to the memory pool only when the last capability is deleted. Our kernel uses both approaches.
+
+在重用内存块之前，对该内存的所有引用必须无效。这包括找到对象的所有突出功能，或者只有在最后一个功能被删除时才将对象返回到内存池。我们的内核使用了这两种方法。
+
+In the first approach, the capability derivation tree is used to find and invalidate all capabilities referring to a memory region. In the second approach, the capability derivation tree is used to ensure, with a check that is local in scope, that there are no system-wide dangling references. This is possible because all other kernel objects have further invariants on their own internal references that relate back to the existence of capabilities in this derivation tree.
+
+在第一种方法中，功能派生树用于查找引用一个内存区域的所有功能并使其无效。在第二种方法中，通过本地范围内的检查，使用功能派生树来确保没有系统范围内的悬浮引用。这是可能的，因为所有其他内核对象在它们自己的内部引用上有进一步的不变量，这些不变量与这个派生树中存在的功能相关。
 
 ### 3.3 Concurrency and non-determinism
 
+Concurrency is the execution of computation in parallel (in the case of multiple hardware processors), or by nondeterministic interleaving via a concurrency abstraction like threads. Proofs about concurrent programs are hard, much harder than proofs about sequential programs.
+
+并发是并行执行计算(在多个硬件处理器的情况下)，或者通过线程之类的并发抽象通过不确定性交错执行。并行程序的证明是困难的，比顺序程序的证明困难得多。
+
+While we have some ideas on how to construct verifiable systems on multiprocessors, they are outside the scope of this paper and left for future work. In this paper we focus on uniprocessor support where the degree of interleaving of execution and non-determinism can be controlled. However, even on a uniprocessor there is some remaining concurrency resulting from asynchronous I/O devices. seL4 avoids much of the complications resulting from I/O by running device drivers at user level, but it must still address interrupts.
+
+虽然我们对如何在多处理器上构建可验证的系统有一些想法，但它们不在本文的范围内，留给未来的工作。在这篇文章中，我们关注于单处理器的支持，其中执行交错的程度和非确定性可以被控制。然而，即使在单处理器上，也存在一些由异步I/O设备产生的剩余并发。seL4通过在用户级运行设备驱动程序，避免了I/O带来的很多并发症，但它仍然必须处理中断。
+
+Consider the small code fragment A; X; B, where A must establish the state that X relies on, X must establish the state B relies on, and so on. Concurrency issues in the verification of this code arise from yielding, interrupts and exceptions.
+
+考虑小代码片段A;X;B, A必须建立X所依赖的状态，X必须建立B所依赖的状态，以此类推。此代码验证中的并发问题源于yielding、中断和异常。
+
+Yielding at X results in the potential execution of any reachable activity in the system. This implies A must establish the preconditions required for all reachable activities, and all reachable activities on return must establish the preconditions of B. Yielding increases complexity significantly and makes verification harder. Preemption is a non-deterministically optional yield. Blocking kernel primitives, such as in lock acquisition and waiting on condition variables, are also a form of non-deterministic yield.
+
+在X处让步会导致系统中任何可达活动的潜在执行。这意味着A必须为所有可达到的活动建立前提条件，而所有可达到的活动在返回时必须建立b的前提条件。优先购买权是一种非确定性的可选收益率。阻塞内核原语，例如锁定获取和等待条件变量，也是一种非确定性的生成形式。
+
+By design, we side-step addressing the verification complexity of yield by using an event-based kernel execution model, with a single kernel stack, and a mostly atomic application programming interface [25].
+
+通过设计，我们使用基于事件的内核执行模型，使用单个内核堆栈和主要是原子化的应用程序编程接口[25]，从而避免了对yield验证复杂性的处理。
+
+Interrupt complexity has two forms: non-deterministic execution of the interrupt handlers, and interrupt handling resulting in preemption (as a result of timer ticks). Theoretically, this complexity can be avoided by disabling interrupts during kernel execution. However, this would be at the expense of large or unbounded interrupt latency, which we consider unacceptable.
+
+中断复杂性有两种形式:中断处理程序的非确定性执行和导致抢占的中断处理(作为计时器计时的结果)。理论上，这种复杂性可以通过在内核执行期间禁用中断来避免。但是，这将以巨大的或无限制的中断延迟为代价，我们认为这是不可接受的。
+
+Instead, we run the kernel with interrupts mostly disabled, except for a small number of carefully-placed interrupt points. If, in the above code fragment, X is the interrupt point, A must establish the state that all interrupt handlers rely on, and all reachable interrupt handlers must establish or preserve the properties B relies on.
+
+相反，我们在运行内核时禁用了中断，除了少数精心放置的中断点。在上面的代码片段中，如果X是中断点，则A必须建立所有中断处理程序所依赖的状态，而所有可到达的中断处理程序必须建立或保存B所依赖的属性。
+
+We simplify the problem further by implementing interrupt points via polling, rather than temporary enabling of interrupts. On detection of a pending interrupt, we explicitly return through the function call stack to the kernel/user boundary. At the boundary we leave a (potentially modified) event stored in the saved user-level registers. The interrupt becomes a new kernel event (prefixed to the pending usertriggered event). After the in-kernel component of interrupt handling, the interrupted event is restarted. This effectively re-tries the (modified) operation, including re-establishing all the preconditions for execution. In this way we avoid the need for any interrupt-point specific post-conditions for interrupt handlers, but still achieve Fluke-like partial preemptability [25].
+
+- [25] B. Ford, M. Hibler, J. Lepreau, R. McGrath, and P. Tullmann. Interface and execution models in the Fluke kernel. In 3rd OSDI. USENIX, Feb 1999.
+
+我们通过轮询而不是临时启用中断来实现中断点，从而进一步简化了这个问题。在检测到一个挂起的中断时，我们通过函数调用堆栈显式地返回到内核/用户边界。在边界处，我们将一个(可能已修改的)事件存储在已保存的用户级寄存器中。中断成为一个新的内核事件(以挂起的用户触发事件为前缀)。在中断处理的内核组件之后，中断的事件被重新启动。这有效地重试了(修改的)操作，包括重新建立执行的所有先决条件。通过这种方式，我们避免了对中断处理程序使用任何特定于中断点的后置条件，但仍然实现了类似意外的部分可抢占性[25]。
+
+The use of interrupt points creates a trade-off, controlled by the kernel designer, between proof complexity and interrupt processing latency. Almost all of seL4’s operations have short and bounded latency, and can execute without any interrupt points at all. The exception is object destruction, whose cleanup operations are inherently unbounded, and are, of course, critical to kernel integrity.
+
+中断点的使用会在证明复杂性和中断处理延迟之间产生一种权衡，这种权衡由内核设计者控制。几乎seL4的所有操作都有短而有界的延迟，并且完全可以在没有任何中断点的情况下执行。对象销毁是一个例外，它的清理操作本质上是无限制的，当然，这对内核完整性至关重要。
+
+We make these operations preemptable by storing the state of progress of destruction in the last capability referencing the object being destroyed; we refer to this as a zombie capability. This guarantees that the correctness of a restarted destroy is not dependent on user-accessible registers. Another advantage of this approach is that if another user thread attempts to destroy the zombie, it will simply continue where the first thread was preempted (a form of priority inheritance), instead of making the new thread dependent (blocked) on the completion of another.
+
+我们通过在最后一个引用被销毁对象的能力中存储销毁进程的状态，使这些操作具有可抢占性;我们将其称为僵尸功能。这保证了重新启动的销毁的正确性不依赖于用户可访问的寄存器。这种方法的另一个优点是，如果另一个用户线程试图销毁zombie，它将简单地继续第一个线程被抢占(一种优先级继承形式)，而不是使新线程依赖于(阻塞)另一个线程的完成。
+
+Exceptions are similar to interrupts in their effect, but are synchronous in that they result directly from the code being executed and cannot be deferred. In the seL4 kernel we avoid exceptions completely and much of that avoidance is guaranteed as a side-effect of verification. Special care is required only for memory faults.
+
+异常在效果上与中断类似，但它们是同步的，因为它们直接由正在执行的代码产生，不能被延迟。在seL4内核中，我们完全避免了异常，并且保证这种避免是验证的副作用。仅对内存错误需要特别注意。
+
+We avoid having to deal with virtual-memory exceptions in kernel code by mapping a fixed region of the virtual address space to physical memory, independent of whether it is actively used or not. The region contains all the memory the kernel can potentially use for its own internal data structures, and is guaranteed to never produce a fault. We prove that this region appears in every virtual address space.
+
+通过将虚拟地址空间的一个固定区域映射到物理内存，我们避免了必须在内核代码中处理虚拟内存异常，而与它是否被积极使用无关。该区域包含内核可能用于其内部数据结构的所有内存，并且保证不会产生错误。我们证明了该区域出现在每个虚拟地址空间中。
+
+Arguments passed to the kernel from user level are either transferred in registers or limited to preregistered physical frames accessed through the kernel region.
+
+从用户级传递到内核的参数要么在寄存器中传输，要么限制为通过内核区域访问的预先注册的物理帧。
+
 ### 3.4 I/O
+
+As described earlier we avoid most of the complexity of I/O by moving device drivers into protected user-mode components. When processing an interrupt event, our interrupt delivery mechanism determines the interrupt source, masks further interrupts from that specific source, notifies the registered user-level handler (device driver) of the interrupt, and unmasks the interrupt when the handler acknowledges the interrupt.
+
+如前所述，我们通过将设备驱动程序移动到受保护的用户模式组件中来避免I/O的大部分复杂性。当处理一个中断事件时，我们的中断传递机制确定中断源，屏蔽来自那个特定源的进一步中断，通知已注册的用户级处理程序(设备驱动程序)中断，并在处理程序确认中断时解禁中断。
+
+We coarsely model the hardware interrupt controller of the ARM platform to include interrupt support in the proof. The model includes existence of the controller, masking of interrupts, and that interrupts only occur if unmasked. This is sufficient to include interrupt controller access, and basic behaviour in the proof, without modelling correctness of the interrupt controller management in detail. The proof is set up such that it is easy to include more detail in the hardware model should it become necessary later to prove additional properties.
+
+我们对ARM平台的硬件中断控制器进行了粗略的建模，以包含中断支持。该模型包括控制器的存在性、中断的屏蔽性以及中断仅在未屏蔽时才会发生。这足以包括中断控制器访问，和基本行为的证明，没有建模的正确性的中断控制器管理的细节。如果以后需要证明其他属性，那么可以很容易地在硬件模型中包含更多细节。
+
+Our kernel contains a single device driver, the timer driver, which generates timer ticks for the scheduler. This is set up in the initialisation phase of the kernel as an automatically reloaded source of regular interrupts. It is not modified or accessed during the execution of the kernel. We did not need to model the timer explicitly in the proof, we just prove that system behaviour on each tick event is correct.
+
+我们的内核包含一个设备驱动程序，即计时器驱动程序，它为调度程序生成计时器刻度。这是在内核的初始化阶段设置的，作为一个自动重新加载的常规中断源。它不会在内核执行期间被修改或访问。我们不需要在proof中显式地建模计时器，我们只需要证明系统在每个tick事件上的行为是正确的。
 
 ### 3.5 Observations
 
+The requirements of verification force the designers to think of the simplest and cleanest way of achieving their goals. We found repeatedly that this leads to overall better design, which tends to reduce the likelihood of bugs.
+
+验证的需求迫使设计人员考虑实现其目标的最简单和最干净的方法。我们反复发现，这将带来更好的总体设计，从而降低出现错误的可能性。
+
+In a number of cases there were significant other benefits. This is particularly true for the design decisions aimed at simplifying concurrency-related verification issues. Nonpreemptable execution (except for a few interrupt-points) has traditionally been used in L4 kernels to maximise averagecase performance. Recent L4 kernels aimed at embedded use [32] have adopted an event-based design to reduce the kernel’s memory footprint (due to the use of a single kernel stack rather than per-thread stacks).
+
+在许多情况下，还有其他显著的好处。对于旨在简化与并发相关的验证问题的设计决策来说，尤其如此。传统上，L4内核使用不可抢占的执行(除了少数中断点)来最大化平均用例性能。最近针对嵌入式使用[32]的L4内核采用了基于事件的设计来减少内核的内存占用(由于使用了单个内核堆栈而不是每个线程堆栈)。
+
 ## 4. seL4 VERIFICATION
+
+This section describes each of the specification layers as well as the proof in more detail.
+
+本节将更详细地描述每个规范层以及证明。
 
 ### 4.1 Abstract specification
 
+The abstract level describes what the system does without saying how it is done. For all user-visible kernel operations it describes the functional behaviour that is expected from the system. All implementations that refine this specification will be binary compatible.
+
+抽象层描述系统做什么，而不说明如何做。对于所有用户可见的内核操作，它描述了系统预期的功能行为。改进该规范的所有实现都是二进制兼容的。
+
+We precisely describe argument formats, encodings and error reporting, so for instance some of the C-level size restrictions become visible on this level. In order to express these, we rarely make use of infinite types like natural numbers. Instead, we use finite machine words, such as 32-bit integers. We model memory and typed pointers explicitly. Otherwise, the data structures used in this abstract specification are high-level — essentially sets, lists, trees, functions and records. We make use of non-determinism in order to leave implementation choices to lower levels: If there are multiple correct results for an operation, this abstract layer would return all of them and make clear that there is a choice. The implementation is free to pick any one of them.
+
+我们精确地描述参数格式、编码和错误报告，因此，例如，在这个级别上可以看到一些c级的大小限制。为了表达这些，我们很少使用无限类型，比如自然数。相反，我们使用有限的机器字，比如32位整数。我们显式地建模内存和类型指针。此外，在这个抽象规范中使用的数据结构是高级的——本质上是集、列表、树、函数和记录。我们利用非确定性将实现选择留给更低的层次:如果一个操作有多个正确的结果，这个抽象层将返回所有结果，并表明存在选择。实现可以自由选择其中任何一个。
+
+An example of this is scheduling. No scheduling policy is defined at the abstract level. Instead, the scheduler is modelled as a function picking any runnable thread that is active in the system or the idle thread. The Isabelle/HOL code for this is shown in Fig. 3. The function all_active_tcbs returns the abstract set of all runnable threads in the system. Its implementation (not shown) is an abstract logical predicate over the whole system. The select statement picks any element of the set. The OR makes a non-deterministic choice between the first block and switch_to_idle_thread. The executable specification makes this choice more specific.
+
+这方面的一个例子是调度。没有在抽象级别定义调度策略。相反，调度程序被建模为一个函数，它选择系统中活动的任何可运行线程或空闲线程。Isabelle/HOL代码为此显示在图3中。函数all_active_tcbs返回系统中所有可运行线程的抽象集。它的实现(未显示)是对整个系统的抽象逻辑谓词。select语句选择集合中的任何元素。OR在第一个块和switch_to_idle_thread之间进行非确定性选择。可执行规范使这种选择更加具体。
+
 ### 4.2 Executable specification
+
+The purpose of the executable specification is to fill in the details left open at the abstract level and to specify how the kernel works (as opposed to what it does). While trying to avoid the messy specifics of how data structures and code are optimised in C, we reflect the fundamental restrictions in size and code structure that we expect from the hardware and the C implementation. For instance, we take care not to use more than 64 bits to represent capabilities, exploiting for instance known alignment of pointers. We do not specify in which way this limited information is laid out in C.
+
+可执行规范的目的是填充在抽象层开放的细节，并指定内核如何工作(而不是它做什么)。在试图避免在C中优化数据结构和代码的混乱细节的同时，我们反映了我们期望从硬件和C实现在大小和代码结构方面的基本限制。例如，我们注意不要使用超过64位的数据来表示功能，例如利用已知的指针对齐。我们没有具体说明在C语言中如何列出这些有限的信息。
+
+The executable specification is deterministic; the only nondeterminism left is that of the underlying machine. All data structures are now explicit data types, records and lists with straightforward, efficient implementations in C. For example the capability derivation tree of seL4, modelled as a tree on the abstract level, is now modelled as a doubly linked list with limited level information. It is manipulated explicitly with pointer-update operations.
+
+可执行的规范是确定的;剩下的唯一不确定性是底层机器的不确定性。所有的数据结构现在都是显式的数据类型、记录和列表，在c语言中有直接、有效的实现。例如，seL4的功能派生树，在抽象层上被建模为树，现在被建模为具有有限层信息的双重链表。通过指针更新操作显式地操作它。
+
+Fig. 4 shows part of the scheduler specification at this level. The additional complexity becomes apparent in the chooseThread function that is no longer merely a simple predicate, but rather an explicit search backed by data structures for priority queues. The specification fixes the behaviour of the scheduler to a simple priority-based round-robin algorithm. It mentions that threads have time slices and it clarifies when the idle thread will be scheduled. Note that priority queues duplicate information that is already available (in the form of thread states), in order to make it available efficiently. They make it easy to find a runnable thread of high priority. The optimisation will require us to prove that the duplicated information is consistent.
+
+图4显示了该级别的部分调度器规范。在chooseThread函数中，额外的复杂性变得很明显，它不再只是一个简单的谓词，而是由数据结构支持的优先级队列的显式搜索。该规范将调度器的行为修复为一种简单的基于优先级的循环算法。它提到了线程有时间片，并阐明了空闲线程何时被调度。请注意，优先级队列重复了已经可用的信息(以线程状态的形式)，以便使其有效可用。它们可以很容易地找到高优先级的可运行线程。优化需要我们证明重复的信息是一致的。
+
+We have proved that the executable specification correctly implements the abstract specification. Because of its extreme level of detail, this proof alone already provides stronger design assurance than has been shown for any other generalpurpose OS kernel.
+
+我们证明了可执行规范正确地实现了抽象规范。由于其极端的详细程度，仅此证明就提供了比任何其他通用操作系统内核更强的设计保证。
 
 ### 4.3 C implementation
 
+The most detailed layer in our verification is the C implementation. The translation from C into Isabelle is correctness-critical and we take great care to model the semantics of our C subset precisely and foundationally. Precisely means that we treat C semantics, types, and memory model as the standard prescribes, for instance with architecture-dependent word size, padding of structs, typeunsafe casting of pointers, and arithmetic on addresses. As kernel programmers do, we make assumptions about the compiler (GCC) that go beyond the standard, and about the architecture used (ARMv6). These are explicit in the model, and we can therefore detect violations. Foundationally means that we do not just axiomatise the behaviour of C on a high level, but we derive it from first principles as far as possible. For example, in our model of C, memory is a primitive function from addresses to bytes without type information or restrictions. On top of that, we specify how types like unsigned int are encoded, how structures are laid out, and how implicit and explicit type casts behave. We managed to lift this low-level memory model to a highlevel calculus that allows efficient, abstract reasoning on the type-safe fragment of the kernel [62, 63, 65]. We generate proof obligations assuring the safety of each pointer access and write. They state that the pointer in question must be non-null and of the correct alignment. They are typically easy to discharge. We generate similar obligations for all restrictions the C99 standard demands.
+
+在我们的验证中最详细的一层是C实现。从C到Isabelle的转换是正确的，我们非常注意精确和基础地建模我们的C子集的语义。精确地意味着我们将C语义、类型和内存模型作为标准规定，例如与体系结构相关的字大小、结构的填充、类型不安全的指针转换和地址的算术。正如内核程序员所做的那样，我们对超越标准的编译器(GCC)以及所使用的架构(ARMv6)进行了假设。这些在模型中是显式的，因此我们可以检测违规。在基础上意味着我们不仅要在高层次上证明C的行为，而且要尽可能从基本原理中推导出它。例如，在我们的C模型中，memory是一个从地址到字节的原始函数，没有类型信息或限制。在此基础上，我们指定像无符号int这样的类型如何编码、结构如何布局以及隐式和显式类型强制转换的行为方式。我们设法将这个低级的内存模型提升到一个高级的演算，允许对内核的类型安全片段进行有效的、抽象的推理[62,63,65]。我们生成保证每个指针访问和写入的安全性的证明义务。它们指出，有问题的指针必须是非空的，并且对齐方式正确。他们通常很容易出院。我们为C99标准要求的所有限制产生类似的义务。
+
+We treat a very large, pragmatic subset of C99 in the verification. It is a compromise between verification convenience and the hoops the kernel programmers were willing to jump through in writing their source. The following paragraphs describe what is not in this subset.
+
+我们在验证中处理一个非常大的、实用的C99子集。这是验证便利和内核程序员在编写源代码时愿意跳过的障碍之间的妥协。下面的段落描述了不属于这个子集的内容。
+
+We do not allow the address-of operator & on local variables, because, for better automation, we make the assumption that local variables are separate from the heap. This could be violated if their address was available to pass on. It is the most far-reaching restriction we implement, because it is common to use local variable references for return parameters of large types that we do not want to pass on the stack. We achieved compliance with this requirement by avoiding reference parameters as much as possible, and where they were needed, used pointers to global variables (which are not restricted).
+
+我们不允许在局部变量上使用address-of操作符&，因为为了更好地实现自动化，我们假设局部变量与堆是分开的。如果他们的地址是可传递的，这可能会被违反。这是我们实现的影响最深远的限制，因为对于不希望传递到堆栈上的大型类型的返回参数，通常使用局部变量引用。我们尽可能地避免引用参数，并在需要引用参数的地方使用指向全局变量(不受限制)的指针，从而满足了这一要求。
+
+One feature of C that is problematic for verification (and programmers) is the unspecified order of evaluation in expressions with side effects. To deal with this feature soundly, we limit how side effects can occur in expressions. If more than one function call occurs within an expression or the expression otherwise accesses global state, a proof obligation is generated to show that these functions are side-effect free. This proof obligation is discharged automatically.
+
+对于验证(和程序员)来说，C的一个有问题的特性是表达式中未指定的求值顺序，并带有副作用。为了更好地处理这个特性，我们限制了表达式中可能出现的副作用。如果一个表达式中发生多个函数调用，或者该表达式访问全局状态，则生成一个证明义务，以表明这些函数没有副作用。此举证义务自动解除。
+
+We do not allow function calls through function pointers. (We do allow handing the address of a function to assembler code, e.g. for installing exception vector tables.) We also do not allow goto statements, or switch statements with fallthrough cases. We support C99 compound literals, making it convenient to return structs from functions, and reducing the need for reference parameters. We do not allow compound literals to be lvalues. Some of these restrictions could be lifted easily, but the features were not required in seL4.
+
+我们不允许通过函数指针调用函数。(我们允许将一个函数的地址传递给汇编代码，例如用于安装异常向量表。)我们还不允许使用goto语句，也不允许使用fall through案例切换语句。我们支持C99复合文字，这使得从函数返回struct很方便，并且减少了对引用参数的需要。我们不允许复合文字是左值。其中一些限制可以很容易地取消，但是seL4并不需要这些特性。
+
+We did not use unions directly in seL4 and therefore do not support them in the verification (although that would be possible). Since the C implementation was derived from a functional program, all unions in seL4 are tagged, and many structs are packed bitfields. Like other kernel implementors, we do not trust GCC to compile and optimise bitfields predictably for kernel code. Instead, we wrote a small tool that takes a specification and generates C code with the necessary shifting and masking for such bitfields. The tool helps us to easily map structures to page table entries or other hardware-defined memory layouts. The generated code can be inlined and, after compilation on ARM, the result is more compact and faster than GCC’s native bitfields. The tool not only generates the C code, it also automatically generates Isabelle/HOL specifications and proofs of correctness [13].
+
+我们在seL4中没有直接使用union，因此在验证中不支持它们(尽管这是可能的)。因为C实现是从一个函数程序派生出来的，所以seL4中的所有union都被标记，而且许多struct都被打包成位字段。像其他内核实现者一样，我们不相信GCC可以为内核代码编译和优化位字段。相反，我们编写了一个小工具，它接受一个规范并生成C代码，并对这些位域进行必要的移动和屏蔽。该工具帮助我们轻松地将结构映射到页表条目或其他硬件定义的内存布局。生成的代码可以内联，并且在ARM上编译后，结果比GCC的本机位字段更紧凑、更快。该工具不仅生成C代码，还自动生成Isabelle/HOL规范和[13]正确性证明。
+
+Fig. 5 shows part of the implementation of the scheduling functionality described in the previous sections. It is standard C99 code with pointers, arrays and structs. The thread_state functions used in Fig. 5 are examples of generated bitfield accessors.
+
+图5显示了前几节中描述的调度功能的部分实现。它是带有指针、数组和结构体的标准C99代码。图5中使用的thread_state函数是生成位域访问器的例子。
+
 ### 4.4 Machine model
+
+Programming in C is not sufficient for implementing a kernel. There are places where the programmer has to go outside the semantics of C to manipulate hardware directly. In the easiest case, this is achieved by writing to memorymapped device registers, as for instance with a timer chip; in other cases one has to drop down to assembly to implement the required behaviour, as for instance with TLB flushes.
+
+用C语言编程不足以实现内核。有些地方，程序员必须跳出C的语义来直接操作硬件。在最简单的情况下，这是通过写入到内存映射设备寄存器来实现的，例如与计时器芯片;在其他情况下，必须使用程序集来实现所需的行为，例如使用TLB刷新。
+
+Presently, we do not model the effects of certain direct hardware instructions because they are too far below the abstraction layer of C. Of these, cache and TLB flushes are relevant for the correctness of the code, and we rely on traditional testing for these limited number of cases. Higher assurance can be obtained by adding more detail to the machine model—we have phrased the machine interface such that future proofs about the TLB and cache can be added with minimal changes. Additionally, required behaviour can be guaranteed by targeted assertions (e.g., that page-table updates always flush the TLB), which would result in further proof obligations.
+
+目前，我们并不对某些直接硬件指令的影响进行建模，因为它们远低于c的抽象层。在这些指令中，缓存和TLB刷新与代码的正确性有关，对于这些有限数量的情况，我们依赖于传统的测试。通过向机器模型中添加更多细节，可以获得更高的保证——我们已经对机器接口进行了修饰，这样将来关于TLB和缓存的证明就可以添加到最小的更改中。此外，所需的行为可以由目标断言来保证(例如，页表更新总是刷新TLB)，这将导致进一步的证明义务。
+
+The basis of this formal model of the machine is the internal state of the relevant devices, collected in one record machine_state. For devices that we model more closely, such as the interrupt controller, the relevant part in machine_state contains details such as which interrupts are currently masked. For the parts that we do not model, such as the TLB, we leave the corresponding type unspecified, so it can be replaced with more details later.
+
+此机器形式化模型的基础是相关设备的内部状态，收集在一个记录machine_state中。对于我们建模更紧密的设备，比如中断控制器，machine_state中的相关部分包含了一些细节，比如当前哪些中断被屏蔽了。对于我们没有建模的部分，比如TLB，我们未指定相应的类型，以便以后可以用更多的细节替换它。
 
 ### 4.5 The proof
 
