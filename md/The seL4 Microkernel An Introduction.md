@@ -26,7 +26,57 @@ Learn more about what it means that seL4 is a microkernel and its use as a hyper
 
 seL4 comes with a formal, mathematical, machine-checked proof of implementation correctness, meaning the kernel is in a very strong sense “bug free” with respect to its specification. In fact, seL4 is the world’s first OS kernel with such a proof at the code level [Klein et al., 2009].
 
+seL4提供了一个正式的、数学的、机器检查的实现正确性证明，这意味着就其规范而言，内核在很强的意义上是“没有bug的”。事实上，seL4是世界上第一个在代码级别上有这样证明的操作系统内核[Klein et al.， 2009]。
 
+- seL4 is provably secure
+
+Besides implementation correctness, seL4 comes with further proofs of security enforcement [Klein et al., 2014]. They say that in a correctly congured seL4-based system, the kernel guarantees the classical security properties of condentiality, integrity and availability. More about these proofs in Chapter 3.
+
+[Gerwin Klein, June Andronick, Kevin Elphinstone, Toby Murray, Thomas Sewell, Rafal Kolanski, and Gernot Heiser. Comprehensive formal verication of an OS microkernel. ACM Transactions on Computer Systems, 32(1):2:1–2:70, February 2014.]
+
+除了实现正确性之外，seL4还进一步证明了安全性的加强[Klein et al.， 2014]。他们说，在一个正确配置的基于sel4的系统中，内核保证了机密性、完整性和可用性等经典的安全属性。更多关于这些证明在第三章。
+
+- seL4 improves security with fine-grained access control through capabilities
+
+Capabilities are access tokens which support very fine-grained control over which entity can access a particular resource in a system. They support strong security according to the principle of least privilege (also called principle of least authority, POLA). This is a core design principle of highly secure system, and is impossible to achieve with the way access control happens in mainstream systems such as Linux or Windows.
+
+功能是访问令牌，它支持对哪个实体可以访问系统中的特定资源进行非常细粒度的控制。它们根据最小特权原则(也称为最小权威原则，POLA)支持强大的安全性。这是高度安全系统的核心设计原则，而Linux或Windows等主流系统的访问控制方式是不可能实现的。
+
+seL4 is still the world’s only OS that is both capability-based and formally verified,
+and as such has a defensible claim of being the world’s most secure OS. More
+about capabilities in Chapter 4.
+
+seL4仍然是世界上唯一的既基于能力又经过正式验证的操作系统，因此有理由声称它是世界上最安全的操作系统。更多关于功能的信息请参见第4章。
+
+- seL4 ensures safety of time-critical systems
+
+seL4 is the world’s only OS kernel (at least in the open literature) that has undergone a complete and sound analysis of its worst-case execution time (WCET) [Blackham et al., 2011, Sewell et al., 2017]. This means, if the kernel is congured appropriately, all kernel operations are bounded in time, and the bound is known. This is a prerequisite for building hard real-time systems, where failure to react to an event within a strictly bounded time period is catastrophic.
+
+[
+- Bernard Blackham, Yao Shi, Sudipta Chattopadhyay, Abhik Roychoudhury, and Gernot Heiser. Timing analysis of a protected operating system kernel. In IEEE Real-Time Systems Symposium, pages 339–348, Vienna, Austria, November 2011. IEEE Computer Society. 
+- Thomas Sewell, Felix Kam, and Gernot Heiser. High-assurance timing analysis
+for a high-assurance real-time OS. Real-Time Systems, 53:812–853, September
+2017.
+]
+
+seL4是世界上唯一对其最坏情况执行时间(WCET)进行了完整而完善的分析的操作系统内核(至少在开放文献中是这样)[Blackham et al.， 2011, Sewell et al.， 2017]。这意味着，如果内核被适当地配置，那么所有内核操作都是有时间限制的，并且这个界限是已知的。这是构建硬实时系统的先决条件，在硬实时系统中，如果不能在严格限定的时间内对事件做出反应，将是灾难性的。
+
+- seL4 is the world’s most advanced mixed-criticality OS
+
+seL4 provides strong support for mixed criticality real-time systems (MCS), where
+the timeliness of critical activities must be ensured even if they co-exist with less
+trusted code executing on the same platform. seL4 achieves this with a exible
+model that retains good resource utilisation, unlike the more established MCS
+OSes that use strict (and inexible) time and space partitioning [Lyons et al., 2018].
+More on seL4’s real-time and MCS support in Chapter 5.
+
+seL4为混合临界实时系统(MCS)提供了强大的支持，其中必须确保关键活动的及时性，即使它们与在同一平台上执行的不太可信的代码共存。seL4通过灵活的模型实现了这一点，保持了良好的资源利用率，而不像更成熟的MCS操作系统那样使用严格(且不灵活)的时间和空间划分[Lyons等人，2018]。更多关于seL4的实时和MCS支持在第5章。
+
+- seL4 is the world’s fastest microkernel
+
+Traditionally, systems are either (sort-of) secure, or they are fast. seL4 is unique in that it is both. seL4 is designed to support a wide range of real-world use cases, whether they are security- (or safety-)critical or not, and excellent performance is a requirement. More on seL4’s performance in Chapter 6.
+
+传统上，系统要么是(有点)安全的，要么是快速的。seL4是唯一的，因为它两者都是。seL4被设计为支持广泛的真实世界用例，无论它们是否具有重要的安全性(或安全性)，卓越的性能是一个需求。更多关于seL4的性能，请参见第6章。
 
 ## Chapter 3 seL4’s Verification Story
 
