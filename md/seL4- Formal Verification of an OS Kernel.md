@@ -372,7 +372,21 @@ The basis of this formal model of the machine is the internal state of the relev
 
 此机器形式化模型的基础是相关设备的内部状态，收集在一个记录machine_state中。对于我们建模更紧密的设备，比如中断控制器，machine_state中的相关部分包含了一些细节，比如当前哪些中断被屏蔽了。对于我们没有建模的部分，比如TLB，我们未指定相应的类型，以便以后可以用更多的细节替换它。
 
+Fig. 6 shows our machine interface. The functions are all of type X machine_m which restricts any side effects to the machine_state component of the system. Most of the functions return nothing (type unit), but change the state of a device. In the abstract and executable specification, these functions are implemented with maximal non-determinism. This means that in the extreme case they may arbitrarily change their part of the machine state. Even for devices that we model, we are careful to leave as much behaviour as possible non-deterministic. The less behaviour we prescribe, the less assumptions the model makes about the hardware.
+
+图6为我们的机器界面。这些函数都是X machine_m类型，它将任何副作用限制在系统的machine_state组件上。大多数函数不返回任何东西(类型单元)，但是改变设备的状态。在抽象和可执行的规范中，这些函数的实现具有极大的非确定性。这意味着，在极端情况下，它们可以任意更改机器的部分状态。即使是对我们建模的设备，我们也会小心地让尽可能多的行为不具有确定性。我们规定的行为越少，模型对硬件的假设就越少。
+
+In the seL4 implementation, the functions in Fig. 6 are implemented in C where possible, and otherwise in assembly; we must check (but we do not prove) that the implementations match the assumptions we make in the levels above. An example is the function getIFSR, which on ARM returns the instruction fault status register after a page fault. For this function, which is basically a single assembly instruction, we only assume that it does not change the memory state of the machine, which is easy to check.
+
+在seL4实现中，图6中的功能尽可能用C实现，否则用汇编实现;我们必须检查(但我们不证明)实现是否符合我们在上面的级别所做的假设。一个例子是getIFSR函数，它在ARM上在出现页面错误后返回指令错误状态寄存器。这个函数基本上是一条组装指令，我们只假设它不会改变机器的内存状态，这很容易检查。
+
 ### 4.5 The proof
+
+This section describes the main theorem we have shown and how its proof was constructed. As mentioned, the main property we are interested in is functional correctness, which we prove by showing formal refinement. We have formalised this property for general state machines in Isabelle/HOL, and we instantiate each of the specifications in the previous sections into this statemachine framework.
+
+本节描述我们所展示的主要定理以及它的证明是如何建立的。如前所述，我们感兴趣的主要性质是函数正确性，我们通过展示形式的细化来证明它。我们已经在Isabelle/HOL中为通用状态机形式化了这个属性，并且在前面的部分中我们将每个规范实例化到这个状态机框架中。
+
+
 
 ## 5. EXPERIENCE AND LESSONS LEARNT
 
