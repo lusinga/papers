@@ -28,12 +28,236 @@ For the sake of clarity, this survey consistently uses certain modern or common 
 discussing literature that used various other terms for the same concepts:
 
 - Container: The term container does not have a single origin, but some early relevant examples of use are Banga et al. [25] in 1999, Lottiaux and Morin [127] in 2001, Morin et al. [145] in 2002, and Price and Tucker [164] in 2004. Early literature on containers confusingly referred to them as a kind of virtualization [45, 48, 104, 142, 164, 182], or even called them virtual machines [182]. As containers grew more popular, the confusion shifted to virtual machines being called containers [37, 220]. This survey uses the term container for multitenant deployment techniques involving process isolation on a shared kernel (in contrast with virtual machine, as defined in the following). However, in practice, the distinction between containers and virtual machines is more of a spectrum than a binary divide. Techniques common to one can be effectively applied to the other, such as using system call filtering with containers, or using seccomp sandboxing or user namespaces with virtual machines.
+- Container: Container这个词的起源并不是单一的，但早期使用的相关例子有Banga等人1999年的[25]，2001年的Lottiaux和Morin[127]， 2002年的Morin等人[145]，以及2004年的Price和Tucker[164]。早期关于容器的文献令人困惑地将其称为一种虚拟化[45、48、104、142、164、182]，甚至称其为虚拟机[182]。随着容器越来越流行，混淆转移到被称为容器的虚拟机上[37,220]。本调查使用术语容器来表示涉及共享内核(与下面定义的虚拟机相反)上的进程隔离的多租户部署技术。然而，在实践中，容器和虚拟机之间的区别更多的是频谱，而不是二进制划分。其中一种常见的技术可以有效地应用于另一种，例如对容器使用系统调用过滤，或对虚拟机使用seccomp沙箱或用户名称空间。
+- Complexity: There are many dimensions to complexity in computing, but in the context of
+multitenant infrastructures, some uniquely relevant dimensions are keeping each guest, the
+interactions between guests, and the host’s management of the guests as small and simple
+as possible. The implementation technique of isolation supports minimizing complexity by
+restricting access to internal knowledge of the guests and host, and providing well-defined
+interfaces to reduce the complexity of interactions between them.
+- 复杂性:计算的复杂性有很多方面，但是在多租户基础设施的上下文中，一些唯一相关的方面使每个客户机、客户机之间的交互以及主机对客户机的管理尽可能地小和简单。隔离的实现技术通过限制对来宾和主机的内部知识的访问，并提供定义良好的接口来降低它们之间交互的复杂性，从而支持最小化复杂性。
+- Guest: The term guest had some early usage in the 1980s for the operating system image running inside a virtual machine [147] but was not common until the early 2000s [26, 197]. This survey uses guest as a general term for operating system images hosted on multitenant infrastructures but occasionally distinguishes between virtual machine guests and container guests.
+- Guest:在20世纪80年代，Guest一词最初用于虚拟机中运行的操作系统映像[147]，但直到21世纪初才普遍使用[26,197]。本调查使用guest作为多租户基础设施上托管的操作系统映像的通用术语，但偶尔会区分虚拟机客户机和容器客户机。
+- Kernel: A variety of different terms appear in the early literature, including supervisory program [52], supervisor program [20], control program [15, 149, 153], coordinating program [153], nucleus [1, 43], monitor [209], and ultimately kernel around the mid-1970s [123, 161]. This survey uses the modern term kernel.
+- Kernel:早期文献中出现了各种不同的术语，包括监督程序[52]、监督程序[20]、控制程序[15,149,153]、协调程序[153]、nucleus[1,43]、monitor[209]，并最终在20世纪70年代中期出现Kernel[123,161]。本调查使用了现代术语内核。
+- Performance: There are many dimensions to performance in computing, but in the context of multitenant infrastructures, some uniquely relevant dimensions are the performance impact of added layers of abstraction separating the guest application workload from the host, balanced against the performance benefits of sharing resources between guests and reducing wasted resources from unused capacity. At the level of a single machine, this involves running multiple guests on the samemachine at the same time, with potential for intelligent, dynamic scheduling to extract more work from the same resource pool. Across multiple machines, this involves a larger pool of shared resources, more flexibility to balance work, and options for heterogenous hardware with resource-affinity configurations (e.g., a mixture of some CPU-heavy machines and some storage-heavy machines, with workload allocation determined by resource needs). The implementation technique of breaking down machines into smaller guests and their resources into smaller, sharable units, supports performance by allowing finer-grained and distributed control over resource management.
+- 性能:在计算表现是多方面的,但在多租户基础设施的环境中,一些独特的相关维度添加抽象层分离的性能影响客人从主机应用程序工作负载,平衡性能优势客人之间的共享资源,减少资源浪费的未使用的容量。在单个机器的级别上，这涉及到在同一台机器上同时运行多个客户机，从而实现智能的动态调度，从而从同一资源池中提取更多的工作。在多台机器上，这涉及到更大的共享资源池、更灵活地平衡工作以及具有资源亲缘配置的异构硬件的选项(例如，混合使用一些cpu重的机器和一些存储重的机器，工作负载分配由资源需求决定)。通过允许对资源管理进行更细粒度的分布式控制，将机器分解为更小的客户机及其资源分解为更小的、可共享的单元的实现技术支持性能。
+- Portability: There are many dimensions to portability in computing, but in the context of multitenant infrastructures, some uniquely relevant dimensions are developing guests in a standardized way—without any special knowledge of the environment where they will be deployed—and abstracting deployment andmanagement across physicalmachines, limiting dependence on low-level hardware details. For example, a container guest can be deployed anywhere in the cluster, or a virtual machine guest can be deployed on any compute machine in the cloud. The implementation techniques of standardizing interfaces so guests are substitutable and hiding implementation and hardware details behind well-defined interfaces both support portability.
+- 可移植性:有很多维度在计算可移植性,但在多租户基础设施的环境中,一些独特的相关维度开发客人以标准化不任何特殊的环境中,他们将部署和抽象的知识在物理机器上部署和管理,限制依赖底层硬件细节。例如，容器客户机可以部署在集群中的任何位置，或者虚拟机客户机可以部署在云中的任何计算机上。标准化接口以使来宾具有可替代性的实现技术以及将实现和硬件细节隐藏在定义良好的接口之后的实现技术都支持可移植性。
+- Process: The early literature tended to use the terms job [171] or program [20, 52, 153], and process only appeared around the mid-1960s [14, 65]. This survey uses the modern term process. The early use of multiprogramming meaning “multiprocessing” was derived from the early use of program meaning “process.”
+- Process:早期文献倾向于使用job[171]或program[20,52,153]等术语，Process大约是在20世纪60年代中期才出现[14,65]。这个调查使用了现代术语过程。早期使用的多道程序设计的意思是“多处理”，源于早期使用的程序意思是“处理”。
+- Security: There are many dimensions to security in computing, but in the context of multitenant infrastructures, some uniquely relevant dimensions are limiting access between guests, from guests to the host, and from the host to the guests. The implementation technique of isolation supports security, at both the software level and the hardware level, by reducing the likelihood of a breach and limiting the scope of damage when a breach occurs.
+- 安全性:计算中的安全性有很多方面，但是在多租户基础设施的上下文中，一些唯一相关的维度限制来宾之间、来宾到主机之间以及主机到来宾之间的访问。隔离的实现技术在软件级和硬件级都支持安全性，它减少了破坏的可能性，并在发生破坏时限制了破坏的范围。
+- Virtual machine: This survey uses the term virtual machine for multitenant deployment techniques involving the replication/emulation of real hardware architectures in software (in contrast with container, as defined earlier). The code responsible for managing virtual machine guests on a physical host machine is often called a hypervisor or virtual machine monitor, both derived from two early terms for the kernel, supervisor and monitor. In many early implementations of virtual machines, the host kernel managed both guests and ordinary processes.
+- 虚拟机:本调查使用了术语虚拟机用于多租户部署技术，包括在软件中复制/模拟真实的硬件架构(与前面定义的容器相比)。负责管理物理主机上的虚拟机客户机的代码通常称为hypervisor或虚拟机监视器，它们都源自于内核的两个早期术语:supervisor和monitor。在许多虚拟机的早期实现中，主机内核同时管理来宾进程和普通进程。
 
 ## 3 COMMON ORIGINS
 
+The origins of both virtual machines and containers can be traced to a fundamental shift in hardware and software architectures toward the late 1950s. The hardware of the time introduced the concept of multiprogramming, which included both basic multitasking in the form of simple context-switching and basic multiprocessing in the form of dedicated I/O processors and multiple CPUs. Codd [51] attributed the earliest known use of the term multiprogramming to Rochester [171] in 1955, describing the ability of an IBM 705 system to interrupt an I/O process (tape read), run a process (calculation) on the data found, and then return to the I/O process. The concept of multiprogramming evolved over the remainder of the decade through work on the EDSAC [211], UNIVAC LARC [70], STRETCH (IBM 7030) [52, 69], TX-2 [77], and an influential and comprehensive review by Gill [82]. Key trade-offs discussed in the literature on multiprogramming—around security, performance, portability, and complexity—continue to echo through modern literature on virtual machines and containers.
+
+虚拟机和容器的起源可以追溯到上世纪50年代后期硬件和软件体系结构的根本转变。当时的硬件引入了多程序设计的概念，包括以简单上下文切换形式的基本多任务处理和以专用I/O处理器和多个cpu形式的基本多处理。Codd[51]将多程序设计这一术语最早的使用归因于1955年的Rochester[171]，它描述了IBM 705系统中断I/O进程(磁带读取)，对发现的数据运行进程(计算)，然后返回到I/O进程的能力。通过EDSAC[211]、UNIVAC LARC[70]、STRETCH (IBM 7030)[52,69]、TX-2[77]和Gill[82]一篇有影响力的全面综述，多程序设计的概念在接下来的十年中不断发展。关于多编程的文献中讨论的关键权衡——围绕安全性、性能、可移植性和复杂性——在虚拟机和容器方面的现代文献中仍然存在。
+
+### 3.1 Security
+
+Multiprogramming increased the complexity of the system software—due to simultaneous and interleaved processes interacting with other processes and shared hardware resources—and also increased the consequences of misbehaving system software—since any process had the potential to disrupt any other process on the same machine. Codd et al. [52] discussed secure isolation as a requirement for “noninterference” between processes regarding errors, in the core design principles for STRETCH. Codd [51] later expanded on the requirement as a need to prevent processes from making “accidental or fraudulent” changes to another process. Buzen and Gagliardi [43] called out the risk of one process modifying memory allocated to other processes or privileged system operations.
+
+多程序设计增加了系统软件的复杂性——由于同时和交错的进程与其他进程交互并共享硬件资源——也增加了系统软件行为不正常的后果——因为任何进程都有可能破坏同一台机器上的任何其他进程。Codd等人[52]在《STRETCH的核心设计原则》中讨论了安全隔离作为进程之间关于错误的“不干涉”的要求。Codd[51]后来扩展了这一需求，将其作为防止流程对另一个流程进行“意外或欺诈性”更改的需要。Buzen和Gagliardi[43]指出了一个进程修改分配给其他进程的内存或特权系统操作的风险。
+
+In response to the increase in complexity and risk, system software of the time introduced a familiar form of isolation, granting a small privileged kernel of system software unrestricted access to all hardware resources and running processes, as well as responsibility for potentially disruptive operations such as memory and storage allocation, process scheduling, and interrupt handling while restricting access to such features from any software outside the kernel. Codd et al. [52] described the structure and function of the STRETCH kernel in detail, including concurrency, interrupts, memory protection, and time limits (an early form of resource usage control). Amdahl et al. [20] touched on the separation of the kernel in the IBM System/360, including appendices of relevant opcodes and protected storage locations. Opler and Baird [153] weighed trade-offs around having the kernel take responsibility for coordinating the parallel operation of processes and judged the approach to have potential to improve portability of programs not written for parallel operation, as well as potential to minimize complexity for programmers who would no longer be responsible to manually coordinate the parallel operation of each program.
+
+为了应对复杂性和风险的增加,系统软件的时间介绍一种熟悉的隔离,给予一个小特权内核的系统软件不受限制地访问所有硬件资源和运行流程,以及负责潜在破坏性的操作,比如内存和存储分配,进程调度和中断处理而限制访问这些特性从内核之外的任何软件。Codd等人[52]详细描述了扩展内核的结构和功能，包括并发性、中断、内存保护和时间限制(资源使用控制的早期形式)。Amdahl等人[20]谈到了IBM System/360内核的分离，包括相关操作码的附录和受保护的存储位置。奥普莱和Baird[153]权衡取舍的内核负责协调并行操作的流程和评价程序的方法有潜力提高可移植性不写给并行操作,以及潜在的减少复杂性的程序员将不再负责手工协调每个程序的并行操作。
+
+### 3.2 Performance
+
+One of the fundamental goals of adding multiprogramming to hardware and operating systems in the late 1950s was to improve performance through more efficient utilization of available resources by sharing them across parallel processes. Codd et al. [52] described performance as a requirement for “noninterference” between processes regarding “undue delay.” Opler and Baird [153] explored the trade-offs between the performance advantages of increasing utilization through multiprocessing, versus the increased complexity of developing for such systems. Codd [49, 50] published two further papers in 1960 about performance considerations for process scheduling algorithms in multiprogramming. Amdahl et al. [20, p. 89] explored the trade-offs between performance and portability in the architecture design of the IBM System/360. Dennis [64, p. 590] noted the performance advantages of dynamic memory allocation for multiprogramming.
+
+在20世纪50年代后期，将多道程序设计添加到硬件和操作系统的一个基本目标是通过在并行进程之间共享可用资源，从而更有效地利用这些资源来提高性能。Codd等人将性能描述为进程之间关于“不当延迟”的“不干涉”要求。Opler和Baird[153]探索了通过多处理提高利用的性能优势与为这类系统增加开发复杂性之间的权衡。Codd[49,50]在1960年发表了另外两篇关于多道规划中进程调度算法性能考虑的论文。Amdahl等人[20,p. 89]在IBM System/360的架构设计中探索了性能和可移植性之间的权衡。Dennis [64, p. 590]指出了多程序设计的动态内存分配的性能优势。
+
+### 3.3 Portability
+
+In the 1950s, it was common for specialized system software to be developed for each new model of hardware, requiring programs to be rewritten to run on even closely related machines. As the system software and programs grew larger and more complex, the porting effort grew more costly, motivating a desire for programs to be portable across differentmachines. Codd et al. [52] discussed portability as a requirement for “independence of preparation” and “flexible allocation of space and time.” Amdahl et al. [20, p. 97] emphasized portability as one of the primary design goals of the IBM System/360, specifically allowing machine-language programs to run unmodified across six different hardware models, with a variety of different configurations of peripheral devices. Buzen and Gagliardi [43] noted that the introduction of a privileged kernel compounded the problem of portability, since a program might have to be rewritten to run on two different kernels, even when the underlying hardware was compatible or completely identical.
+
+在20世纪50年代，为每一种新的硬件模型开发专门的系统软件是很普遍的，要求程序重写才能在甚至是紧密相关的机器上运行。随着系统软件和程序变得越来越大、越来越复杂，移植工作的成本也越来越高，这就激发了在不同机器之间移植程序的愿望。Codd等人[52]将可移植性作为“独立准备”和“灵活分配空间和时间”的要求进行了讨论。Amdahl等人[20,p. 97]强调可移植性是IBM System/360的主要设计目标之一，特别是允许机器语言程序在六种不同的硬件模型上不加修改地运行，具有各种不同配置的外围设备。Buzen和Gagliardi[43]指出，特权内核的引入加剧了可移植性问题，因为一个程序可能必须重写才能在两个不同的内核上运行，即使底层硬件是兼容的或完全相同的。
+
+### 3.4 Minimizing Complexity
+
+Another early realization after the introduction of multiprogramming was that it was unreasonable to expect the developer of each process to directly manage all of the complexity of interacting with every other process running on the machine, so the privileged kernel approach had the advantage of allowing processes to maintain a more minimal focus on their own internals. Codd et al. [52] described minimizing complexity as a requirement for “minimum information from programmer.” Nearly a decade before Rushby [173] first wrote about the idea of a Trusted Computing Base, Buzen and Gagliardi [43, p. 291] argued for minimizing complexity within the privileged kernel, noting that such separation was effective when the privileged code base was kept small, so it could be maintained in a relatively stable state, with limited changes over time, by a few expert developers.
+
+引入后的另一个早日实现多道程序设计是不合理的期望每个过程的开发人员直接管理所有的复杂性与其他交互过程的计算机上运行,所以有特权的内核方法允许进程保持更多的最小的优势集中在他们自己的内部。Codd等人[52]将复杂性最小化描述为“来自程序员的最小信息”的要求。“近十年之前Rushby[173]首先写一个可信计算基础的想法,Buzen和Gagliardi [43, p . 291]主张减少复杂性在特权内核,指出这种分离是有效的特权代码库时保持小,所以它可以保持在一个相对稳定的状态,有限的变化随着时间的推移,一些专家开发人员。
+
 ## 4 EARLY VIRTUAL MACHINES
 
+The early work on virtual machines grew directly out of the work on multiprogramming, continuing the goal of safely sharing the resources of a physical machine across multiple processes. Initially, the idea was no more than a refinement on memory protection between processes, but it expanded into a much bigger idea: that small isolated bundles of shared resources from the host machine could present the illusion of being a physical machine running a full operating system.
+
+虚拟机的早期工作直接从多编程工作发展而来，继续实现跨多个进程安全共享物理机器资源的目标。最初，这个想法只不过是对进程之间的内存保护进行了改进，但它扩展成了一个更大的想法:来自主机的共享资源的小的、独立的bundle可能会给人一种运行完整操作系统的物理机器的错觉。
+
+### 4.1 M44/44X
+
+In 1964, Nelson [149] published an internal research report at IBM outlining plans for an experimental machine based on the IBM 7044, called the M44. The project built on earlier work in multiprogramming, improving process isolation and scheduling in the privileged kernel with an early form of virtualmemory. They called the memory mapped for a particular process a virtualmachine [149, p. 14]. The 44X part of the name stood for the virtual machines (also based on the IBM 7044) running on top of the M44 host machine.
+
+1964年，Nelson[149]发表了一份IBM内部研究报告，概述了基于IBM 7044的实验机器的计划，该机器被称为M44。该项目建立在多编程早期工作的基础上，使用早期形式的虚拟内存改进了特权内核中的进程隔离和调度。他们将映射到特定进程的内存称为虚拟机[149，第14页]。名称中的44X部分代表运行在M44主机上的虚拟机(也是基于IBM 7044)。
+
+Nelson [149, pp. 4–6] identified the performance advantages of dynamically allocated shared resources (especially memory and CPU) as one of the primary motivators for the M44/44X experiments. Portability was another central consideration, allowing software to run unmodified across single process, multiprocess, and debugging contexts [149, pp. 9–10].
+
+Nelson[149，第4-6页]指出，动态分配共享资源(特别是内存和CPU)的性能优势是M44/44X实验的主要动因之一。可移植性是另一个需要考虑的核心问题，允许软件无需修改就可以跨单进程、多进程和调试上下文运行[149，第9-10页]。
+
+The M44/44X lacked almost all of the features we would associate with virtual machines today, but it played an important, although largely forgotten, part in the history of virtual machines. Denning [63] reflected that the M44/44X was central to significant theoretical and experimental advances in memory research around paging, segmentation, and virtual memory in the 1960s.
+
+M44/44X几乎缺少我们今天与虚拟机相关的所有特性，但它在虚拟机的历史上扮演了一个重要的角色，尽管它在很大程度上被遗忘了。Denning[63]认为，M44/44X是20世纪60年代关于分页、分段和虚拟内存研究中重要的理论和实验进展的核心。
+
+### 4.2 Cambridge Monitor System
+
+The IBM System/360 was explicitly designed for portability of software across different models and different hardware configurations [20]. In themid-1960s, IBM’s Control Program-40 Cambridge Monitor System (CP-40/CMS) project running on a modified IBM System/360 (model 40) took the idea a few steps further—initially calling the work a pseudo machine but later adopting the term virtual machine [61, p. 485]. The CP-40/CMS and later CP-67/CMS1 projects improved on earlier approaches to portability, making it possible for software written for a bare metal machine to run unmodified in a virtual machine, which could simulate the appearance of various different hardware configurations [15, pp. 1–2]. It also improved isolation by introducing privilege separation for interrupts [15, pp. 6–7], paged memory within virtual machine guests [43, 155], and simulated devices [1, 43]. IBM’s work on the CP-40/CMS focused on improving performance through efficient utilization of shared memory [15, pp. 3–5] and explictly did not target efficient utilization of CPU through sharing [15, p. 1].Kogut [112] developed a variant of CP-67/CMS to improve performance through dynamic allocation of storage (physical disk) to virtual machines.
+
+IBM System/360被明确地设计为跨不同型号和不同硬件配置[20]的软件可移植性。在20世纪60年代中期，IBM的控制程序-40剑桥监控系统(CP-40/CMS)项目在一个改进的IBM System/360 (model 40)上进一步采用了这个想法——最初称其为一台伪机器，但后来采用了术语虚拟机[61，第485页]。CP-40/CMS和后来的CP-67/CMS1项目对早期的可移植性方法进行了改进，使得为裸机编写的软件无需修改就可以在虚拟机中运行，从而可以模拟各种不同硬件配置的外观[15，第1-2页]。通过引入中断的特权分离[15，第6-7页]、虚拟机客户[43,155]和模拟设备中的分页内存[1,43]，它还改进了隔离。IBM在CP-40/CMS上的工作重点是通过有效利用共享内存来提高性能[15,pp. 3-5]，而明显没有通过共享来有效利用CPU [15, p. 1]。Kogut[112]开发了一种CP-67/CMS的变种，通过向虚拟机动态分配存储(物理磁盘)来提高性能。
+
+### 4.3 VM/370
+
+IBM’s VM/370 running on the System/370 hardware followed in the early 1970s and included virtual memory hardware [61, p. 485]. Madnick and Donovan [130, p. 214] estimated the overhead of the VM/370 at 10% to 15% but deemed the performance trade-off to be worthwhile from a security perspective. Goldberg [85, pp. 39–40] identified the source of overhead as primarily: maintaining state for virtual processors, trapping and emulating privileged instructions, and memory address translation for virtual machine guests (especially when paging was supported in the guests). In retrospect, Creasy [61] noted that efficient execution was never a primary goal of IBM’s work on the CP-40, CP-67, or VM/370 (p. 487), and the focus was instead on efficient utilization of available resources (p. 484).
+
+1970年代早期，IBM的VM/370在System/370硬件上运行，包括虚拟内存硬件[61，第485页]。Madnick和Donovan [130, p. 214]估计VM/370的开销在10%到15%之间，但认为从安全角度来看，性能的权衡是值得的。Goldberg[85，第39-40页]认为开销的来源主要是:维护虚拟处理器的状态、捕获和模拟特权指令，以及虚拟机客户机的内存地址转换(特别是在客户机中支持分页时)。回顾过去，Creasy[61]指出，高效执行从来都不是IBM在CP-40、CP-67或VM/370上工作的主要目标(第487页)，而重点是有效利用可用资源(第484页)。
+
+### 4.4 Trade-Offs
+
+In their formal requirements for virtual machines in the mid-1970s, Popek and Goldberg [162, p. 413] stated that ideally virtual machines should “show at worst only minor decreases in speed” compared to running on bare metal. In 2017, Bugnion et al. [41] explained Popek and Goldberg’s requirements in modern terms, exploring the performance impact for hardware architectures that do not fully meet the requirements.
+
+在20世纪70年代中期对虚拟机的正式要求中，Popek和Goldberg [162, p. 413]指出，与在裸机上运行相比，理想的虚拟机应该“在最坏的情况下只有轻微的速度下降”。2017年，Bugnion等人[41]用现代术语解释了Popek和Goldberg的需求，探讨了不能完全满足需求的硬件架构对性能的影响。
+
+Buzen and Gagliardi [43, p. 291], Madnick and Donovan [130, p. 212], Goldberg [84, p. 75], and Creasy [61, p. 486] all observed that the portability offered by virtual machines was also an advantage for development purposes, since it allowed development and testing of multiple different versions of the kernel/operating systems—and programs targeting those kernels/operating systems—in multiple different virtual hardware configurations, on the same physical machine at the same time.
+
+Buzen和Gagliardi[43，第291页]，Madnick和Donovan[130，第212页]，Goldberg[84，第75页]，和Creasy[61，第486页]都注意到，虚拟机提供的可移植性对于开发目的也是一个优势，因为它允许在同一物理机器上，在不同的虚拟硬件配置中，同时开发和测试多个不同版本的内核/操作系统——以及针对这些内核/操作系统的程序。
+
+Buzen and Gagliardi [43] considered one of the key advantages of the virtual machine approach to be that “virtual machine monitors typically do not require a large amount of code or a high degree of logical complexity.” Popek and Kline [161, p. 294] discussed the advantage of virtual machines being smaller and less complex than a kernel and complete operating system, improving their potential to be secure. Goldberg [85, p. 39] suggested minimizing complexity as a way to improve performance: selectively disabling more expensive features (e.g., memory paging in guests) for virtualmachines thatwould not use the features. Creasy [61, p. 488] discussed the advantages of minimizing interdependencies between virtual machines, giving preference to standard interfaces on the host machine.
+
+Buzen和Gagliardi[43]认为虚拟机方法的关键优势之一是“虚拟机监视器通常不需要大量代码或高度的逻辑复杂性。Popek和Kline[161，第294页]讨论了虚拟机比内核和完整的操作系统更小、更简单的优势，提高了它们的安全潜力。Goldberg[85，第39页]建议将复杂性最小化作为提高性能的一种方法:选择性地禁用不使用这些特性的虚拟机的更昂贵的特性(例如，在客户机中进行内存分页)。Creasy[61，第488页]讨论了最小化虚拟机之间的相互依赖的好处，并优先考虑主机上的标准接口。
+
+A frequently cited group of papers in the early 1970s, by Lauer and Snow [118], Lauer and Wyeth [119], and Srodawa and Bates [185], suggested that virtual machines offered a sufficient level of isolation that it was no longer necessary to maintain a privilege-separated kernel in the host operating system. However, by that point in time, the concept of a privileged kernel was well enough established that the idea of eliminating it was unlikely to be widely accepted. Buzen and Gagliardi [43, p. 297] observed that the proposal depended heavily on the ability of the virtual machine implementation to handle all virtualmemorymapping directly, but since the papers failed to take memory segmentation into account, the approach could not be implemented as initially proposed.
+
+一群频繁引用的论文在1970年代早期,劳尔和雪[118],劳尔和惠氏[119],Srodawa和贝茨[185],认为虚拟机提供了足够的隔离级别,它不再需要维护一个privilege-separated主机操作系统的内核。然而，到那时，特权内核的概念已经足够明确，消除特权内核的想法不太可能被广泛接受。Buzen和Gagliardi [43, p. 297]观察到，该方案严重依赖于虚拟机实现直接处理所有虚拟内存映射的能力，但由于论文没有将内存分割考虑在内，该方法无法像最初提出的那样实现。
+
+### 4.5 Decline
+
+As companies like DEC, Honeywell, HP, Intel, and Xerox introduced smaller hardware to the market in the 1970s, they did not include hardware support for features such as virtual memory and the ability to trap all sensitive instructions, which made it challenging to implement strong isolation using virtual machine techniques on such hardware [66, 78]. Creasy [61, p. 484] observed in the early 1980s that the advent of the personal computer decreased interest in the early forms of virtual machines—which were largely developed for the purpose of isolating users in time-sharing systems on mainframes—but he recognized potential for virtual machines to serve “the future’s network of personal computers.”
+
+随着像DEC、霍尼韦尔、惠普、英特尔和施乐这样的公司在20世纪70年代将小型硬件引入市场，他们没有包括对诸如虚拟内存和捕获所有敏感指令的能力等功能的硬件支持，这使得在此类硬件上使用虚拟机技术实现强隔离具有挑战性[66,78]。Creasy [61, p. 484]在20世纪80年代早期观察到，个人计算机的出现降低了对早期形式的虚拟机的兴趣——虚拟机主要是为了在大型机上的分时系统中隔离用户而开发的——但他认识到虚拟机服务于“未来的个人计算机网络”的潜力。
+
 ## 5 EARLY CAPABILITIES
+
+The origin of containers is often attributed [31, 54, 114, 121, 166] to the addition of the chroot system call in the seventh edition of UNIX released by Bell Labs in 1979 [108]. The simple form of filesystem namespace isolation that chroot provides was certainly one influence on the development of containers, although it lacked any concept of isolation for process namespaces [105, 165]. However, containers are not a single technology; they are a collection of technologies combined to provide secure isolation, including namespaces, cgroups, seccomp, and capabilities. Combe et al. [54], Jian and Chen [102], Kovács [114], Priedhorsky and Randles [165], and Raho et al. [166] describe how these different technologies combine to provide secure isolation for containers. It is more accurate to attribute the origin of containers to the earliest of these technologies—capabilities—that began decades before chroot and several years before the first work on virtual machines. Like containers, capabilities took the approach of building secure isolation into the hardware and the operating system, without virtualization.
+
+容器的起源通常被归为[31,54,114,121,166]与1979年贝尔实验室发布的第七版UNIX中增加的chroot系统调用有关[108]。chroot提供的简单形式的文件系统名称空间隔离肯定是容器开发的一个影响因素，尽管它缺乏进程名称空间隔离的任何概念[105,165]。然而，容器不是单一的技术;它们是用于提供安全隔离的技术的集合，包括名称空间、cgroups、seccomp和功能。Combe等人[54]，Jian和Chen [102]， Kovacs [114]， Priedhorsky和Randles [165]， Raho等人[166]描述了这些不同的技术如何结合起来提供容器的安全隔离。更准确的说法是，容器起源于这些技术的早期——能力——在chroot出现之前几十年，在虚拟机出现之前几年。与容器一样，功能采用在硬件和操作系统中构建安全隔离的方法，而不使用虚拟化。
+
+### 5.1 Descriptors
+
+In the early 1960s, inspired by the need to isolate processes, the Burroughs B5000 hardware architecture introduced an improvement to memory protection called descriptors, which flagged whether a particular memory segment held code or data, and protected the system by ensuring it could only execute code (and not data), and could only access data appropriately (a single element scalar, or bounds-checked array) [120, 136]. A process on the B5000 could only access its own code and data segments through a private Program Reference Table, which held the descriptors for the process [120, p. 23]. A descriptor also flagged whether a segment was actively in main memory or needed to be loaded from drum [120, p. 24].
+
+在1960年代早期,受隔离过程的需要,Burroughs B5000硬件架构推出了一个名为“描述符改进内存保护,标记是否一个特定的内存段代码或数据,和保护系统,确保它只能执行代码(而不是数据),并适当地只能访问数据(单个元素标量或bounds-checked数组)(120、136)。B5000上的进程只能通过私有程序引用表访问自己的代码和数据段，这个私有程序引用表包含进程的描述符[120，第23页]。描述符还标记了一个段是否活跃在主存中，或者是否需要从drum中加载[120，第24页]。
+
+### 5.2 Dennis and Van Horn
+
+In the mid-1960s, Dennis and Van Horn [65] introduced the term capability in theoretical work directly inspired by both the Burroughs B5000 andMIT’s Compatible Time-Sharing System (CTSS) [65, p. 154]. Like the B5000 descriptors, capabilities defined the set of memory segments a process was permitted to read, write, or execute [120, p. 42]. These early capabilities introduced several important refinements: a process executed within a protected domain with an associated capability list; multiple processes could share the same capability list; and a process could FORK a parallel process with the same capabilities (but no greater), or create a subprocess with a subset of its own capabilities (but no greater) [120, pp. 42–44]. These theoretical capabilities also had a concept of ownership (by a process or a user) [120, p. 42] and of persistent data “directories” (but not files) that survived beyond the execution of a process and could be private to a user or accessible to any user [120, pp. 44–45].
+
+在20世纪60年代中期，Dennis和Van Horn[65]直接受到Burroughs B5000和mit兼容分时系统(CTSS)的启发，在理论工作中引入了capability一词[65,p. 154]。像B5000描述符一样，能力定义了进程被允许读、写或执行的内存段集[120，第42页]。这些早期的功能引入了几个重要的改进:在受保护的域内执行的流程具有相关的功能列表;多个进程可以共享相同的能力列表;一个流程可以派生出具有相同功能(但不能更大)的并行流程，或者创建具有自己功能子集(但不能更大)的子流程[120，第42-44页]。这些理论上的功能也有所有权的概念(由进程或用户)[120，第42页]和持久性数据“目录”(而不是文件)，这些目录在进程执行之后幸存下来，可以是一个用户私有的，也可以是任何用户可访问的[120，第44-45页]。
+
+Soon after Dennis and Van Horn published their theoretical capabilities, Ackerman and Plummer [14] implemented some aspects of capabilities relating to resource control on a modified PDP-1 at MIT and added a file capability in addition to the directory capability—a precursor to filesystem namespaces.
+
+在Dennis和Van Horn发表了他们的理论能力之后不久，Ackerman和Plummer[14]在MIT的一个经过修改的PDP-1上实现了一些与资源控制相关的能力，并在目录能力之外增加了一个文件能力——文件系统名称空间的前身。
+
+### 5.3 Chicago Magic Number Machine
+
+In 1967, the University of Chicago launched the first attempt at designing and building a generalpurpose hardware and software capability system, which they later called the Chicago Magic Number Machine3 [73, 74]. The Chicago machine pushed the concept of separation between capabilities and data further, to protect against users altering the capabilities that limited their access to memory on the system [120, pp. 49–50]. The machine had a set of physical registers for capabilities, which were distinct from the usual set of registers for data. It also flagged whether each memory segment stored capabilities or data, and prevented processes from performing data operations like reading or writing on capability segments or capability registers. Inter-process communication also sent both a capability segment and a data segment [120, p. 51].
+
+1967年，芝加哥大学首次尝试设计和建造一个通用的硬件和软件能力系统，他们后来称之为芝加哥魔术数字机[73,74]。Chicago机器进一步推动了功能和数据分离的概念，以防止用户更改限制他们访问系统内存的功能[120，第49-50页]。这台机器有一组用于能力的物理寄存器，不同于通常用于数据的寄存器集。它还标记了每个内存段是否存储了功能或数据，并阻止进程执行数据操作，如在功能段或功能寄存器上进行读写。进程间通信也发送能力段和数据段[120，第51页]。
+
+The University of Chicago project ran out of funding and was never completed, but it inspired subsequent work on CAL-TSS [120, p. 49].
+
+芝加哥大学的这个项目资金不足，没有完成，但它启发了随后的CAL-TSS工作[120，第49页]。
+
+### 5.4 CAL-TSS
+
+In 1968, the University of California at Berkeley launched the CAL-TSS project [120, pp. 52–57], which aimed to produce a general-purpose capability-based operating system, to run on a Control Data Corporation 6400 model (RISC architecture) mainframe machine, without any special customization to the hardware. Like previous implementations, CAL-TSS confined a process to a domain, restricting access to hardware registers, memory, executable code, system calls to the kernel, and inter-process communication. The project introduced a concept of unique and nonreusable identifiers for objects, to protect against reuse of dangling pointers to access and modify memory that has been reallocated after being freed.
+
+1968年，加州大学伯克利分校(University of California at Berkeley)启动了CAL-TSS项目[120,pp. 52-57]，目的是生产一种通用的基于能力的操作系统，在Control Data Corporation 6400模型(RISC architecture)主机上运行，而不需要对硬件进行任何特殊定制。与以前的实现一样，CAL-TSS将进程限制在一个域内，限制对硬件寄存器、内存、可执行代码、对内核的系统调用和进程间通信的访问。该项目引入了对象的唯一和不可重用标识符的概念，以防止重用悬空指针来访问和修改释放后重新分配的内存。
+
+The CAL-TSS project encountered difficulties implementing the operating system as designed and was terminated in 1971. Levy [120, p. 57] identified the memory management features of the CDC 6400 as a particularly troublesome obstacle to the implementation. In postmortem analysis, Sturgis [186] and Lampson and Sturgis [116] reflected that CAL-TSS ended up being large, overly complex, and slow, and attributed this primarily to a poor match between the hardware they selected and the design of mapped address spaces, and also to their design choice of distributing privileged code for manipulating global system data across individual processes rather than consolidating it in a privileged kernel.
+
+CAL-TSS项目在实现设计的操作系统时遇到了困难，并于1971年终止。Levy[120，第57页]认为CDC 6400的内存管理特性是实现的一个特别麻烦的障碍。在后期的分析中,Sturgis[186]和兰普森Sturgis[116]反映CAL-TSS最终被大,过于复杂,而缓慢的,,这主要归因于一个糟糕的比赛之间的硬件选择和映射地址空间的设计,以及他们的设计选择的特权代码操纵全局系统数据分发个人过程而不是巩固特权内核。
+
+### 5.5 Plessey System 250
+
+In the early 1970s, the Plessey System 250 [72] was a commercially successful real-time multiprocessing telephone-switch controller. It implemented capabilities for memory protection and process isolation [120, p. 65], and expanded capabilities into the I/O system [120, p. 77].
+
+在20世纪70年代早期，Plessey System 250[72]是一种商业上成功的实时多处理电话开关控制器。它实现了内存保护和进程隔离的功能[120，第65页]，并将功能扩展到I/O系统[120，第77页]。
+
+### 5.6 Provably Secure Operating System
+
+Also in the early 1970s, the Stanford Research Institute began a project to explore the potential of formal proofs applied to a capability-based operating system design, which they called the Provably Secure Operating System (PSOS) [150]. The design was completed in 1980 but never fully formally proven and never implemented [151].
+
+同样在20世纪70年代早期，斯坦福研究所开始了一个项目，探索将形式证明应用于基于能力的操作系统设计的潜力，他们称之为可证明安全操作系统(PSOS)[150]。该设计在1980年完成，但从未完全正式证明和实施[151]。
+
+### 5.7 CAP
+
+In the late 1970s, the University of Cambridge’s CAP machine [148, 210] successfully implemented capabilities as general-purpose hardware combined with a complementary operating system. The CAP introduced a refinement replacing the privileged kernel with an ordinary process, so the special control the “root” process had over the entire system was really just the normal ability of any process to create subprocesses and grant a subset of its own capabilities to those subprocesses [120, pp. 80–81].
+
+在20世纪70年代末，剑桥大学的CAP机器[148,210]成功地实现了通用硬件与互补操作系统结合的功能。帽介绍细化取代特权内核与一个普通的过程,因此,特殊控制“根”的过程在整个系统只是正常的任何进程创建子流程和能力给予这些子流程自身功能的一个子集(120年,第81 - 80页)。
+
+### 5.8 Object Systems
+
+Several software offshoots of the early capability systems generalized the idea by treating processes and shared resources as typed objects with associated capabilities, including Carnegie-Mellon’s Hydra [217, 218], StarOS [103], and Gnosis later renamed as KeyKOS [92].
+
+早期能力系统的几个软件分支通过将进程和共享资源作为具有相关能力的类型对象来推广这一思想，包括Carnegie-Mellon的Hydra[217,218]、StarOS[103]和Gnosis后来被重新命名为KeyKOS[92]。
+
+### 5.9 IBM System/38
+
+In 1978, IBM announced plans for a capability-based hardware architecture, the System/38, which they shipped in 1980 [120, p. 137]. Berstis [32] characterized the primary goal of the System/38 as improving memory protection without sacrificing performance. Houdek et al. [96] described the implementation of capabilities as protected pointers in detail. The System/38 introduced a concept of user profiles associated with protected process domains [32, pp. 249–250], which were vaguely reminiscent of modern user namespaces, although implemented differently. User profiles allowed for revocation of capabilities but at the cost of significantly increased complexity in the implementation [120, pp. 155–156].
+
+1978年，IBM宣布了基于能力的硬件架构System/38的计划，该架构于1980年发布[120，第137页]。Berstis[32]认为System/38的主要目标是在不牺牲性能的情况下提高内存保护。Houdek等人[96]详细描述了作为受保护指针的功能的实现。System/38引入了与受保护进程域相关联的用户配置文件的概念[32,pp. 249-250]，这让人隐约想起现代的用户名称空间，尽管实现方式有所不同。用户配置文件允许撤销功能，但其代价是在实现过程中显著增加了复杂性[120，第155-156页]。
+
+The System/38 was succeeded by the AS/400 in the late 1980s, which removed capability-based addressing [183, p. 119]. The AS/400 later adopted the concept of logical partitioning from the IBM System/370 [176, pp. 1–2], to divide the physical resources of the host machine between multiple guests at the hardware level4 [183, pp. 240, 328].
+
+System/38在1980年代后期被AS/400继任，它删除了基于能力的寻址[183，第119页]。AS/400后来采用了IBM System/370的逻辑分区概念[176,pp. 1-2]，在硬件级别4上在多个客户机之间划分主机的物理资源[183,pp. 240,328]。
+
+### 5.10 Intel iAPX 432
+
+In 1975, Intel began designing the iAPX 432 [2] capability-based hardware architecture, which they originally intended to be their next-generation, market-leading CPU, replacing the 8080 [137, p. 79]. The project finally shipped in 1981, but it was significantly delayed and significantly over budget [137, p. 79].
+
+在1975年，英特尔开始设计iAPX 432[2]基于能力的硬件架构，他们最初打算成为下一代，市场领先的CPU，取代8080 [137,p. 79]。该项目最终在1981年发货，但它被严重推迟，并大大超出预算[137，第79页]。
+
+Mazor [137, p. 75] recorded that performance was not considered as a goal in the design of the iAPX 432. Hansen et al. [91] measured the performance of the iAPX 432 against the Intel 8086, Motorola 68000, and the VAX-11/780 in 1982, with results as poor as 95 times slower on some benchmarks. Norton [152, p. 27] assessed the poor performance and unoptimized compiler offered by the iAPX 432 as the leading cause of its commercial failure. Levy [120, p. 186] blamed the commercial failure on both poor performance and overhyped marketing.
+
+Mazor [137, p. 75]记录了性能在iAPX 432设计中没有被考虑为目标。汉森等人[91]在1982年将iAPX 432与英特尔8086、摩托罗拉68000和VAX-11/780的性能进行了对比，结果在某些基准上甚至慢了95倍。Norton[152，第27页]认为iAPX 432提供的性能差和未优化的编译器是导致其商业失败的主要原因。列维[120，第186页]将商业失败归咎于糟糕的业绩和过度炒作的营销。
+
+In a move that Mazor [137] described as “a crash program . . . to save Intel’s market share” (p. 75), Intel launched a parallel project to develop the 8086 architecture (the first in a long line of x86 CPUs), which became Intel’s leading product line by default rather than by design (p. 79).
+
+在一个行动中，Mazor[137]描述为“一个崩溃计划…为了保住英特尔的市场份额”(第75页)，英特尔启动了一个并行项目来开发8086架构(一长串x86 cpu中的第一个)，它默认而不是通过设计成为英特尔的领先产品线(第79页)。
+
+### 5.11 Trade-Offs
+
+The early capability systems in the 1960s and 1970s sacrificed performance for the sake of security, although Levy speculated in the mid-1980s that this was partly due to “hardware poorly matched to the task” [120, p. 205]. Wilkes [209, pp. 49–59] contrasted the memory protection features of capabilities with other systems of the time, including detailed descriptions of hardware implementations.
+
+早期的能力系统在20世纪60年代和70年代为了安全牺牲了性能，尽管Levy在80年代中期推测这部分是由于“硬件不匹配的任务”[120,205页]。Wilkes [209, pp 49-59]对比了当时其他系统的内存保护功能，包括硬件实现的详细描述。
+
+Levy [120, p. 205] also observed that the early capability systems significantly increased complexity for the sake of security. Patterson and Séquin [157] and Patterson and Ditzel [156] judged this sacrifice as a major reason the capability machines were surpassed by simpler architectures, such as RISC.
+
+Levy[120，第205页]也观察到早期的能力系统为了安全显著地增加了复杂性。Patterson和Sequin[157]和Patterson和Ditzel[156]认为这种牺牲是性能机器被更简单的架构(如RISC)超越的主要原因。
+
+Kirk McKusick recalled that the primary reason Bill Joy ported chroot from UNIX into BSD in 1982 was for portability, so he could build different versions of the system in an isolated build directory [105, p. 11].
+
+Kirk McKusick回忆说，Bill Joy在1982年将chroot从UNIX移植到BSD的主要原因是为了可移植性，这样他就可以在一个独立的构建目录中构建系统的不同版本[105，第11页]。
+
+### 5.12 Decline
+
+As with virtual machines, interest in the early capability systems sharply declined in the 1980s, influenced by several independent factors. Several early attempts to implement capabilities were terminated uncompleted—notably the ChicagoMagic NumberMachine, CAL-TSS, and the PSOS— contributing to a reputation that capability systemswere difficult to implement and perhaps overly ambitious, despite the successful implementations that followed. The commercial failure of Intel’s iAPX 432 raised further doubts on the feasibility of capability-based architectures. In 2003, Neumann and Feiertag [151, p. 6] looked back on the early capability systems, expressing disappointment that “the demand for meaningfully secure systems has remained surprisingly small until recently.”
+
+与虚拟机一样，受几个独立因素的影响，对早期功能系统的兴趣在20世纪80年代急剧下降。一些早期实现能力的尝试没有完成就被终止了——最著名的是芝加哥数字机、CAL-TSS和PSOS——这使得能力系统难以实现，而且可能过于雄心勃勃的名声，尽管后来实现成功了。英特尔iAPX 432的商业失败引发了对基于能力架构的可行性的进一步怀疑。在2003年，Neumann和Feiertag [151, p. 6]回顾了早期的能力系统，表达了对“直到最近对有意义的安全系统的需求仍然惊人的小”的失望。
+
+Perhaps the most significant factor in the decline of capabilities was the rise of the generalpurpose operating system, which was a third important technology that evolved from multiprogramming. MIT’s CTSS [55, 209] laid the foundation for Multics [56], which later inspired UNIX [168] and its robust mutation, the Berkeley Software Distribution (BSD)6 [138, 139]. Saltzer and Schroeder [174, p. 1294] contrasted capabilities with the access control list models adopted by Multics and its descendants, calling out revocation of access as one major area where capabilities fell short.
+
+也许在能力衰退中最重要的因素是通用操作系统的崛起，它是由多道程序设计演变而来的第三项重要技术。麻省理工学院的CTSS[55, 209]奠定了Multics[56]的基础，后者后来激发了UNIX[168]及其强大的变异，伯克利软件发行版(BSD)[138, 139]。Saltzer和Schroeder [174, p. 1294]将性能与Multics及其后代采用的访问控制列表模型进行了对比，指出撤销访问是性能不足的一个主要领域。
+
+Although none of the early capability systems remain in use today, they have not been entirely forgotten. In 2003, Miller et al. [143] reviewed capability systems from a historical perspective, addressing common misconceptions about capabilities related to revocation, confinement, and equivalence to access control lists. Section 7 traces the evolution of a feature called capabilities in the modern Linux Kernel. FreeBSD took a different approach for the feature it calls capabilities and integrated the Capsicum framework [140, p. 30], which was more directly derived from the classic capability systems [21, 199]. In 2012, the CHERI project [200, 202, 203, 215] expanded on the ideas of the Capsicum framework, pushing its capability model down into an RISC-based hardware architecture. Since 2016, Google has been exploring a revival of capability systems with the Fuchsia operating system and Zircon microkernel [87]. In a 2018 plenary session about Spectre/ Meltdown, Hennessy [94] pointed to future potential for capabilities, reflecting that the early capability systems “probably weren’t the right match for what software designers thought they needed and they were too inefficient at the time” but suggested “those are all things we know how to fix now . . . so it’s time, I think, to begin re-examining some of those more sophisticated [protection] mechanisms and see if they’ll work.”
+
+虽然没有一个早期的能力系统仍然在今天使用，他们没有完全被遗忘。在2003年，Miller等人[143]从历史的角度回顾了功能系统，解决了关于功能的撤销、限制和访问控制列表的等价性的常见误解。第7节追溯了现代Linux内核中称为功能的特性的演变。FreeBSD为其称为功能的特性采取了不同的方法，并集成了辣椒框架[140，第30页]，它更直接地源自经典的功能系统[21,199]。2012年，CHERI项目[200,202,203,215]扩展了辣椒框架的思想，将其能力模型下推到基于risc的硬件架构中。自2016年以来，谷歌一直在探索复兴Fuchsia操作系统和锆石微核的能力系统[87]。在2018年的一次全体会议关于幽灵/崩溃,轩尼诗[94]指出未来潜在的能力,反映了早期功能系统,“可能没有合适的匹配软件设计师认为他们需要什么和他们太低效”但建议”这些都是我们现在知道如何修理。所以我认为，现在是重新检查那些更复杂的保护机制，看看它们是否有效的时候了。”
 
 ## 6 MODERN VIRTUAL MACHINES
 
@@ -60,6 +284,8 @@ A year later, the team behind Disco founded VMware to continue their work, and r
 ### 6.3 Denali
 
 The Denali project at the University of Washington in 2002 [207] introduced the term paravirtualization, 8 another work-around for the lack of hardware virtualization support in x86, which involved altering the instruction set in the virtualized hardware architecture and then porting the guest operating system to run on the altered instruction set [206].
+
+- [207] Andrew Whitaker, Marianne Shaw, and Steven D. Gribble. 2002. Denali: A scalable isolation kernel. In Proceedings of the 10th ACM SIGOPS European Workshop. ACM, New York, NY, 10–15.
 
 华盛顿大学的 Denali 项目 2002年 [207] 引入了半虚拟化这一术语，另一种解决 x86 中缺乏硬件虚拟化支持的方法,其中包括改变虚拟硬件架构中的指令集，然后移植客户操作系统以在改变后的指令集上运行 [206]。
 
@@ -235,6 +461,36 @@ Container implementations have a potential advantage over virtual machine implem
 
 ## 8 SECURITY OUTLOOK
 
+A series of vulnerabilities related to speculative execution and side-channel attacks rose to attention early in 2018. These vulnerabilities collectively upend traditional notions of secure isolation. The current reactionary approach—patching up each vulnerability as it is revealed—works in the short term but is a losing battle in the long term.
+
+2018年初，一系列与投机执行和侧通道攻击相关的漏洞受到关注。这些漏洞颠覆了安全隔离的传统观念。当前的反动做法——修补每一个暴露出来的弱点——短期内有效，但长期来看是一场必败之仗。
+
+Early in 2018, Kocher et al. [111] and Lipp et al. [124] published a set of vulnerabilities, respectively called Spectre and Meltdown, using techniques involving speculative execution and out-oforder execution. Spectre affects Intel, AMD, and ARM [111, p. 3], can be launched from any user process (including JavaScript code run in a browser) [111, p. 3], and grants access to any memory an attacked process could normally access [111, p. 5]. Meltdown affects Intel x86 architecture, can be launched from any user process, and grants full access to any physical memory on the same machine including kernel memory and memory allocated to any other process [124, p. 1]. In July 2018, Schwarz et al. [177] published a remote variant of Spectre, nicknamed NetSpectre, which is launched through packets over the network and grants access to any physical memory accessible to the attacked process. In August 2018, Van Bulck et al. [193] published a variant of Meltdown, nicknamed Foreshadow or more broadly “L1 Terminal Fault” (L1TF), which is launched from unprivileged user space, and grants access to the L1 data cache, including encrypted data from Intel’s Software Guard eXtensions (SGX). In November 2018, Canella et al. [44] reviewed the broad range of speculative execution vulnerabilities and proposed a comprehensive classification of the known variants and mitigations, which also revealed several previously unknown variants.
+
+- [111] Paul Kocher, Daniel Genkin, Daniel Gruss, Werner Haas, Mike Hamburg, Moritz Lipp, Stefan Mangard, Thomas Prescher, Michael Schwarz, and Yuval Yarom. 2018. Spectre attacks: Exploiting speculative execution. arXiv:1801.01203.
+- [124] Moritz Lipp, Michael Schwarz, Daniel Gruss, Thomas Prescher, Werner Haas, Stefan Mangard, Paul Kocher, Daniel Genkin, Yuval Yarom, and Mike Hamburg. 2018. Meltdown. arXiv:1801.01207.
+- [177] Michael Schwarz, Martin Schwarzl, Moritz Lipp, and Daniel Gruss. 2018. NetSpectre: Read arbitrary memory over network. arXiv:1807.10535.
+- [193] Jo Van Bulck, Marina Minkin, Ofir Weisse, Daniel Genkin, Baris Kasikci, Frank Piessens, Mark Silberstein, Thomas F. Wenisch, Yuval Yarom, and Raoul Strackx. 2018. Foreshadow: Extracting the keys to the Intel SGX kingdom with transient out-of-order execution. In Proceedings of the 27th USENIX Security Symposium (USENIX Security’18). 991–1008.
+- [44] Claudio Canella, Jo Van Bulck, Michael Schwarz, Moritz Lipp, Benjamin von Berg, Philipp Ortner, Frank Piessens, Dmitry Evtyushkin, and Daniel Gruss. 2018. A systematic evaluation of transient execution attacks and defenses. arXiv:1811.05441.
+
+2018年初，Kocher等人[111]和Lipp等人[124]发表了一组漏洞，分别称为Spectre和Meltdown，使用的技术包括投机执行和非投机执行。Spectre影响Intel、AMD和ARM[111，第3页]，可以从任何用户进程(包括在浏览器中运行的JavaScript代码)[111，第3页]启动，并授予被攻击进程可以正常访问的任何内存[111，第5页]。Meltdown影响Intel x86架构，可以从任何用户进程启动，并授予对同一机器上任何物理内存的完全访问权，包括内核内存和分配给任何其他进程的内存[124,p. 1]。2018年7月，Schwarz等人[177]发布了Spectre的一个远程变体，昵称为NetSpectre，它通过网络上的数据包发射，授予对被攻击进程可访问的任何物理内存的访问权。2018年8月，Van Bulck等人[193]发表了Meltdown的一种变体，昵称为预测或更广泛地称为“L1终端故障”(L1TF)，它从非特权用户空间启动，授予对L1数据缓存的访问权，包括来自英特尔软件保护扩展器(SGX)的加密数据。2018年11月，Canella等人[44]回顾了投机性执行漏洞的广泛范围，并对已知的变种和缓解措施进行了全面分类，同时也揭示了几个之前未知的变种。
+
+The models of secure isolation employed by virtual machines and containers offer little protection from the speculative execution vulnerabilities. Containers are vulnerable to Meltdown, although virtual machines are not because they run a different kernel than the host [124, p. 12]. Both virtual machines and containers are vulnerable to Spectre [10, pp. 3, 5, 6], NetSpectre [177, p. 11], and L1TF [205], with varying degrees of compromise. Variants of L1TF23 are especially troublesome for virtual machines, because they allow an unprivileged process in the user space of a guest to access any memory on the physical machine, including memory allocated to other guests, the host operating system, and host kernel [13]. Multitenant infrastructures generally allow any tenant to deploy a virtual machine or container on any physical machine in the cloud or cluster, which means that it is viable to exploit these vulnerabilities by simply creating an account with a public provider and deploying malicious guests repeatedly, until one of them lands on a physical host with interesting secrets to steal.
+
+虚拟机和容器使用的安全隔离模型对投机性执行漏洞提供的保护很少。容器很容易崩溃，尽管虚拟机不会，因为它们运行的内核与主机不同[124，第12页]。虚拟机和容器都容易受到Spectre[10，第3，第5，第6]，NetSpectre[177，第11页]和L1TF[205]的攻击，它们都有不同程度的折衷。L1TF23的变体对于虚拟机尤其麻烦，因为它们允许客户机用户空间中的非特权进程访问物理机器上的任何内存，包括分配给其他客户机、主机操作系统和主机内核[13]的内存。多租户基础设施通常允许任何租户任何物理机器上部署一个虚拟机或容器在云中或集群,这意味着它是可行的,利用这些漏洞,只需创建一个帐户与公共提供者和部署恶意客人反复,直到其中一个落在一个物理主机与有趣的秘密窃取。
+
+The techniques behind the speculative execution vulnerabilitieswere not new, but the combined application of the techniques was more sophisticated, and the security impact more severe, than previously considered possible. Although these vulnerabilities were only recently discovered and published by defensive security researchers,24 it is possible that offensive security researchers25 discovered and exploited them much earlier, and continue to exploit additional unpublished variants. Although mitigation patches have typically been applied quickly for the known variants of these vulnerabilities [9, 10], it is not feasible to entirely disable speculative execution [111, p. 11] and out-of-order execution [124, p. 14], which are the primary vectors of the attacks, because the performance penalty is prohibitive, and in some cases the hardware simply has no mechanism to disable the features. The probability of further variants being discovered in the coming years is high. A substantial rethink of the fundamental hardware architecture could potentially eliminate the entire class of vulnerabilities, but in the research, development, and production timelines common to hardware vendors, such a significant change could take decades.
+
+投机性执行漏洞背后的技术并不是新的，但是这些技术的组合应用比以前认为的可能更复杂，安全影响也更严重。尽管防御安全研究人员最近才发现并发布了这些漏洞，但攻击安全研究人员很可能在更早的时候就发现并利用了它们，并继续利用其他未发布的变种。虽然缓解补丁通常很快申请这些漏洞的已知的变异(9、10)是不可行的完全禁用投机执行(111,11页)和无序执行(124,14页),主向量的攻击,因为性能损失是禁止的,在某些情况下,硬件只是没有机制来禁用功能。未来几年发现更多变异的可能性很高。对基础硬件架构进行实质性的重新思考，可能会消除这类漏洞，但在硬件供应商共同的研究、开发和生产时间表中，这样一个重大的改变可能需要几十年的时间。
+
+Two notable alternative hardware architectures, CHERI and RISC-V, were already under development before the flood of speculative execution vulnerabilities were published. CHERI [215] combines concepts from classic capability systems and RISC architectures, with a strong emphasis on memory protection. RISC-V [24] is a RISC-based hardware architecture, aimed at providing an extensible open source instruction set architecture (ISA) used as an industry standard by a broad array of hardware vendors. Neither CHERI nor RISC-V were designed with speculative execution vulnerabilities in mind, but Watson et al. [204] observed that CHERI mitigates some aspects of Spectre and Meltdown but is vulnerable to speculative memory access, whereas Asanović and O’Connor [23] announced that RISC-V is not vulnerable because it does not perform speculative memory access. In August 2018, Google announced that the open source implementation of its Titan project, providing a hardware root of trust, will likely be based on RISC-V [169]. MIT’s Sanctum processor [59] was also based on RISC-V and demonstrated potential for secure hardware partitioning by adding a small secure CPU to the side of the main CPU. Hardware partitioning might provide a way to mitigate the speculative execution vulnerabilities in multitenant environments while avoiding major changes to the kernel and operating system. However, genuinely delivering the level of physical isolation that x86 promised would likely require logical partitioning of the main CPU, RAM, and cache of the machine, so the guests and the host operating system could share resources at the hardware level but be far more restricted at the software level than is currently possible.
+
+两个值得注意的替代硬件架构，CHERI和RISC-V，在投机的执行漏洞泛滥之前就已经在开发中了。CHERI[215]结合了来自经典能力系统和RISC架构的概念，并着重于内存保护。[24]是一种基于risc的硬件架构，旨在提供一种可扩展的开放源码指令集架构(ISA)，被广泛的硬件供应商用作行业标准。谢利和RISC-V设计与投机执行漏洞,但沃森et al。[204]发现谢利,缓解了幽灵的某些方面和崩溃,但容易受到投机性内存访问,而Asanović和奥康纳[23]宣布RISC-V不是脆弱的,因为它不执行投机内存访问。2018年8月，谷歌宣布其Titan项目的开源实现可能基于RISC-V[169]，该项目提供了信任的硬件根目录。MIT的Sanctum处理器[59]也是基于RISC-V，通过在主处理器的侧面添加一个小型安全CPU，显示了安全硬件分区的潜力。硬件分区可以减少多租户环境中的投机性执行漏洞，同时避免对内核和操作系统进行重大更改。然而，真正实现x86所承诺的物理隔离级别可能需要对机器的主CPU、RAM和缓存进行逻辑分区，因此来宾操作系统和主机操作系统可以在硬件级别上共享资源，但在软件级别上受到的限制比目前可能的要大得多。
+
+The problem of providing secure isolation for containers and virtual machines extends beyond simple refinements to their implementations.When the fundamental assumptions of a system are proven false, then any theorems built on those assumptions may also be false. The secure isolation features of the full stack—from the kernel and operating system, through to virtual machines, containers, and application workloads—are all built on false assumptions about the behavior of the hardware and will need to be re-examined.
+
+为容器和虚拟机提供安全隔离的问题超出了对其实现的简单改进。当一个系统的基本假设被证明是错误的，那么任何建立在这些假设上的定理也可能是错误的。完整堆栈的安全隔离特性——从内核和操作系统，到虚拟机、容器和应用程序工作负载——都建立在关于硬件行为的错误假设之上，需要重新检查。
+
 ## 9 RELATED IMPLEMENTATIONS
 
 Implementation approaches that adopt the label “cloud” [67, 97, 125, 180] are typically virtual machines with added orchestration features to enhance portability. Cloud implementations also tend to favor lighter-weight guest images, which enhances performance and reduces complexity, although cloud images are generally not quite as minimal as container images.
@@ -253,3 +509,4 @@ Implementation approaches that adopt the label “serverless” [17, 93, 106, 11
 
 A detailed examination of the history of virtual machines and containers reveals that the two have evolved in tandem from the very beginning. It also reveals that both families of technology are facing significant challenges in providing secure isolation for modern multitenant infrastructures. In light of recent vulnerabilities, patching up existing tools is a necessary and valuable activity in the short term but is not sufficient for the long term. In the coming decades, the computing industry as a whole will need to embrace more radical alternatives in both hardware and software. Current researchers and developers can benefit from a deeper understanding of how virtual machines and containers evolved—and the trade-offs made along the way—to make more informed choices for tomorrow, avoid repeating past mistakes, and build on a solid foundation toward new paths of exploration.
 
+对虚拟机和容器历史的详细研究表明，它们从一开始就协同发展。它还揭示了这两种技术在为现代多租户基础设施提供安全隔离方面都面临着重大挑战。鉴于最近的漏洞，修补现有工具在短期内是必要的和有价值的活动，但从长期来看是不够的。在未来的几十年里，计算机行业作为一个整体将需要在硬件和软件上采用更激进的替代品。当前的研究人员和开发人员可以从对虚拟机和容器如何进化的更深入的理解中获益——以及在此过程中所做的权衡——为未来做出更明智的选择，避免重复过去的错误，并为新的探索道路建立坚实的基础。
