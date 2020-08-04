@@ -164,6 +164,17 @@ Strings have type string, and are written in quotes, as ”this is a string”. 
 
 ### 2.2 Tuples and records
 
+It is often useful to create values which package many values. Compound types include tuples, records and lists.
+
+创建包含许多值的值通常是有用的。复合类型包括元组、记录和列表。
+
+A tuple is a finite sequence of values packaged as one value. The type of a tuple indicates the type of the elements in the sequence. An example of a tuple is (true,3), which is a tuple of type bool int, made up of a boolean and an integer. The order is important: (3,true) is a different tuple, with a different type int bool. An arbitrary number of values can be packaged in this way, leading to correspondingly long tuple types. One way to extract a value from a tuple is to use the selection operations #1, #2, : : :, which extract the element at the corresponding position in the tuple. For example,
+
+```sml
+- #2 (1,3.0,true);
+val it = 3.0 : real
+```
+
 ### 2.3 Declarations
 
 ### 2.4 Pattern matching
@@ -253,4 +264,3 @@ Strings have type string, and are written in quotes, as ”this is a string”. 
 ### 7.8 Handling command-line arguments
 
 ### 7.9 Miscellaneous functionality
-
