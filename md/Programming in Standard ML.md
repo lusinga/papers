@@ -46,3 +46,4 @@ Computation in ML consists of evaluation of expressions. Each expression has thr
 - It may or may not engender an effect.
 
 These characteristics are all that you need to know to compute with an expression.
+
