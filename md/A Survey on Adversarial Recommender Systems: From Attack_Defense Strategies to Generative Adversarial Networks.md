@@ -18,6 +18,14 @@ The goal of this survey is two-fold: (i) to present recent advances on adversari
 
 ### 3.2 GAN-based Recommendation Framework
 
+GANs have been successfully applied in state-of-the-art RS to learning recommendation models. Since the first pioneering GAN-basedwork IRGAN [150] in 2017,we have witnessed rapid adoption of these network architectures in many traditional and novel applications and domains. In this section, we provide a conceptual framework that will show how GANs are employed in RS domain and shed light on particularities and differences of GAN application in RecSys and ML.
+
+GAN已成功应用于最新的RS到学习推荐模型中，自2017年首创基于GAN的工作IRGAN [150]以来，我们见证了这些网络体系结构在许多传统和新颖的应用程序和领域中的迅速采用。在本节中，我们提供一个概念框架，该框架将显示GAN如何在RS域中使用，并阐明GAN在RecSys和ML中的特殊性和差异。
+
+GAN-CF problem formulation and conceptual model. The prominent recommendation models in the literature that successfully apply GAN [148, 150] for the CF task utilize the two-player min-max game with objective function built on top of Equation (13).
+
+GAN-CF问题的提出和概念模型在文献中成功地将GAN [148，150]用于CF任务的著名推荐模型利用了具有方程（13）之上的目标函数的两人最小-最大博弈。
+
 ### 3.3 GAN-based Recommendation Models: State of the Art
 
 ## 4 SUMMARY AND FUTURE DIRECTIONS
