@@ -79,17 +79,79 @@ Generally, we only included papers that are compliant with our definition of a C
 
 ## 3 INTERACTION MODALITIES OF CRS
 
+The recent interest in CRS is spurred both by developments in NLP and technological advances such as broadband mobile internet access and new devices like smartphones and home assistants. Our review of the literature however shows that the interaction between users and a CRS is neither limited to natural language input and output nor to specific devices.
+
+最近对 CRS 的兴趣受到 NLP 的发展和技术进步（例如宽带移动互联网接入以及智能手机和家庭助理等新设备）的刺激。 然而，我们对文献的回顾表明，用户与 CRS 之间的交互既不限于自然语言输入和输出，也不限于特定设备。
+
 ### 3.1 Input and Output Modalities
+
+The majority of the surveyed papers explicitly or implicitly support two main forms of inputs and outputs, either as the only modality or combined in a hybrid approach:
+
+- Based on forms and structured layouts, as in a traditional web-based (desktop) application.
+- Based on natural language, either in written or spoken form.
 
 ### 3.2 Application Environment
 
+Stand-alone and Embedded Applications. CRS can both be stand-alone applications or part of a larger software solution. In the first case, recommendation is the central functionality of the system. Examples for such applications include the mobile tourist guides proposed in References [7, 60, 86], the interactive e-commerce advisory systems discussed in References [41, 58], or the early FindMe browsing and shopping systems [14, 15]. In the second case, that of an embedded application, the CRS does not (entirely) stand on its own. Often, the CRS is implemented in the form of a chatbot that is embedded within e-commerce solutions [32, 164] or other types of web-portals [21]. In some cases, the CRS is also part of a multi-modal 2D or 3D user experience, like in Reference [33] and Reference [43]. A special case in this context is the use of a CRS on voice-based home assistants (smart speakers) [4, 36]. In such settings, providing recommendations is only one of many functionalities the device is capable of. Users might therefore not actually perceive the system as primarily being a recommender.
+
+Supported Devices. An orthogonal aspect regarding the application environment of a CRS is that of the supported devices. This is particularly important, because the specific capabilities and features of the target device can have a significant impact on the design choices when building a CRS. The mentioned smart speaker applications, for example, are specifically designed for hardware devices that often only support voice-based interactions. This can lead to specific challenges, e.g., when it comes to determining the user’s intent or when a larger set of alternatives should be presented to the users. The interaction with chatbot applications, however, is typically not tied to specific hardware devices. Commonly, they are either designed as web applications or as smartphone and tablet applications. However, the choice of the used communication modality can still depend on the device characteristics. Typing on small smartphone screens may be tedious and the limited screen space in general requires the development of tailored user interfaces.
+
 ### 3.3 Interaction Initiative
+
+A central design question for most conversational systems is who takes the initiative in the dialogue. Traditionally, we can differentiate between (i) system-driven, (ii) user-driven, and (iii) mixed-initiative systems. When considering CRS primarily as dialogue systems, such a classification can in principle be applied as well, but the categorization is not always entirely clear.
+
+大多数对话系统的中心设计问题是谁在对话中采取主动。 传统上，我们可以区分 (i) 系统驱动、(ii) 用户驱动和 (iii) 混合主动系统。 当将 CRS 主要视为对话系统时，原则上也可以应用这种分类，但分类并不总是完全清楚。
+
+Critiquing-based systems are often considered to be mainly system-driven, and sometimes mixed-initiative, e.g., in Reference [148]. In such applications, the users are typically first asked about their preferences, e.g., using a form, and then an initial recommendation is presented. Users can then use a set of pre-defined or dynamically determined critiques to further refine their preferences. While the users in such applications have some choices regarding the dialogue flow, e.g., they can decide to accept a recommendation or further apply critiques, these choices are typically very limited and the available critiques are determined by the system. Another class of mostly system-driven applications are the form-based interactive advisory systems discussed in Reference [41]. Here, the system guides the user through a personalized preference elicitation dialogue until enough is known about the user. Only after the initial recommendations are displayed, the user can influence the dialogue by selecting from pre-defined options like asking for an explanation or by relaxing some constraints.
+
+基于评论的系统通常被认为主要是系统驱动的，有时是混合的，例如，在参考文献 [148] 中。在此类应用程序中，通常首先询问用户他们的偏好，例如使用表单，然后呈现初始推荐。然后，用户可以使用一组预定义或动态确定的评论来进一步细化他们的偏好。虽然此类应用程序中的用户对对话流程有一些选择，例如，他们可以决定接受推荐或进一步应用评论，但这些选择通常非常有限，可用的评论由系统确定。另一类主要是系统驱动的应用程序是参考文献 [41] 中讨论的基于表单的交互式咨询系统。在这里，系统通过个性化的偏好启发对话引导用户，直到对用户有足够的了解。只有在显示初始推荐后，用户才能通过从预定义选项中进行选择（例如要求解释或放宽某些限制）来影响对话。
+
+The other extreme would be a user-driven system, where the system takes no proactive role. The resulting dialogue therefore consists of “user-asks, system-responds” pairs, and it stands to question if we would call such an exchange a conversational recommendation. Such conversation patterns are rather typical for one-shot query-answering, search and recommendation systems that are not in the scope of our survey. As a result, in the papers considered relevant for this study, we did not find any paper that aimed at building an entirely user-driven system in which the system never actively engages in a dialogue, e.g., when it does not ask any questions ever. A special case in that context is the recommender system proposed in Reference [82], which monitors an ongoing group chat and occasionally makes recommendations to the group based on the observed communication.
+
+另一个极端是用户驱动的系统，该系统不承担任何主动角色。 因此，由此产生的对话由“用户-询问、系统-响应”对组成，我们是否将这种交流称为对话推荐是值得怀疑的。 对于不在我们调查范围内的一次性查询-回答、搜索和推荐系统，这种对话模式是相当典型的。 因此，在被认为与本研究相关的论文中，我们没有发现任何旨在构建完全由用户驱动的系统的论文，其中系统从不主动参与对话，例如，当它从不提出任何问题时. 在这种情况下的一个特殊情况是参考文献 [82] 中提出的推荐系统，它监视正在进行的群聊，并偶尔根据观察到的通信向群推荐。
+
+This observation is not surprising because every CRS is a task-oriented system aiming to achieve goals like obtaining enough reliable information about the user’s preferences. As a result, almost all approaches in the literature are mixed-initiative systems, although with different degrees of system guidance. Typical chatbot applications, for example, often guide users through a series of questions with pre-defined answer options (using forms and buttons), and at the same time allow them to type in statements in natural language. In fully NLP-based interfaces, users typically have even more freedom to influence how the dialogue continues. Still, also in these cases, the system typically has some agenda to move the conversation forward.
+
+这种观察并不奇怪，因为每个 CRS 都是一个面向任务的系统，旨在实现诸如获取有关用户偏好的足够可靠信息等目标。 因此，尽管具有不同程度的系统引导，文献中几乎所有方法都是混合主动系统。 例如，典型的聊天机器人应用程序通常会引导用户回答一系列带有预定义答案选项（使用表单和按钮）的问题，同时允许他们以自然语言输入语句。 在完全基于 NLP 的界面中，用户通常可以更自由地影响对话的继续方式。 尽管如此，同样在这些情况下，系统通常有一些议程来推进对话。
+
+Technically, even a fully NLP-based dialogue can almost entirely be system-driven and mostly rely on a “system asks, user responds” [172] conversation pattern. Nonetheless, the provision of a natural language user interface might leave the users disappointed when they find out that they can never actively engage in the conversation, e.g., by asking a clarification question or explanation regarding the system’s question.
+
+从技术上讲，即使是完全基于 NLP 的对话也几乎可以完全由系统驱动，并且主要依赖于“系统询问，用户响应”[172] 对话模式。 尽管如此，当用户发现他们永远无法积极参与对话时，提供自然语言用户界面可能会让他们感到失望，例如，通过询问有关系统问题的澄清问题或解释。
 
 ### 3.4 Discussion
 
+A variety of ways exist in which the user’s interaction with a CRS can be designed, e.g., in terms of the input and output modalities, the supported devices, or the level of user control. In most surveyed papers, these design choices are, however, rarely discussed. One reason is that in many cases the proposed technical approach is mostly independent of the interaction modality, e.g., when the work is on a new strategy to determine the next question to ask to the user. In other cases, the modalities are pre-determined by the given research question, e.g., how to build a CRS on a mobile.
+
+存在多种设计用户与 CRS 交互的方式，例如，在输入和输出模式、支持的设备或用户控制级别方面。 然而，在大多数调查论文中，很少讨论这些设计选择。 一个原因是，在许多情况下，所提出的技术方法大多独立于交互模式，例如，当工作采用新策略来确定要向用户提出的下一个问题时。 在其他情况下，模式由给定的研究问题预先确定，例如，如何在移动设备上构建 CRS。
+
+More research therefore seems required to understand how to make good design choices in these respects and what the implications and limitations of each design choice are. Regarding the chosen form of inputs and outputs, it is, for example, not always entirely clear if natural language interaction makes the recommendation more efficient or effective compared to form-based inputs. Pure natural language interfaces in principle provide the opportunity to elicit preferences in a more natural way. However, these interfaces have their limitations as well. The accuracy of the speech recognizer, for example, can have a major impact on the system’s usability. In addition, some users might also be better acquainted and feel more comfortable with more traditional interaction mechanisms (forms and buttons). According to the study in Reference [54], a mix of a natural language interface and buttons led to the best user experience. Moreover, in Reference [102], it turned out that in situations of disambiguation, i.e., when a user has to choose among a set of multiple alternatives, mixed-interaction mode (NLP interface with buttons) can make the task easier for users. Overall, while in some cases the choice of the modalities is predetermined through the device, finding an optimal combination of interaction modalities remains challenging, in particular as individual user preferences might play a role here.
+
+因此，似乎需要更多的研究来了解如何在这些方面做出好的设计选择以及每个设计选择的含义和局限性是什么。例如，关于输入和输出的选择形式，与基于形式的输入相比，自然语言交互是否使推荐更高效或有效，并不总是完全清楚。原则上，纯自然语言接口提供了以更自然的方式引出偏好的机会。但是，这些接口也有其局限性。例如，语音识别器的准确性会对系统的可用性产生重大影响。此外，一些用户也可能更熟悉更传统的交互机制（表单和按钮）并感觉更舒服。根据参考文献 [54] 中的研究，自然语言界面和按钮的混合带来了最佳的用户体验。此外，在参考文献 [102] 中，事实证明，在消除歧义的情况下，即当用户必须在一组多个选项中进行选择时，混合交互模式（带有按钮的 NLP 界面）可以使用户更轻松地完成任务。总的来说，虽然在某些情况下，模式的选择是通过设备预先确定的，但找到交互模式的最佳组合仍然具有挑战性，特别是因为个人用户偏好可能在这里发挥作用。
+
+More studies are also needed to understand how much flexibility in the dialogue is required by users or how much active guidance by the system is appreciated in a certain application. Furthermore, even though language-based and in particular voice-based conversations have become more popular in recent years, certain limitations remain. It is, for example, not always clear how one would describe a set of recommendations when using voice output. Reading out more than one recommendation seems impractical in most cases and something that we could call “recommendation summarization” might be needed.
+
+还需要更多的研究来了解用户在对话中需要多少灵活性，或者在某个应用程序中系统的主动指导有多少受到赞赏。 此外，尽管近年来基于语言，特别是基于语音的对话变得越来越流行，但仍然存在某些限制。 例如，在使用语音输出时如何描述一组推荐并不总是很清楚。 在大多数情况下，阅读不止一个建议似乎不切实际，可能需要我们称之为“建议摘要”的东西。
+
+Despite these potential current limitations,we expect a number of new opportunities where CRS can be applied in the future. With the ongoing technological developments, more and more devices and machines are equipped with CPUs and are connected to the internet. In-store interactive walls, service robots and in-car recommenders, as discussed above, are examples of visions that are already pursued today. These new applications will, however, also come with their own general challenges (e.g., privacy considerations, aspects of technology acceptance) and application-specific ones (e.g., safety considerations in an in-car setting).
+
+尽管目前存在这些潜在限制，但我们预计未来会出现许多可以应用 CRS 的新机会。 随着技术的不断发展，越来越多的设备和机器配备了 CPU 并连接到互联网。 如上所述，店内互动墙、服务机器人和车内推荐器是当今已经实现的愿景的例子。 然而，这些新应用也将带来它们自己的一般挑战（例如，隐私考虑、技术接受方面）和特定于应用的挑战（例如，车内环境中的安全考虑）。
+
 ## 4 UNDERLYING KNOWLEDGE AND DATA
 
+Depending on the chosen technical approach, CRS have to incorporate various types of knowledge and background data to function. Clearly, like any recommender, there has to be information about the recommendable items. Likewise, the generation of the recommendations is either based on explicit knowledge, for example recommendation rules or constraints, or on machine learning models that are trained on some background data. However, conversational systems usually rely on additional types of knowledge about the user intents that the CRS supports, the possible states in the dialogue, or data such as recorded and transcribed natural language recommendation dialogues that are used to train a machine learning model. In the following sections, we provide an overview on the different types of knowledge and data that were used in the literature to build a CRS.
+
+根据所选择的技术方法，CRS 必须结合各种类型的知识和背景数据才能发挥作用。 显然，就像任何推荐器一样，必须有关于可推荐项目的信息。 同样，推荐的生成要么基于显性知识，例如推荐规则或约束，要么基于在某些背景数据上训练的机器学习模型。 然而，对话系统通常依赖于关于 CRS 支持的用户意图、对话中的可能状态或用于训练机器学习模型的记录和转录的自然语言推荐对话等数据的其他类型的知识。 在以下部分中，我们概述了文献中用于构建 CRS 的不同类型的知识和数据。
+
 ### 4.1 User Intents
+
+CRS are dialogue systems designed to serve very specific purposes in the context of information filtering and decision making. Therefore, they have to support their users’ particular information needs and intents that can occur in such conversations. In many CRS, the set of user intents that the system supports is pre-defined and represents a major part of the manually engineered background knowledge on which the system is built. In particular in NLP-based approaches, detecting the current user’s intent and selecting the system’s response is one of the main computational tasks of the system, see also Section 5. In this section, we will therefore mainly focus on NLP-based systems.
+
+CRS 是对话系统，旨在在信息过滤和决策制定的背景下服务于非常特定的目的。 因此，他们必须支持用户在此类对话中可能出现的特定信息需求和意图。 在许多 CRS 中，系统支持的用户意图集是预定义的，代表了构建系统的人工设计背景知识的主要部分。 特别是在基于 NLP 的方法中，检测当前用户的意图和选择系统的响应是系统的主要计算任务之一，另见第 5 节。因此，在本节中，我们将主要关注基于 NLP 的系统。
+
+The set of user intents that the system supports varies across the different CRS that are found in the literature, and the choice of which intents to support ultimately depends on the requirements of the application domain. However, while a subset of the intents that the system supports is sometimes specific to the application as well, there are a number of intents that are common in many CRS. In Table 1, we provide a high-level overview of domain-independent user intents that we have found in our literature review. The order of the intents in Table 1 roughly follows the flow of a typical recommendation dialogue. This overview is also intended to serve as a tool for the designers of CRS to check if there are any gaps in their current system with respect to potential user needs that are not well supported.
+
+
+
 
 ### 4.2 User Modeling
 
