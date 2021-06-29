@@ -84,10 +84,48 @@ In this section, we provide a definition for each task.
 
 In this section, we describe the datasets included in CodeXGLUE. Datasets are chosen or created based on the criterion that the volume of the dataset could support the development and evaluation of data-driven machine learning methods.
 
+### 3.1 Clone detection
 
+Clone detection includes two subtasks. The first subtask is to predict whether two given codes have the same semantics. We use the BigCloneBench [71] dataset for the subtask. The second subtask aims to retrieve semantically similar codes given a code as the query and we use the dataset POJ-104 [52] to perform it.
+
+克隆检测包括两个子任务。 第一个子任务是预测两个给定的代码是否具有相同的语义。 我们使用 BigCloneBench [71] 数据集作为子任务。 第二个子任务旨在检索给定代码作为查询的语义相似代码，我们使用数据集 POJ-104 [52] 来执行它。
+
+- BigCloneBench is a widely used large code clone benchmark that contains over 6,000,000 true clone pairs and 260,000 false clone pairs from 10 different functionalities. The dataset provided by Wang et al. [84] is filtered by discarding code fragments without any tagged true or false clone pairs, leaving it with 9,134 Java code fragments. Finally, the dataset includes 901,028/415,416/415,416 examples for training, validation and testing, respectively.
+
+- BigCloneBench 是一个广泛使用的大型代码克隆基准测试，包含来自 10 个不同功能的超过 6,000,000 个真实克隆对和 260,000 个虚假克隆对。 Wang等人提供的数据集。 [84] 通过丢弃没有任何标记的真假克隆对的代码片段进行过滤，留下 9,134 个 Java 代码片段。 最后，数据集包括 901,028/415,416/415,416 个分别用于训练、验证和测试的示例。
+
+- POJ-104 dataset [52] comes from a pedagogical programming open judge (OJ) system that automatically judges the validity of submitted source code for specific problems by running the code. We use the POJ-104 dataset, which consists of 104 problems and includes 500 student-written C/C++ programs for each problem. Different from that of the BigCloneBench dataset, the task of POJ- 104 aims to retrieve other programs that solve the same problem given a program. We group the datasets in three subsets based on the number of problems they are required to solve (64/16/24) for training, validation, and testing.
+
+- POJ-104 数据集 [52] 来自一个教学编程开放判断（OJ）系统，该系统通过运行代码自动判断提交的源代码对特定问题的有效性。 我们使用 POJ-104 数据集，该数据集包含 104 个问题，并为每个问题包含 500 个学生编写的 C/C++ 程序。 与 BigCloneBench 数据集不同，POJ-104 的任务旨在检索解决给定程序相同问题的其他程序。 我们根据训练、验证和测试所需解决的问题数量 (64/16/24) 将数据集分为三个子集。
+
+### 3.2 Defect detection
+
+### 3.3 Cloze test
+
+### 3.4 Code completion
+
+### 3.5 Code translation
+
+### 3.6 Code search
+
+### 3.7 Code repair
+
+### 3.8 Text-to-code generation
+
+### 3.9 Code summarization
+
+### 3.10 Documentation translation
 
 
 ## 4 BASELINE SYSTEMS
+
+### 4.1 CodeBERT
+
+### 4.2 CodeGPT
+
+### 4.3 Encoder-Decoder
+
+
 
 ## 5 EXPERIMENT
 

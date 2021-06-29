@@ -28,8 +28,6 @@ In this section, we first introduce the concept of code rewriting, and then use 
 
 在本节中，我们首先介绍代码重写的概念，然后用它来定义BUGLAB作为一个bug检测和修复的自监督学习的框架。
 
-
-
 ## 3 Neural Models
 
 ## 4 A Python Implementation
