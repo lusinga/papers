@@ -52,37 +52,15 @@ To some extent, TDR can be considered as an evolution of classical reading techn
 
 Scenario-based inspections. Among reading techniques, Porter & Votta [37] defined the scenario-based approach, based on scenarios that provide inspectors with more specific instructions than a typical checklist and focus on a wider variety of defects. They discovered that such technique is significantly more useful for requirements inspectors. Later on, Porter et al. [38], [36] and Miller et al. [33] replicated the original study confirming the results. Other studies by Fusaro et al. [23] and Sandahl et al. [44] reported contradictory results, however without providing explanations on the circumstances leading scenario-based code inspection to fail. A significant advance in this field was then provided by Basili et al. [7], who re-visited the original scenario-based as a technique that needs to be specialized for the specific issues to be analyzed. They also defined a new scenariobased technique called perspective-based reading: The basic idea is that different aspects of the source code should be inspected by inspectors having different skills [7]. All in all, the papers mentioned above, provided evidence of the usefulness of reading techniques; their similarities with TDR, give an interesting rationale on why TDR could bring benefits.
 
-Ordering of code changes. Research on the ordering of code
-changes is also related to TDR. In particular, Baum et al.
-argued that an optimal ordering of code changes would help
-reviewers by reducing the cognitive load and improving the
-alignment with their cognitive processes [10], even though
-they made no explicit reference to ordering tests. This may
-give theoretical value to the TDR practice. Code ordering and
-its relation to understanding, yet without explicit reference to
-tests or reviews, has also been the subject of studies [25], [12].
+基于场景的检查。在阅读技术中，Porter & Votta [37] 定义了基于场景的方法，基于场景为检查员提供比典型检查表更具体的指令，并专注于更广泛的缺陷。他们发现这种技术对于需求检查员来说更有用。后来，波特等人。 [38]、[36] 和米勒等人。 [33] 重复了原始研究，证实了结果。 Fusaro 等人的其他研究。 [23] 和 Sandahl 等人。 [44] 报告了相互矛盾的结果，但是没有解释导致基于场景的代码检查失败的情况。 Basili 等人随后在该领域取得了重大进展。 [7]，他重新访问了原始的基于场景的技术，将其作为一种需要专门用于要分析的特定问题的技术。他们还定义了一种新的基于场景的技术，称为基于透视的阅读：基本思想是源代码的不同方面应该由具有不同技能的检查员进行检查 [7]。总而言之，上述论文提供了阅读技巧有用的证据；它们与 TDR 的相似之处，为 TDR 带来好处的原因提供了一个有趣的理由。
 
-Reviewing test code. Many articles on classical inspection
-(e.g., [29], [54]) underline the importance of reviewing tests;
-however, they do not leave any specific recommendation. The
-benefits of reviewing tests are also highlighted in two case
-studies [30], [35]. Already in Fagan’s seminal paper [17], the
-inspection of tests is discussed, in this case noting fewer benefits
-compared to the inspection of production code. Winkler et
-al. [55] experimented with writing tests during inspection and
-found neither large gains nor losses in efficiency and effectiveness.
-Elberzhager et al. [16], [15] proposed to use results
-from code reviews to focus testing efforts. To our knowledge,
-in academic literature TDR has been explicitly referred to only
-by Spadini et al. [47]. In a more general investigation on
-how test files are reviewed, the authors reported that some
-practitioners indeed prefer to review test code first as to get
-a better understanding of a code change before looking for
-defects in production code. Our work builds upon the research
-on reviewing test code, by investigating how reviewing test
-code can(not) be beneficial for the whole reviewing process.
+Ordering of code changes. Research on the ordering of code changes is also related to TDR. In particular, Baum et al. argued that an optimal ordering of code changes would help reviewers by reducing the cognitive load and improving the alignment with their cognitive processes [10], even though they made no explicit reference to ordering tests. This may give theoretical value to the TDR practice. Code ordering and its relation to understanding, yet without explicit reference to tests or reviews, has also been the subject of studies [25], [12].
 
+代码更改的顺序。 代码变更排序的研究也与TDR有关。 特别是，鲍姆等人。 认为代码更改的最佳排序将通过减少认知负荷和改善与其认知过程的一致性来帮助审查者 [10]，即使他们没有明确提及排序测试。 这可能会为 TDR 实践提供理论价值。 代码排序及其与理解的关系，但没有明确提及测试或审查，也是研究的主题 [25]、[12]。
 
+Reviewing test code. Many articles on classical inspection (e.g., [29], [54]) underline the importance of reviewing tests; however, they do not leave any specific recommendation. The benefits of reviewing tests are also highlighted in two case studies [30], [35]. Already in Fagan’s seminal paper [17], the inspection of tests is discussed, in this case noting fewer benefits compared to the inspection of production code. Winkler et al. [55] experimented with writing tests during inspection and found neither large gains nor losses in efficiency and effectiveness. Elberzhager et al. [16], [15] proposed to use results from code reviews to focus testing efforts. To our knowledge, in academic literature TDR has been explicitly referred to only by Spadini et al. [47]. In a more general investigation on how test files are reviewed, the authors reported that some practitioners indeed prefer to review test code first as to get a better understanding of a code change before looking for defects in production code. Our work builds upon the research on reviewing test code, by investigating how reviewing test code can(not) be beneficial for the whole reviewing process.
+
+审查测试代码。许多关于经典检验的文章（例如，[29]、[54]）强调了审查测试的重要性；但是，他们没有留下任何具体建议。两个案例研究 [30]、[35] 也强调了审查测试的好处。已经在 Fagan 的开创性论文 [17] 中讨论了测试检查，在这种情况下，与生产代码检查相比，它的好处更少。温克勒等人。 [55] 在检查过程中对编写测试进行了试验，发现在效率和有效性方面既没有大的收益也没有大的损失。 Elberzhager 等人。 [16]、[15] 建议使用代码审查的结果来集中测试工作。据我们所知，在学术文献中，只有 Spadini 等人明确提到了 TDR。 [47]。在关于如何审查测试文件的更一般的调查中，作者报告说，一些从业者确实更喜欢先审查测试代码，以便在查找生产代码中的缺陷之前更好地了解代码更改。我们的工作建立在审查测试代码的研究之上，通过调查审查测试代码如何（不）对整个审查过程有益。
 
 ## III. METHODOLOGY
 
