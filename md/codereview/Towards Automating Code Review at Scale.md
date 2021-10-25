@@ -18,3 +18,14 @@ Machine learning and language models have been applied to study code review acce
 
 机器学习和语言模型已被应用于研究代码审查接受率 [6, 12]，生成审查评论 [13]，并预测特定审查变化 [15]。 后者使用深度学习模型来推荐审阅者应该向贡献者建议的代码修订。 他们考虑了两种设置，两者都旨在预测审查后更正的代码，第一个只使用错误/提交的代码，而第二个使用错误代码和审查者评论。 因此，该任务是我们探索的任务的补充，即预测评论的位置。 我们的数据收集方法也更加全面，可能反过来有利于他们的模型。
 
+## 3 APPROACH
+
+## 4 RESULTS
+
+## 5 IMPLICATIONS AND RESEARCH AGENDA
+
+As AI4SE research has begun to turn to code review [15], we argue for doing so in a way that closely mimics its use in practice. We present a reality check on the challenge of this domain: even large models struggle to merely rank which parts of a changeset to review, achieving little to no gain over smaller architectures, nor with more training time, or with project-specific history. In a field that often trains and assesses its models on artificially balanced data, our work stresses the importance of focusing on realistic data distributions. That does not imply sacrificing the ability to learn – in this work, our models were able to prioritize reviews 5-10× better than a random base-rate; yet, since comments occur rarely and with little regularity, there is still a significant challenge ahead.
+
+- [15] Rosalia Tufano, Luca Pascarella, Michele Tufano, Denys Poshyvanyk, and Gabriele Bavota. 2021. Towards Automating Code Review Activities. In ICSE.
+
+随着 AI4SE 研究开始转向代码审查 [15]，我们主张以一种密切模仿其在实践中使用的方式进行审查。 我们对这个领域的挑战进行了现实检查：即使是大型模型也难以仅对变更集的哪些部分进行排序，与较小的架构相比几乎没有或没有收益，也没有更多的训练时间或特定于项目的历史。 在一个经常在人工平衡数据上训练和评估其模型的领域，我们的工作强调了关注真实数据分布的重要性。 这并不意味着牺牲学习能力——在这项工作中，我们的模型能够优先考虑比随机基准率高 5-10 倍的评论； 然而，由于评论很少出现，也很少有规律，所以前方仍然存在重大挑战。
