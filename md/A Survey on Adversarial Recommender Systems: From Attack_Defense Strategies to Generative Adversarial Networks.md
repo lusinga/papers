@@ -10,7 +10,19 @@ The goal of this survey is two-fold: (i) to present recent advances on adversari
 
 ## 1 INTRODUCTION
 
+In the age of data deluge, where users face a new form of information explosion, recommender systems (RS) have emerged as a paradigm of information push to lessen decision anxieties and consumer confusion by over-choice. RS enhance users’ decision-making process and support sales by personalizing item recommendations for each user and helping them discover novel products. RS are a pervasive part of user experience online today and serve as the primary choice for many consumer-oriented companies such as Amazon, Netflix, and Google (e.g., YouTube [182]). Among different recommendation techniques, collaborative filtering (CF) methods have been the mainstream of recommendation research both in academia and industry due to their superb recommendation quality. CF builds on the fundamental assumption that users who have expressed similar interests in the past will maintain similar choices in future [59] and infers target user preference over unseen items by leveraging behavioral data of other users and exploiting similarities in their behavioral patterns.
+
+在数据泛滥的时代，用户面临着一种新形式的信息爆炸，推荐系统 (RS) 已成为一种信息推送范式，以减少因过度选择而导致的决策焦虑和消费者困惑。 RS 通过为每个用户提供个性化的商品推荐并帮助他们发现新产品来增强用户的决策过程并支持销售。 RS 是当今在线用户体验的普遍组成部分，并且是许多面向消费者的公司的主要选择，例如亚马逊、Netflix 和谷歌（例如 YouTube [182]）。在不同的推荐技术中，协同过滤（CF）方法因其卓越的推荐质量而成为学术界和工业界推荐研究的主流。 CF 建立在一个基本假设之上，即过去表达过相似兴趣的用户将在未来保持相似的选择 [59]，并通过利用其他用户的行为数据并利用他们行为模式的相似性来推断目标用户对看不见的项目的偏好。
+
 ## 2 ADVERSARIAL MACHINE LEARNING FOR SECURITY OF RS
+
+Poisoning attack. Data poisoning attacks are realized by injecting false data points into the training data with the goal to corrupt/degrade the model (e.g., the classifier). Poisoning attacks have been explored in the literature for a variety of tasks [146], such as (i) attacks on binary classification for tasks such as label flipping or against kernelized SVM [163], (ii) attacks on unsupervised learning such as clustering and anomaly detection [18], and (iii) attacks on matrix completion task in RS [47, 89]. As an example, in the pioneering work by Biggio et al. [17], the authors propose a poisoning attack based on properties of the SVM optimal solution that could significantly degrade the classification test accuracy.
+
+中毒攻击。 数据中毒攻击是通过将虚假数据点注入训练数据来实现的，目的是破坏/降级模型（例如分类器）。 文献中已经针对各种任务 [146] 探讨了中毒攻击，例如 (i) 对标签翻转等任务的二元分类攻击或针对核化 SVM [163] 的攻击，(ii) 对无监督学习（例如聚类）的攻击 和异常检测 [18]，以及 (iii) 对 RS [47, 89] 中矩阵完成任务的攻击。 例如，在 Biggio 等人的开创性工作中。 [17]，作者提出了一种基于 SVM 最优解的特性的中毒攻击，这可能会显着降低分类测试的准确性。
+
+Evasion attack. Unlike poisoning attacks, evasion attacks do not interfere with training data. They adjust malicious samples during the inference phase. These attacks are also named decision-time attacks, referring to their attempt to evade the decision made by the learned model at test time [146]. For instance, evasion attacks can be used to evade spam [76] aswell as network intrusion [151] detectors. Recently, evasive attacks are conducted by crafting adversarial examples, which are subtle but non-random human-imperceptible perturbations, added to original data to cause the learned model to produce erroneous output. Szegedy et al. [139] were the first to discover that some carefully selected perturbations that are barely perceptible to the human eye, when added to an image, could lead a well-trained DNN to misclassify the adversarial image with high confidence.
+
+躲避攻击。 与中毒攻击不同，逃避攻击不会干扰训练数据。 他们在推理阶段调整恶意样本。 这些攻击也被称为决策时间攻击，指的是他们试图逃避学习模型在测试时做出的决策[146]。 例如，逃避攻击可用于逃避垃圾邮件 [76] 以及网络入侵 [151] 检测器。 最近，通过制作对抗性示例来进行规避攻击，这些对抗性示例是微妙但非随机的人类无法察觉的扰动，添加到原始数据中以导致学习模型产生错误的输出。 塞格迪等人。 [139] 是第一个发现一些人眼几乎察觉不到的精心挑选的扰动，当添加到图像中时，可能会导致训练有素的 DNN 以高置信度错误分类对抗性图像。
 
 ## 3 ADVERSARIAL LEARNING FOR GAN-BASED RECOMMENDATION
 

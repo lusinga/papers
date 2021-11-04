@@ -16,6 +16,38 @@ The empirical evaluation of the two models shows that, on the contributor side, 
 
 ## I. INTRODUCTION
 
+Code Review is the process of analyzing source code written by a teammate to judge whether it is of sufficient quality to be integrated into the main code trunk. Recent studies provided evidence that reviewed code has lower chances of being buggy [1]–[3] and exhibit higher internal quality [3], likely being easier to comprehend and maintain. Given these benefits, code reviews are widely adopted both in industrial and open source projects with the goal of finding defects, improving code quality, and identifying alternative solutions.
+
+Code Review是对队友编写的源代码进行分析，判断其质量是否足够好，可以集成到主代码主干中的过程。 最近的研究提供的证据表明，经过审查的代码出现错误的可能性较低 [1]-[3]，并且表现出更高的内部质量 [3]，可能更容易理解和维护。 鉴于这些好处，代码审查在工业和开源项目中被广泛采用，其目标是发现缺陷、提高代码质量和确定替代解决方案。
+
+The benefits brought by code reviews do not come for free. Indeed, code reviews add additional expenses to the standard development costs due to the allocation of one or more reviewers having the responsibility of verifying the correctness, quality, and soundness of newly developed code. Bosu and Carver report that developers spend, on average, more than six hours per week reviewing code [4]. This is not surprising considering the high number of code changes reviewed in some projects: Rigby and Bird [5] show that industrial projects, such as Microsoft Bing, can undergo thousands of code reviews per month (3k in the case of Bing). Also, as highlighted by Czerwonka et al. [6], the effort spent in code review does not only represent a cost in terms of time, but also pushes developers to switch context from their tasks.
+
+代码审查带来的好处不是免费的。 事实上，由于分配了一名或多名审查员负责验证新开发代码的正确性、质量和健全性，代码审查在标准开发成本上增加了额外费用。 Bosu 和 Carver 报告说，开发人员平均每周花费超过 6 个小时来审查代码 [4]。 考虑到某些项目中审查的大量代码更改，这并不奇怪：Rigby 和 Bird [5] 表明，工业项目，例如 Microsoft Bing，每月可以接受数千次代码审查（在 Bing 的情况下为 3k）。 此外，正如 Czerwonka 等人所强调的那样。 [6]，代码审查所花费的精力不仅代表时间成本，而且还会促使开发人员从他们的任务中切换上下文。
+
+Our long-term goal is to reduce the cost of code reviewing by (partially) automating this time-consuming process. Indeed, we believe that several code review activities can be automated, such as, catching bugs, improving adherence to the project’s coding style, and refactoring suboptimal design decisions. The final goal is not to replace developers during code reviews but work with them in tandem by automatically solving (or suggesting) code quality issues that developers would manually catch and fix in their final checks. A complete automation, besides likely not being realistic, would also dismiss one of the benefits of code review: the sharing of knowledge among developers.
+
+我们的长期目标是通过（部分）自动化这个耗时的过程来降低代码审查的成本。 事实上，我们相信一些代码审查活动可以自动化，例如捕捉错误、提高对项目编码风格的遵守以及重构次优设计决策。 最终目标不是在代码审查期间替换开发人员，而是通过自动解决（或建议）开发人员在最终检查中手动捕获和修复的代码质量问题与他们协同工作。 完全自动化除了可能不切实际之外，还会忽略代码审查的好处之一：开发人员之间的知识共享。
+
+In this paper, we make a first step in this direction by using Deep Learning (DL) models to partially automate specific code review tasks. First, from the perspective of the contributor (i.e., the developer submitting the code for review), we train a transformer model [7] to “translate” the code submitted for review into a version implementing code changes that a reviewer is likely to suggest. In other words, we learn code changes recommended by reviewers during review activities and we try to automatically implement them on the code submitted for review. This could give a fast and preliminary feedback to the contributor as soon as she submits the code. This model has been trained on 17,194 code pairs of $C_s \to C_r$ where Cs is the code submitted for review and Cr is the code implementing a specific comment provided by the reviewer.
+
+在本文中，我们通过使用深度学习 (DL) 模型来部分自动化特定的代码审查任务，朝着这个方向迈出了第一步。 首先，从贡献者（即提交代码进行审查的开发人员）的角度来看，我们训练了一个转换器模型 [7] 将提交审查的代码“翻译”为实施审查者可能建议的代码更改的版本 . 换句话说，我们在审查活动中学习审查者推荐的代码更改，并尝试在提交审查的代码上自动实施它们。 这可以在贡献者提交代码后立即向她提供快速和初步的反馈。 该模型已经在 17,194 个 Cs 到 Cr 的代码对上进行了训练，其中 Cs 是提交审查的代码，Cr 是实现审查者提供的特定评论的代码。
+
+Once trained, the model can take as input a previously unseen code and recommend code changes as a reviewer would do. The used architecture is a classic encoder-decoder model with one encoder taking the submitted code as input and one decoder generating the revised source code.
+
+训练完成后，模型可以将以前未见过的代码作为输入，并像审阅者一样推荐代码更改。 使用的架构是经典的编码器-解码器模型，其中一个编码器将提交的代码作为输入，一个解码器生成修改后的源代码。
+
+Second, from the perspective of the reviewer, given the code under review (Cs) we want to provide the ability to automatically generate the code Cr implementing on Cs a specific recommendation expressed in natural language (Rnl) by the reviewer. This would allow (i) the reviewer to automatically attach to her natural language comment a preview of how the code would look like by implementing her recommendation, and (ii) the contributor to have a better understanding of what the reviewer is recommending. For such a task, we adapt the previous architecture to use two encoders and one decoder.
+
+其次，从审查者的角度来看，鉴于审查中的代码 (Cs)，我们希望提供自动生成代码 Cr 的能力，以在 Cs 上实现审查者以自然语言 (Rnl) 表达的特定建议。 这将允许 (i) 审查者通过实施她的建议自动将代码外观的预览附加到她的自然语言评论，以及 (ii) 贡献者更好地理解审查者的建议。 对于这样的任务，我们调整以前的架构以使用两个编码器和一个解码器。
+
+The two encoders take as input Cs and Rnl, respectively,
+while the decoder is still in charge of generating Cr. The
+model has been trained with 17,194 triplets <Cs, Rnl> -> Cr.
+
+两个编码器分别将 Cs 和 Rnl 作为输入，
+而解码器仍然负责生成 Cr。 这
+模型已经用 17,194 个三元组 <Cs, Rnl> -> Cr 进行了训练。
+
 ## II. USING TRANSFORMERS TO AUTOMATE CODE REVIEW
 
 ## III. STUDY DESIGN
