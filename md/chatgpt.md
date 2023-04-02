@@ -98,6 +98,8 @@ We build on previous techniques to align models with human intentions, particula
 
 - Ibarz, B., Leike, J., Pohlen, T., Irving, G., Legg, S., and Amodei, D. (2018). Reward learning from human preferences and demonstrations in atari. In Advances in neural information processing systems, pages 8011–8023.
 
+我们基于之前的技术，使模型与人类意图保持一致，特别是通过人类反馈的强化学习（RLHF）。最初是为了在模拟环境和Atari游戏中训练简单的机器人而开发的（Christiano et al., 2017; Ibarz et al., 2018），近年来已应用于微调语言模型以对文本进行总结（Ziegler et al., 2019; Stiennon et al., 2020; Böhm et al., 2019; Wu et al., 2021）。这项工作受到了类似工作的影响，这些工作在对话（Jaques et al., 2019; Yi et al., 2019; Hancock et al., 2019）、翻译（Kreutzer et al., 2018; Bahdanau et al., 2016）、语义解析（Lawrence and Riezler, 2018）、故事生成（Zhou and Xu, 2020）、评论生成（Cho et al., 2018）和证据提取（Perez et al., 2019）等领域使用人类反馈作为奖励。Madaan等人（2022）使用书面人类反馈来增加提示并提高GPT-3的性能。还有一些关于使用具有4个规范先验的强化学习在基于文本的环境中对齐代理的工作（Nahian et al., 2021）。我们的工作可以被视为直接将RLHF应用于在广泛的语言任务分布上对齐语言模型。
+
 The question of what it means for language models to be aligned has also received attention recently (Gabriel, 2020). Kenton et al. (2021) catalog behavioral issues in LMs that result from misalignment, including producing harmful content and gaming misspecified objectives. In concurrent work, Askell et al. (2021) propose language assistants as a testbed for alignment research, study some simple baselines, and their scaling properties.
 
 ### Training language models to follow instructions.
