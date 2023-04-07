@@ -38,6 +38,8 @@ Unlike Chinchilla, PaLM, or GPT-3, we only use publicly available data, making o
 
 In the rest of this paper, we present an overview of the modifications we made to the transformer architecture (Vaswani et al., 2017), as well as our training method. We then report the performance of our models and compare with others LLMs on a set of standard benchmarks. Finally, we expose some of the biases and toxicity encoded in our models, using some of the most recent benchmarks from the responsible AI community.
 
+在本文的其余部分中，我们将介绍我们对 Transformer 架构（Vaswani 等人，2017）所做的修改概述以及我们的训练方法。然后，我们报告我们的模型在一系列标准基准测试中的表现，并与其他大型语言模型进行比较。最后，我们使用负责任 AI 社区中一些最新的基准测试，揭示我们的模型中编码的一些偏见和毒性。
+
 ## 2 Approach
 
 ## 3 Main results
@@ -51,6 +53,8 @@ In the rest of this paper, we present an overview of the modifications we made t
 ## 7 Related work
 
 Language models are probability distributions over sequences of words, tokens or characters (Shannon, 1948, 1951). This task, often framed as next token prediction, has long been considered a core problem in natural language processing (Bahl et al., 1983; Brown et al., 1990). Because Turing (1950) proposed to measure machine intelligence by using language through the “imitation game”, language modeling has been proposed as a benchmark to measure progress toward artificial intelligence (Mahoney, 1999).
+
+语言模型是对单词、标记或字符序列的概率分布（Shannon，1948年，1951年）。这个任务通常被定义为下一个标记预测，长期以来一直被认为是自然语言处理领域的核心问题（Bahl 等人，1983年；Brown 等人，1990年）。自从图灵（1950年）通过“模仿游戏”提议使用语言来衡量机器智能以来，语言建模就被提议作为衡量人工智能进步的基准（Mahoney，1999年）。
 
 ## 8 Conclusion
 
