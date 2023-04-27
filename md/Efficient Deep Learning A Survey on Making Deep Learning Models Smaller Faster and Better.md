@@ -195,9 +195,33 @@ The promise with such extreme quantization approaches is the theoretical 32/1 = 
 
 To be able to get latency improvements with quantized networks, the math operations have to be done in fixed-point representations too. This means all intermediate layer inputs and outputs are also in fixed-point, and there is no need to dequantize the weight matrices since they can be used directly along with the inputs.
 
+要通过量化网络获得延迟改进，数学运算也必须使用定点表示。这意味着所有中间层输入和输出也都是定点表示，而且不需要将权重矩阵去量化，因为它们可以直接与输入一起使用。
+
+Vanhoucke et al. [136] demonstrated a 3× inference speedup using a fully fixed-point model on an x86 CPU, when compared to a floating-point model on the same CPU, without sacrificing accuracy. The weights are still quantized similar to post-training quantization; however, all layer inputs (except the first layer) and the activations are fixed-point. In terms of performance, the primary driver for this improvement was the availability of fixed-point SIMD instructions in Intel’s SSE4 instruction set [35], where commonly used building-block operations like the Multiply- Accumulate (MAC) [34] can be parallelized. Since the paper was published, Intel has released two more iterations of these instruction sets [31], which might further improve the speedups.
+
+Vanhoucke等人在一篇论文中展示了一个完全定点模型相较于同一CPU上的浮点模型，使用x86 CPU可以实现3倍的推理速度提升，而不会影响准确性。权重仍然像训练后量化那样被量化；但是，除了第一层之外，所有层的输入和激活都是定点表示的。在性能方面，这种改进的主要驱动力是Intel SSE4指令集中的定点SIMD指令的可用性，其中常用的构建块操作如乘加（MAC）[34]可以并行化。自该论文发表以来，英特尔已经发布了两个更高版本的这些指令集[31]，这可能会进一步提高速度。
+
+The network that Vanhoucke et al. [136] mention was a five-layer feed-forward network that was post-training quantized. However, post-training quantization can lead to quality loss during inference as highlighted in other works [67, 75, 139] as the networks become more complex. These could be because of (1) outlier weights that skew the computation of the quantized values for the entire input range toward the outliers, leading to fewer bits being allocated to the bulk of the range, or (2) different distribution of weights within the weight matrix— for example, within a convolutional layer, the distribution of weights between each filter might be different, but they are quantized the same way. These effects might be more pronounced at low bit widths due to an even worse loss of precision.
+Vanhoucke 等人[136]提到的网络是一个经过后训练量化的五层前馈网络。然而，后训练量化可能会导致推理过程中的质量损失，正如其他一些工作[67，75，139]所强调的，因为网络变得更加复杂。这可能是由于以下原因：（1）异常权重使整个输入范围的量化值的计算向异常值倾斜，导致范围的大部分分配的位数较少；（2）权重矩阵内部的权重分布不同——例如，在卷积层中，每个滤波器之间的权重分布可能不同，但它们是以相同的方式量化的。这些效应在低位宽时可能更加明显，因为精度损失更严重。
+
+Jacob et al. [67] propose (and further detailed by Krishnamoorthi [75]) a training regime that is quantization-aware. In this setting, the training happens in floating-point but the forward-pass simulates the quantization behavior during inference. Both weights and activations are passed through a function that simulates this quantization behavior (fake-quantized is the term used by many works [67, 75]) (Figure 7).
+Jacob等人（引用文献67）提出了一个量化感知的训练方案，由Krishnamoorthi进一步详细阐述[引用文献75]。在这种情况下，训练是在浮点数下进行的，但正向传递模拟了推理时的量化行为。权重和激活值都通过一个函数进行传递，这个函数模拟了量化行为（许多工作使用“假量化”这个术语[引用文献67，75]）（图7）。
+
+Quantization-Aware Training (QAT) allows the network to adapt to tolerate the noise introduced by the clamping and rounding behavior during inference. Once the network is trained, tools such as the TFLite Model Converter [12] can generate the appropriate fixed-point inference model from a network annotated with the quantization nodes.
+量化感知训练（QAT）允许网络适应推理过程中引入的夹紧和舍入行为带来的噪声。一旦网络被训练好了，像TFLite模型转换器[引用文献12]这样的工具就可以从带有量化节点注释的网络中生成适当的定点推理模型。
+
+Results. Table 2 presents a comparison between the baseline floating-point model, post-training quantized, and QAT models [11]. The model with post-training quantization gets close to the baseline, but there is still a significant accuracy difference. The model size is 4× smaller, but the latency is slightly higher due to the need to dequantize the weights during inference. The model with 8- bit QAT gets quite close to the baseline floating-point model while requiring 4× less disk space and being 1.64× faster. To summarize, we recommend evaluating standard 8-bit QAT for your networks, since the resulting model quality is comparable to floating-point models, and there is broad support for faster inference with 8-bit models.
+结果。表2展示了基准浮点模型、训练后量化模型和QAT模型[引用文献11]之间的比较。训练后量化的模型接近基准模型，但仍存在显著的准确度差异。模型大小缩小了4倍，但由于推理时需要对权重进行去量化，所以延迟略高。8位QAT模型非常接近基准浮点模型，同时需要4倍少的磁盘空间，并且速度快1.64倍。总之，我们建议对您的网络评估标准的8位QAT，因为所得到的模型质量与浮点模型相当，而且支持使用8位模型进行更快的推理。
+
 #### 3.1.3 Other Compression Techniques
 
+There are other compression techniques like low-rank decomposition [146] and weight sharing via k-means clustering [53], which are also actively being used for model compression [103] and might be suitable for further compressing hotspots in a model.
+还有其他的压缩技术，如低秩分解[引用文献146]和通过k-means聚类实现权重共享[引用文献53]，这些技术也被积极用于模型压缩[引用文献103]，并且可能适用于进一步压缩模型中的热点区域。
+
 ### 3.2 Learning Techniques
+
+Learning techniques try to train a model differently to obtain better quality metrics (accuracy, F1 score, precision, recall, etc.). The improvement in quality can sometimes be traded off for a smaller footprint by reducing the number of parameters/layers in the model and achieving the same baseline quality with a smaller model (see Section 4). An incentive of paying attention to learning techniques is that they need to be applied only during the training phase, without impacting the inference.
+学习技术试图以不同的方式训练模型，以获得更好的质量度量（准确性、F1得分、精度、召回率等）。通过减少模型中的参数/层数量并使用较小的模型达到相同的基准质量，有时可以通过牺牲质量的提高来换取更小的占用空间（参见第4节）。关注学习技术的一个好处是，它们只需要在训练阶段应用，而不会影响推理过程。
 
 #### 3.2.1 Distillation
 
