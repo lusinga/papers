@@ -1,6 +1,6 @@
 # Chain-of-Thought Prompting Elicits Reasoning in Large Language Models
 
-- JasonWei 
+- Jason Wei 
 - Xuezhi Wang 
 - Dale Schuurmans 
 - Maarten Bosma
@@ -85,13 +85,91 @@ Chain-of-thought prompting has several attractive properties as an approach for 
 思维链提示作为一种促进语言模型推理的方法，具有几个有吸引力的特点。
 
 - First, chain of thought, in principle, allows models to decompose multi-step problems into intermediate steps, which means that additional computation can be allocated to problems that require more reasoning steps.
-- 首先，思维链原则上允许模型将多步问题分解成中间步骤，这意味着可以为需要更多推理步骤的问题分配更多的计算资源。
+首先，思维链原则上允许模型将多步问题分解成中间步骤，这意味着可以为需要更多推理步骤的问题分配更多的计算资源。
 
 - Second, a chain of thought provides an interpretable window into the behavior of the model, suggesting how it might have arrived at a particular answer and providing opportunities to debug where the reasoning path went wrong (although fully characterizing a model’s computations that support an answer remains an open question).
-- 其次，一条思路为模型的行为提供了一个可解释的窗口，提示它可能如何得出一个特定的答案，并提供机会调试推理路径出错的地方（尽管完全描述支持答案的模型的计算仍然是一个开放的问题）。
+其次，一条思路为模型的行为提供了一个可解释的窗口，提示它可能如何得出一个特定的答案，并提供机会调试推理路径出错的地方（尽管完全描述支持答案的模型的计算仍然是一个开放的问题）。
 
+- Third, chain-of-thought reasoning can be used for tasks such as math word problems, commonsense reasoning, and symbolic manipulation, and is potentially applicable (at least in principle) to any task that humans can solve via language.
+第三，思维链推理可以用于数学应用题、常识推理和符号操作等任务，并且在原则上可能适用于任何人类可以通过语言解决的任务。
+
+- Finally, chain-of-thought reasoning can be readily elicited in sufficiently large off-the-shelf language models simply by including examples of chain of thought sequences into the exemplars of few-shot prompting.
+最后，通过将思维链序列的示例包含在几次提示的示例中，足够大的现成语言模型可以轻松引发思维链推理。
 
 ## 3 Arithmetic Reasoning
+
+We begin by considering math word problems of the form in Figure 1, which measure the arithmetic reasoning ability of language models. Though simple for humans, arithmetic reasoning is a task where language models often struggle (Hendrycks et al., 2021; Patel et al., 2021, inter alia). Strikingly, chainof- thought prompting when used with the 540B parameter language model performs comparably with task-specific finetuned models on several tasks, even achieving new state of the art on the challenging GSM8K benchmark (Cobbe et al., 2021).
+我们首先考虑图1中的数学词问题，它们衡量了语言模型的算术推理能力。虽然这对人类来说很简单，但算术推理是语言模型经常遇到困难的任务（例如Hendrycks等人，2021年; Patel等人，2021年）。令人惊讶的是，当与540B参数语言模型一起使用时，"思维链提示"在多项任务上的表现与特定任务的微调模型相当，甚至在具有挑战性的GSM8K基准测试中实现了新的最佳表现（Cobbe等人，2021年）。
+
+### 3.1 Experimental Setup
+
+We explore chain-of-thought prompting for various language models on multiple benchmarks.
+我们在多个基准测试中探索了思维链提示技术在不同语言模型上的应用。
+
+#### Benchmarks
+
+We consider the following five math word problem benchmarks: (1) the GSM8K benchmark of math word problems (Cobbe et al., 2021), (2) the SVAMP dataset of math word problems with varying structures (Patel et al., 2021), (3) the ASDiv dataset of diverse math word problems (Miao et al., 2020), (4) the AQuA dataset of algebraic word problems, and (5) the MAWPS benchmark (Koncel-Kedziorski et al., 2016). Example problems are given in Appendix Table 12.
+我们考虑以下五个数学词问题基准测试：(1) 数学词问题的GSM8K基准测试（Cobbe等人，2021），(2) 含有不同结构数学词问题的SVAMP数据集（Patel等人，2021），(3) 多样化数学词问题的ASDiv数据集（Miao等人，2020），(4) 代数词问题的AQuA数据集，以及(5) MAWPS基准测试（Koncel-Kedziorski等人，2016）。示例问题在附录表12中给出。
+
+#### Standard prompting
+
+For the baseline, we consider standard few-shot prompting, popularized by Brown et al. (2020), in which a language model is given in-context exemplars of input–output pairs before outputting a prediction for a test-time example. Exemplars are formatted as questions and answers. The model gives the answer directly, as shown in Figure 1 (left). 
+作为基准线，我们考虑标准的少样本提示技术，这种技术由Brown等人（2020）推广，其中语言模型在输出测试样例的预测之前被提供了输入输出对的上下文示例。示例被格式化为问题和答案。模型直接给出答案，如图1（左侧）所示。
+
+#### Chain-of-thought prompting
+
+Our proposed approach is to augment each exemplar in few-shot prompting with a chain of thought for an associated answer, as illustrated in Figure 1 (right). As most of the datasets only have an evaluation split, we manually composed a set of eight few-shot exemplars with chains of thought for prompting—Figure 1 (right) shows one chain of thought exemplar, and the full set of exemplars is given in Appendix Table 20. (These particular exemplars did not undergo prompt engineering; robustness is studied in Section 3.4 and Appendix A.2.) To investigate whether chain-of-thought prompting in this form can successfully elicit successful reasoning across a range of math word problems, we used this single set of eight chain of thought exemplars for all benchmarks except AQuA, which is multiple choice instead of free response. For AQuA, we used four exemplars and solutions from the training set, as given in Appendix Table 21.
+我们提出的方法是在少样本提示中为每个示例增加一系列思路链，以及其相关答案，如图1（右）所示。由于大多数数据集只有一个评估集，我们手动构建了一个包含八个少样本示例的提示思路链集合——图1（右）展示了一个思路链示例，完整的示例集合在附录表格20中给出。（这些特定的示例并未经过提示工程处理；鲁棒性研究在第3.4节和附录A.2中进行。）为了调查这种形式的思路链提示能否成功地引出各种数学问题的成功推理，我们将这一套八个思路链样例集合用于所有基准测试，除了AQuA，因为AQuA是多项选择而不是自由回答。对于AQuA，我们使用了训练集中的四个示例和解决方案，如附录表格21所示。
+
+#### Language models
+
+We evaluate five large language models. The first is GPT-3 (Brown et al., 2020), for which we use text-ada-001, text-babbage-001, text-curie-001, and text-davinci-002, which presumably correspond to InstructGPT models of 350M, 1.3B, 6.7B, and 175B parameters (Ouyang et al., 2022).The second is LaMDA (Thoppilan et al., 2022), which has models of 422M, 2B, 8B, 68B, and 137B parameters. The third is PaLM, which has models of 8B, 62B, and 540B parameters. The fourth is UL2 20B (Tay et al., 2022), and the fifth is Codex (Chen et al., 2021, code-davinci-002 in the OpenAI API). We sample from the models via greedy decoding (though follow-up work shows chain-of-thought prompting can be improved by taking the majority final answer over many sampled generations (Wang et al., 2022a)). For LaMDA, we report averaged results over five random seeds, where each seed had a different randomly shuffled order of exemplars. As LaMDA experiments did not show large variance among different seeds, to save compute we report results for a single exemplar order for all other models. 
+
+我们评估了五个大型语言模型。第一个是GPT-3（Brown等，2020），我们使用text-ada-001，text-babbage-001，text-curie-001和text-davinci-002，这些模型据说对应于InstructGPT模型的350M、1.3B、6.7B和175B个参数（Ouyang等，2022）。第二个是LaMDA（Thoppilan等，2022），它有422M、2B、8B、68B和137B个参数的模型。第三个是PaLM，它有8B、62B和540B个参数的模型。第四个是UL2 20B（Tay等，2022），第五个是Codex（Chen等，2021，在OpenAI API中为code-davinci-002）。我们通过贪心解码从模型中采样（尽管后续工作表明，通过对许多采样生成的大多数最终答案进行取舍，思路链提示可以得到改进（Wang等，2022a））。对于LaMDA，我们对五个随机种子进行平均结果报告，每个种子都有一个不同的随机排序的示例集。由于LaMDA实验在不同种子之间没有显示出很大的差异，为了节省计算资源，我们为所有其他模型报告一个示例顺序的结果。
+
+### 3.2 Results
+
+The strongest results of chain-of-thought prompting are summarized in Figure 4, with all experimental outputs for each model collection, model size, and benchmark shown in Table 2 in the Appendix. There are three key takeaways. First, Figure 4 shows that chain-of-thought prompting is an emergent ability of model scale (Wei et al., 2022b). That is, chain-of-thought prompting does not positively impact performance for small models, and only yields performance gains when used with models of ~100B parameters. We qualitatively found that models of smaller scale produced fluent but illogical chains of thought, leading to lower performance than standard prompting.
+思路链提示的最强结果总结在图4中，每个模型集合、模型大小和基准测试的所有实验输出在附录表2中显示。有三个关键的发现。首先，图4显示，思路链提示是模型规模的一种新兴能力（Wei等，2022b）。也就是说，思路链提示对于小型模型没有积极影响，只有在使用大约100B参数的模型时才能产生性能提升。我们在定性上发现，规模较小的模型会产生流畅但不合逻辑的思路链，导致性能低于标准提示。
+
+- JasonWei, Yi Tay, Rishi Bommasani, Colin Raffel, Barret Zoph, Sebastian Borgeaud, Dani Yogatama, Maarten Bosma, Denny Zhou, Donald Metzler, et al. 2022b. Emergent abilities of large language models. Transactions on Machine Learning Research.
+
+
+Second, chain-of-thought prompting has larger performance gains for more-complicated problems. For instance, for GSM8K (the dataset with the lowest baseline performance), performance more than doubled for the largest GPT and PaLM models. On the other hand, for SingleOp, the easiest subset of MAWPS which only requires a single step to solve, performance improvements were either negative or very small (see Appendix Table 3).
+其次，思路链提示对于更复杂的问题具有更大的性能提升。例如，对于GSM8K（基线性能最低的数据集），最大的GPT和PaLM模型的性能提高了一倍以上。另一方面，对于SingleOp，MAWPS的最简单子集，只需要一步即可解决，性能提升要么为负，要么非常小（见附录表3）。
+
+Third, chain-of-thought prompting via GPT-3 175B and PaLM 540B compares favorably to prior state of the art, which typically finetunes a task-specific model on a labeled training dataset. Figure 4 shows how PaLM 540B uses chain-ofthought prompting to achieve new state of the art on GSM8K, SVAMP, and MAWPS (though note that standard prompting already passed the prior best for SVAMP). On the other two datasets, AQuA and ASDiv, PaLM with chain-of-thought prompting reaches within 2% of the state of the art (Appendix Table 2).
+第三，通过GPT-3 175B和PaLM 540B的思维链提示，与以往的最先进技术相比表现出色，以往的技术通常在标记的训练数据集上微调特定任务的模型。图4展示了PaLM 540B如何使用思维链提示在GSM8K、SVAMP和MAWPS上实现新的最先进技术（尽管请注意，标准提示已经超过了SVAMP的先前最佳表现）。在另外两个数据集AQuA和ASDiv上，具有思维链提示的PaLM达到了最先进水平的接近2％（附录表2）。
+
+To better understand why chain-of-thought prompting works, we manually examined modelgenerated chains of thought by LaMDA 137B for GSM8K. Of 50 random examples where the model returned the correct final answer, all of the generated chains of thought were also logically and mathematically correct except two that coincidentally arrived at the correct answer (see Appendix D.1, and Table 8 for examples of correct model-generated chains of thought). We also randomly examined 50 random samples for which the model gave the wrong answer. The summary of this analysis is that 46% of the chains of thought were almost correct, barring minor mistakes (calculator error, symbol mapping error, or one reasoning step missing), and that the other 54% of the chains of thought had major errors in semantic understanding or coherence (see Appendix D.2). To provide a small insight into why scaling improves chain-of-thought reasoning ability, we performed a similar analysis of errors made by PaLM 62B and whether those errors were fixed by scaling to PaLM 540B. The summary is that scaling PaLM to 540B fixes a large portion of one-step missing and semantic understanding errors in the 62B model (see Appendix A.1).
+为了更好地理解为什么思维链提示有效，我们手动检查了LaMDA 137B生成的GSM8K思维链。在50个随机示例中，模型返回正确的最终答案，除了两个巧合地到达正确答案的思维链之外，所有生成的思维链都是逻辑上和数学上正确的（请参见附录D.1和表8，其中列出了正确的模型生成思维链的示例）。我们还随机检查了50个模型给出错误答案的样本。这项分析的总结是，46％的思维链几乎是正确的，除了一些小错误（计算器错误、符号映射错误或缺少一步推理），而另外54％的思维链在语义理解或连贯性方面存在重大错误（请参见附录D.2）。
+
+为了提供一些关于为什么扩大规模可以提高思维链推理能力的见解，我们对PaLM 62B所犯的错误以及这些错误是否通过扩大规模至PaLM 540B而得到纠正进行了类似的分析。总结是，将PaLM扩大至540B可以纠正62B模型中大部分缺少一步推理和语义理解错误（请参见附录A.1）。
+
+### 3.3 Ablation Study
+
+The observed benefits of using chain-of-thought prompting raises the natural question of whether the same performance improvements can be conferred via other types of prompting. Figure 5 shows an ablation study with three variations of chain of thought described below.
+使用思维链提示所观察到的好处引发了一个自然的问题，即是否可以通过其他类型的提示来获得相同的性能改进。图5展示了一个消融研究，其中包括三个思维链提示的变体，这些变体的描述如下。
+
+#### Equation only
+
+One reason for why chain-of-thought prompting might help is that it produces the mathematical equation to be evaluated, and so we test a variation where the model is prompted to output only a mathematical equation before giving the answer. Figure 5 shows that equation only prompting does not help much for GSM8K, which implies that the semantics of the questions in GSM8K are too challenging to directly translate into an equation without the natural language reasoning steps in chain of thought. For datasets of one-step or two-step problems, however, we find that equation only prompting does improve performance, since the equation can be easily derived from the question (see Appendix Table 6). 
+思维链提示可能有用的原因之一是它产生要评估的数学方程式，因此我们测试了一种变体，在该变体中，模型在给出答案之前只被提示输出一个数学方程式。图5显示，对于GSM8K，仅方程提示并没有太大的帮助，这意味着GSM8K中的问题语义太具有挑战性，无法直接将其转化为方程式，而没有思维链中的自然语言推理步骤。然而，对于一步或两步问题的数据集，我们发现仅方程提示确实提高了性能，因为可以轻松地从问题中推导出方程式（请参见附录表6）。
+
+#### Variable compute only
+
+Another intuition is that chain of thought allows the model to spend more computation (i.e., intermediate tokens) on harder problems. To isolate the effect of variable computation from chain-of-thought reasoning, we test a configuration where the model is prompted to output a only sequence of dots (: : :) equal to the number of characters in the equation needed to solve the problem. This variant performs about the same as the baseline, which suggests that variable computation by itself is not the reason for the success of chainof- thought prompting, and that there appears to be utility from expressing intermediate steps via natural language.
+另一种想法是，思维链允许模型在更难的问题上花费更多的计算资源（即中间标记）。为了隔离变量计算量和思维链推理的影响，我们测试了一种配置，其中模型被提示仅输出一个由（: : :)组成的点序列，该序列的长度等于解决问题所需的方程式中的字符数。这个变体的表现与基线差不多，这表明变量计算本身并不是思维链提示成功的原因，而自然语言表达中间步骤似乎有用。
+
+#### Chain of thought after answer
+
+Another potential benefit of chain-of-thought prompting could simply be that such prompts allow the model to better access relevant knowledge acquired during pretraining. Therefore, we test an alternative configuration where the chain of thought prompt is only given after the answer, isolating whether the model actually depends on the produced chain of thought to give the final answer. This variant performs about the same as the baseline, which suggests that the sequential reasoning embodied in the chain of thought is useful for reasons beyond just activating knowledge.
+思维链提示的另一个潜在好处可能仅仅是这样的提示允许模型更好地访问预训练时获得的相关知识。因此，我们测试了一种替代配置，其中思维链提示仅在答案之后给出，以隔离模型实际是否依赖所生成的思维链来给出最终答案。这个变种的表现与基线差不多，这表明思维链中体现的顺序推理具有超出激活知识之外的其他有用性质。
+
+### 3.4 Robustness of Chain of Thought
+
+Sensitivity to exemplars is a key consideration of prompting approaches—for instance, varying the permutation of few-shot exemplars can cause the accuracy of GPT-3 on SST-2 to range from near chance (54.3%) to near state of the art (93.4%) (Zhao et al., 2021). In this final subsection, we evaluate robustness to chains of thought written by different annotators. In addition to the results above, which used chains of thought written by an Annotator A, two other co-authors of this paper (Annotators B and C) independently wrote chains of thought for the same few-shot exemplars (shown in Appendix H). Annotator A also wrote another chain of thought that was more concise than the original, following the style of solutions given in Cobbe et al. (2021).
+对样本的敏感性是提示方法的关键考虑因素——例如，改变几个示例的排列顺序会导致GPT-3在SST-2上的准确率从接近随机（54.3％）到接近最优状态（93.4％）（Zhao等，2021）。在本文的最后一小节中，我们评估了对不同注释者编写的思考链的鲁棒性。除了上面的结果，即使用注释者A编写的思考链之外，本文的另外两位合著者（注释者B和C）也独立地为相同的几个示例编写了思考链（详见附录H）。注释者A还按照Cobbe等人（2021）给出的解决方案风格，编写了比原始版本更简洁的思考链。
 
 ## 4 Commonsense Reasoning
 
