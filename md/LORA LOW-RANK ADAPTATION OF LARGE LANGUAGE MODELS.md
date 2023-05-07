@@ -29,11 +29,18 @@ Many sought to mitigate this by adapting only some parameters or learning extern
 
 We take inspiration from Li et al. (2018a); Aghajanyan et al. (2020) which show that the learned over-parametrized models in fact reside on a low intrinsic dimension. We hypothesize that the change in weights during model adaptation also has a low “intrinsic rank”, leading to our proposed Low-Rank Adaptation (LoRA) approach. LoRA allows us to train some dense layers in a neural network indirectly by optimizing rank decomposition matrices of the dense layers’ change during adaptation instead, while keeping the pre-trained weights frozen, as shown in Figure 1. Using GPT-3 175B as an example, we show that a very low rank (i.e., r in Figure 1 can be one or two) suffices even when the full rank (i.e., d) is as high as 12,288, making LoRA both storage- and compute-efficient.
 
-我们受到Li等人(2018a)和Aghajanyan等人(2020)的启发，这些人表明，实际上过度参数化的模型存在低内在维度。我们假设模型适应期间权重的变化也具有低“内在秩”，从而引出我们提出的低秩适应（LoRA）方法。LoRA允许我们通过优化密集层的秩分解矩阵来间接训练神经网络中的一些密集层，而保持预训练权重不变，如图1所示。以GPT-3 175B为例，我们展示了即使完整秩（即d）高达12,288，使用很低的秩（即图1中的r可以是一或两）也足够了，这使得LoRA在存储和计算效率方面都非常高。
+我们受到Li等人(2018a)和Aghajanyan等人(2020)的启发，这些人表明，实际上过度参数化的模型存在低内在维度。我们假设模型适应期间权重的变化也具有低“内在秩”，从而引出我们提出的低秩适应（LoRA）方法。LoRA允许我们通过优化密集层的秩分解矩阵来间接训练神经网络中的一些密集层，而保持预训练权重不变，如图1所示。以GPT-3 175B为例，我们展示了即使完整秩（即d）高达12,288，使用很低的秩（即图1中的r可以是1或2）也足够了，这使得LoRA在存储和计算效率方面都非常高。
 
 LoRA possesses several key advantages.
 
+A pre-trained model can be shared and used to build many small LoRA modules for different tasks. We can freeze the shared model and efficiently switch tasks by replacing the matrices A and B in Figure 1, reducing the storage requirement and task-switching overhead significantly.
+一种预训练模型可以共享并用于构建许多不同任务的小型LoRA模块。我们可以冻结共享模型并通过替换图1中的矩阵A和B来高效地切换任务，从而显著减少存储需求和任务切换开销。
 
+LoRA makes training more efficient and lowers the hardware barrier to entry by up to 3 times when using adaptive optimizers since we do not need to calculate the gradients or maintain the optimizer states for most parameters. Instead, we only optimize the injected, much smaller low-rank matrices.
+LoRA通过注入优化后的秩分解矩阵，将预训练模型参数冻结，减少了下游任务的可训练参数数量，使得训练更加高效，并且在使用适应性优化器时，降低了硬件进入门槛，最多可降低3倍，因为我们不需要计算大多数参数的梯度或维护优化器状态，而是仅优化注入的、远小于原参数量的秩分解矩阵。
+
+Our simple linear design allows us to merge the trainable matrices with the frozen weights when deployed, introducing no inference latency compared to a fully fine-tuned model, by construction.
+我们的简单线性设计允许我们在部署时将可训练矩阵与冻结的权重合并，与完全微调模型相比，通过构造不会引入推理延迟。
 
 ## 2 PROBLEM STATEMENT
 
