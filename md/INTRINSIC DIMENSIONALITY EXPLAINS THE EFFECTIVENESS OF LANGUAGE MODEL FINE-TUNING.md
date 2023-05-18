@@ -1,0 +1,10 @@
+# INTRINSIC DIMENSIONALITY EXPLAINS THE EFFECTIVENESS OF LANGUAGE MODEL FINE-TUNING
+
+## ABSTRACT
+
+Although pretrained language models can be fine-tuned to produce state-of-theart results for a very wide range of language understanding tasks, the dynamics of this process are not well understood, especially in the low data regime. Why can we use relatively vanilla gradient descent algorithms (e.g., without strong regularization) to tune a model with hundreds of millions of parameters on datasets with only hundreds or thousands of labeled examples? In this paper, we argue that analyzing fine-tuning through the lens of intrinsic dimension provides us with empirical and theoretical intuitions to explain this remarkable phenomenon. We empirically show that common pre-trained models have a very low intrinsic dimension; in other words, there exists a low dimension reparameterization that is as effective for fine-tuning as the full parameter space. For example, by optimizing only 200 trainable parameters randomly projected back into the full space, we can tune a RoBERTa model to achieve 90% of the full parameter performance levels on MRPC. Furthermore, we empirically show that pre-training implicitly minimizes intrinsic dimension and, perhaps surprisingly, larger models tend to have lower intrinsic dimension after a fixed number of pre-training updates, at least in part explaining their extreme effectiveness. Lastly, we connect intrinsic dimensionality with low dimensional task representations and compression based generalization bounds to provide intrinsic-dimension-based generalization bounds that are independent of the full parameter count.
+
+虽然预训练的语言模型可以微调，以产生非常广泛的语言理解任务的最先进的结果，但这个过程的动态性并不清楚，特别是在低数据情况下。为什么我们可以使用相对简单的梯度下降算法（例如，没有强正则化）来调整一个具有数亿个参数的模型，在只有几百或几千个标注样本的数据集上？在本文中，我们认为通过内在维度的视角来分析微调，可以为我们提供经验和理论上的直觉，来解释这种非凡的现象。我们凭经验表明，常见的预训练模型具有非常低的内在维度；换句话说，存在一个低维重参数化，它对于微调来说和完整的参数空间一样有效。例如，通过优化只有200个可训练参数随机投影回完整空间，我们可以调整一个RoBERTa模型，在MRPC上达到完整参数性能水平的90%。此外，我们凭经验表明，预训练隐含地最小化了内在维度，并且或许令人惊讶的是，在固定数量的预训练更新之后，较大的模型往往具有较低的内在维度，至少部分地解释了它们极端有效的原因。最后，我们将内在维度与低维任务表示和基于压缩的泛化界联系起来，提供了与完整参数数量无关的基于内在维度的泛化界。
+
+## 6 CONCLUSION
+
