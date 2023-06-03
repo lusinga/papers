@@ -95,17 +95,46 @@ $$
 
 定性评估：有时我们没有奖励函数可以用来定量评估智能体的行为（这种情况下我们的方法才是实际有用的）。在这些情况下，我们只能从定性上评估智能体如何满足人类的偏好。在本文中，我们将从自然语言表达的目标开始，要求人类根据智能体实现目标的表现对其行为进行评估，并展示智能体试图实现该目标的视频。
 
+Our model based on trajectory segment comparisons is very similar to the trajectory preference queries used in Wilson et al. (2012), except that we don’t assume that we can reset the system to an arbitrary state3 and so our segments generally begin from different states. This complicates the interpretation of human comparisons, but we show that our algorithm overcomes this difficulty even when the human raters have no understanding of our algorithm.
+
+我们基于轨迹段对比的模型与Wilson等人（2012）中使用的轨迹偏好查询非常相似，不同的是我们并未假设能够将系统重置到任意状态，因此我们的段通常从不同的状态开始。这使得对人类比较的解释变得复杂，但我们展示了即使在人类评价者对我们的算法一无所知的情况下，我们的算法也能克服这个困难。
+
 ### 2.2 Our Method
 
+At each point in time our method maintains a policy $\pi: \mathcal{O} \rightarrow \mathcal{A}$ and a reward function estimate $\hat{r}: \mathcal{O} \times \mathcal{A} \rightarrow \mathbb{R}$, each parametrized by deep neural networks.
+These networks are updated by three processes:
+1. The policy $\pi$ interacts with the environment to produce a set of trajectories $\left\{\tau^1, \ldots, \tau^i\right\}$. The parameters of $\pi$ are updated by a traditional reinforcement learning algorithm, in order to maximize the sum of the predicted rewards $r_t=\hat{r}\left(o_t, a_t\right)$.
+2. We select pairs of segments $\left(\sigma^1, \sigma^2\right)$ from the trajectories $\left\{\tau^1, \ldots, \tau^i\right\}$ produced in step 1, and send them to a human for comparison.
+3. The parameters of the mapping $\hat{r}$ are optimized via supervised learning to fit the comparisons collected from the human so far.
 
+在每个时间点，我们的方法都会维持一个由深度神经网络参数化的策略$\pi: \mathcal{O} \rightarrow \mathcal{A}$和奖励函数估计$\hat{r}: \mathcal{O} \times \mathcal{A} \rightarrow \mathbb{R}$。这些网络通过三个过程进行更新：
+
+1. 策略$\pi$与环境交互，生成一组轨迹$\left\{\tau^1, \ldots, \tau^i\right\}$。$\pi$的参数通过传统的强化学习算法进行更新，以最大化预测奖励$r_t=\hat{r}\left(o_t, a_t\right)$的总和。
+2. 我们从步骤1生成的轨迹$\left\{\tau^1, \ldots, \tau^i \right\}$中选择轨迹片段对$\left(\sigma^1, \sigma^2\right)$，并将它们发送给人类进行比较。
+3. 通过监督学习优化映射$\hat{r}$的参数，以适应到目前为止从人类收集到的比较数据。
+
+These processes run asynchronously, with trajectories flowing from process (1) to process (2), human comparisons flowing from process (2) to process (3), and parameters for $\hat{r}$ 
+flowing from process (3) to process (1). The following subsections provide details on each of these processes.
 
 #### 2.2.1 Optimizing the Policy
+
+After using $\hat{r}$ to compute rewards, we are left with a traditional reinforcement learning problem. We can solve this problem using any RL algorithm that is appropriate for the domain. One subtlety is that the reward function $\hat{r}$ may be non-stationary, which leads us to prefer methods which are robust to changes in the reward function. This led us to focus on policy gradient methods, which have been applied successfully for such problems (Ho and Ermon, 2016).
+
+在使用 $\hat{r}$ 计算奖励后，我们面临一个传统的强化学习问题。我们可以使用任何适合该领域的强化学习算法来解决这个问题。一个微妙之处在于，奖励函数 $\hat{r}$ 可能是非平稳的，这使得我们更倾向于选择对奖励函数变化具有鲁棒性的方法。这使我们关注到了策略梯度方法，这些方法已经成功应用于此类问题（Ho and Ermon, 2016）。
+
+In this paper, we use advantage actor-critic (A2C; Mnih et al., 2016) to play Atari games, and trust region policy optimization (TRPO; Schulman et al., 2015) to perform simulated robotics tasks. In each case, we used parameter settings which have been found to work well for traditional RL tasks. The only hyperparameter which we adjusted was the entropy bonus for TRPO. This is because TRPO relies on the trust region to ensure adequate exploration, which can lead to inadequate exploration if the reward function is changing.
+
+在本文中，我们使用优势演员-评论家（A2C；Mnih等，2016）来玩Atari游戏，并使用信任区域策略优化（TRPO；Schulman等，2015）来执行模拟机器人任务。在每种情况下，我们使用了在传统RL任务中表现良好的参数设置。我们调整的唯一超参数是TRPO的熵奖励。这是因为TRPO依赖于信任区域来确保充分的探索，如果奖励函数发生变化，这可能导致探索不足。
 
 #### 2.2.2 Preference Elicitation
 
 #### 2.2.3 Fitting the Reward Function
 
 #### 2.2.4 Selecting Queries
+
+We decide how to query preferences based on an approximation to the uncertainty in the reward function estimator, similar to Daniel et al. (2014): we sample a large number of pairs of trajectory segments of length k from the latest agent-environment interactions, use each reward predictor in our ensemble to predict which segment will be preferred from each pair, and then select those trajectories for which the predictions have the highest variance across ensemble members5 This is a crude approximation and the ablation experiments in Section 3 show that in some tasks it actually impairs performance. Ideally, we would want to query based on the expected value of information of the query (Akrour et al., 2012; Krueger et al., 2016), but we leave it to future work to explore this direction further.
+
+我们根据奖励函数估计器中的不确定性近似来决定如何查询偏好，类似于 Daniel et al. (2014)：我们从最近的智能体-环境交互中抽取大量长度为 k 的轨迹段对，使用我们整个集合中的每个奖励预测器来预测每对中哪个轨迹段会被偏好，然后选择那些在整个集合成员中具有最高方差的预测轨迹。这是一个粗略的近似，第3节中的消融实验表明，在某些任务中，这实际上会降低性能。理想情况下，我们希望根据查询的信息期望值来进行查询（Akrour et al., 2012; Krueger et al., 2016），但我们将在未来的工作中进一步探讨这个方向。
 
 ## 3 Experimental Results
 
