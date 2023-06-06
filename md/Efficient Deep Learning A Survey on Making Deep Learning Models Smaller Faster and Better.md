@@ -225,6 +225,10 @@ Learning techniques try to train a model differently to obtain better quality me
 
 #### 3.2.1 Distillation
 
+Ensembles are well known to help with generalization [55, 78]. The intuition is that this enables learning multiple independent hypotheses, which are likely to be better than learning a single hypothesis. Dietterich [40] goes over some of the standard ensembling methods, such as bagging (learning models that are trained on non-overlapping data and then ensembling them), boosting (learning models that are trained to fix the classification errors of other models in the ensemble), and averaging (voting by all the ensemble models). Buciluˇa et al. [22] used large ensembles to label synthetic data that they generated using various schemes. A smaller neural net is then trained to learn not just from the labeled data but also from this weakly labeled synthetic data. They found that single neural nets were able to mimic the performance of larger ensembles, while being 1, 000× smaller and faster. This demonstrated that it is possible to transfer the cumulative knowledge of ensembles to a single small model. However, it might not be sufficient to rely on just the existing labeled data.
+
+集成已被证明有助于泛化[55, 78]。直觉上，这使得学习多个独立的假设成为可能，这些假设很可能比学习单个假设更好。Dietterich [40]介绍了一些标准的集成方法，如bagging（学习在不重叠的数据上训练的模型，然后将它们集成），boosting（学习训练以修正集成中其他模型的分类错误的模型），和平均（由所有集成模型投票）。Buciluˇa等人[22]使用大型集成来标记他们使用各种方案生成的合成数据。然后训练一个较小的神经网络，不仅从标记的数据中学习，还从这些弱标记的合成数据中学习。他们发现，单个神经网络能够模仿大型集成的性能，同时比它们小和快1,000倍。这表明将集成的累积知识转移到单个小模型是可能的。然而，仅仅依赖现有的标记数据可能是不够的。
+
 #### 3.2.2 Data Augmentation
 
 #### 3.2.3 Self-Supervised Learning
