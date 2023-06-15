@@ -28,3 +28,231 @@ Currently there are many active efforts to address hallucination for various NLG
 
 ## 2 DEFINITIONS
 
+In the general context outside of NLP, hallucination is a psychological term referring to a particular type of perception [51, 118]. Blom [14] define hallucination as “a percept, experienced by a waking individual, in the absence of an appropriate stimulus from the extracorporeal world”. Simply put, a hallucination is an unreal perception that feels real. The undesired phenomenon of “NLG models generating unfaithful or nonsensical text” shares similar characteristics with such psychological hallucinations – explaining the choice of terminology. Hallucinated text gives the impression of being fluent and natural despite being unfaithful and nonsensical. It appears to be grounded in the real context provided, although it is actually hard to specify or verify the existence of such contexts. Similar to psychological hallucination, which is hard to tell apart from other “real” perceptions, hallucinated text is also hard to capture at first glance.
+
+在自然语言处理（NLP）之外的一般背景中，幻觉是指一种特定类型的知觉的心理学术语[51, 118]。Blom [14]将幻觉定义为“在没有来自实体世界的适当刺激的情况下，被清醒的个体体验到的感知”。简而言之，幻觉是一种虚幻的感知，但给人真实的感觉。所谓“自然语言生成模型生成不忠实或无意义的文本”这一不受欢迎的现象与心理幻觉有着相似的特点，这解释了使用这个术语的选择。幻觉文本给人以流畅和自然的印象，尽管它不忠实和无意义。它似乎以提供的真实背景为基础，尽管实际上很难具体说明或验证这种背景的存在。与心理幻觉类似，很难在一瞥之间区分幻觉文本与其他“真实”的感知。
+
+Within the context of NLP, the above definition of hallucination, the generated content that is nonsensical or unfaithful to the provided source content [50, 125, 140, 237], is the most inclusive and standard. However, there do exist variations in definition across NLG tasks, which will be further described in the later task-specific sections.
+
+在自然语言处理（NLP）的背景下，上述关于幻觉的定义，即生成的内容是无意义或不忠实于提供的源内容[50, 125, 140, 237]，是最全面和标准的定义。然而，在不同的自然语言生成（NLG）任务中，存在着对定义的变化，这将在后面的任务特定部分进一步描述。
+
+### 2.1 Categorization
+
+Following the categorization from previous works [41, 76, 125], there are two main types of hallucinations, namely intrinsic hallucination and extrinsic hallucination. To explain the definition and categorization more intuitively, we give examples of each category of hallucinations for each NLG downstream task in Table 1.
+
+根据先前的研究作品[41, 76, 125]的分类，幻觉可以分为两种主要类型，即内在幻觉和外在幻觉。为了更直观地解释定义和分类，我们在表格1中给出了每个NLG下游任务中每个幻觉类别的示例。
+
+(1) Intrinsic Hallucinations: The generated output that contradicts the source content. For instance, in the abstractive summarization task from Table 1, the generated summary “The first Ebola vaccine was approved in 2021” contradicts the source content “The first vaccine for Ebola was approved by the FDA in 2019.”.
+
+（1）内在幻觉：生成的输出与源内容相矛盾。例如，在表1中的抽象摘要任务中，生成的摘要“第一个埃博拉疫苗于2021年获得批准”与源内容“第一个埃博拉疫苗于2019年获得FDA批准”相矛盾。
+
+(2) Extrinsic Hallucinations: The generated output that cannot be verified from the source content (i.e., output that can neither be supported nor contradicted by the source). For example, in the abstractive summarization task from Table 1, the information “China has already started clinical trials of the COVID-19 vaccine.” is not mentioned in source. We can neither find evidence for the generated output from the source nor assert that it is wrong. Notably, the extrinsic hallucination is not always erroneous because it could be from factually correct external information [125, 181]. Such factual hallucination can be helpful because it recalls additional background knowledge to improve the informativeness of the generated text. However, in most of the literature, extrinsic hallucination is still treated with caution because its unverifiable aspect of this additional information increases the risk from a factual safety perspective.
+
+（2）外在幻觉：生成的输出无法从源内容中验证（即输出既不能被支持也不能被源内容所否定）。例如，在表1中的抽象摘要任务中，信息“中国已经开始COVID-19疫苗的临床试验”在源内容中没有提到。我们既无法从源内容中找到生成的输出的证据，也不能确定它是错误的。值得注意的是，外在幻觉并不总是错误的，因为它可能来自事实上正确的外部信息[125, 181]。这种事实性幻觉可能是有帮助的，因为它回忆起额外的背景知识，提高了生成文本的信息量。然而，在大多数文献中，外在幻觉仍然要谨慎对待，因为这种附加信息的不可验证性从事实安全的角度增加了风险。
+
+### 2.2 Task Comparison
+
+The previous subsection is about the definition and categorization of hallucination commonly shared by many NLG tasks. Yet, there are some task-specific differences.
+
+前面的小节介绍了许多自然语言生成（NLG）任务中共享的幻觉的定义和分类。然而，不同任务之间可能存在一些特定的差异。
+
+For the abstractive summarization, data-to-text, and dialogue tasks, the main difference is in what serves as the “source” and the level of tolerance towards hallucinations. The source in abstractive summarization is the input source text that is being summarized [165], while the source in data-totext is non-linguistic data [56, 157], and the source(s) in the dialogue system is dialogue history and/or the external knowledge sentences. Tolerance towards hallucinations is very low in both the summarization [139] and data-to-text tasks [140, 195, 199] because it is essential to provide faithful generation. In contrast, the tolerance is relatively higher in dialogue systems because the desired characteristics are not only faithfulness but also user engagement, especially in open-domain dialogue systems [75, 78].
+
+对于抽象摘要、数据到文本和对话任务，主要的区别在于“源”的定义以及对幻觉的容忍程度。在抽象摘要任务中，源是被摘要的输入源文本[165]；而在数据到文本任务中，源是非语言数据[56, 157]；在对话系统中，源可以是对话历史和/或外部知识句子。对幻觉的容忍程度在摘要和数据到文本任务中非常低[139, 140, 195, 199]，因为提供忠实的生成结果是至关重要的。相比之下，在对话系统中，对幻觉的容忍程度相对较高，因为期望的特性不仅是忠实度，还包括用户参与度，尤其是在开放域对话系统中[75, 78]。
+
+For the generative question answering (GQA) task, the exploration of hallucination is at its early stage, so there is no standard definition or categorization of hallucination yet. However, we can see that the GQA literature mainly focuses on “intrinsic hallucination” where the source is the world knowledge [102]. Lastly, unlike the aforementioned tasks, the categorizations of hallucinations in machine translation vary within the task. Most relevant literature agrees that translated text is considered a hallucination when the source text is completely disconnected from the translated target [95, 132, 153]. For further details, please refer to Section 11.
+
+对于生成式问答（GQA）任务，对幻觉的探索处于早期阶段，因此还没有标准的定义或分类。然而，我们可以看到GQA文献主要关注“内在幻觉”，其中源是世界知识[102]。最后，与前面提到的任务不同，机器翻译中幻觉的分类在任务内部存在变化。大多数相关文献认为，当源文本与翻译目标完全不相关时，翻译文本被视为幻觉[95, 132, 153]。更详细的信息，请参考第11节。
+
+### 2.3 Terminology Clarification
+
+Multiple terminologies are associated with the concept of hallucination. We provide clarification of the commonly used terminologies hallucination, faithfulness and factuality to resolve any confusion. Faithfulness is defined as staying consistent and truthful to the provided source – an antonym to "hallucination." Any work that tries to maximize faithfulness thus focuses on minimizing hallucination. For this reason, our survey includes all those works that address the faithfulness of machine generated outputs. Factuality refers to the quality of being actual or based on fact. Depending on what serves as the “fact”, "factuality" and "faithfulness" may or may not be the same. Maynez et al. [125] differentiate "factuality" from "faithfulness" by defining the “fact” to be the world knowledge. In contrast, Dong et al. [34] use the source input as the “fact” to determine the factual correctness, making "factuality" indistinguishable from "faithfulness". In this paper, we adopt the definition from Maynez et al. [125] because we believe having such distinction between source knowledge and world knowledge provides a more clear understanding.
+
+与幻觉概念相关的术语有多种。为了消除任何困惑，我们对常用术语“幻觉”、“忠实度”和“事实性”进行澄清。忠实度被定义为与提供的源内容保持一致和真实的程度，是“幻觉”的反义词。任何试图最大程度地提高忠实度的工作都着重于最小化幻觉。因此，我们的调查包括那些处理机器生成输出的忠实度的工作。
+
+事实性指的是实际的或基于事实的质量。根据“事实”的定义，“事实性”和“忠实度”可能相同，也可能不同。Maynez等人[125]通过将“事实”定义为世界知识来区分“事实性”和“忠实度”。相反，Dong等人[34]使用源输入作为“事实”来确定事实的正确性，使“事实性”与“忠实度”无法区分。在本文中，我们采用Maynez等人[125]的定义，因为我们认为在源知识和世界知识之间进行区分能够提供更清晰的理解。
+
+Note that the judging criteria for what is considered faithful or hallucinated (i.e., the definition of hallucination) can differ across tasks. For more details of these variation definitions, you can find in the later task-specific sections.
+
+需要注意的是，被认为是忠实的或幻觉的（即幻觉的定义）的评判标准在不同任务中可能会有所不同。关于这些不同定义的详细信息，您可以在后面的任务特定部分找到。
+
+## 3 CONTRIBUTORS TO HALLUCINATION IN NLG
+
+### 3.1 Hallucination from Data
+
+The main cause of hallucination from data is source-reference divergence. This divergence happens
+
+1） as an artifact of heuristic data collection or 2) due to the nature of some NLG tasks that inevitably contain such divergence. When a model is trained on data with source-reference(target) divergence, the model can be encouraged to generate text that is not necessarily grounded and not faithful to the provided source.
+
+数据导致幻觉的主要原因是源参考之间的差异。这种差异发生在以下两种情况下：
+
+1） 作为启发式数据收集的产物，或者
+2） 由于某些不可避免的自然语言生成任务的性质，这些任务中会存在这种差异。
+
+当模型在具有源参考差异的数据上进行训练时，模型可能会生成与提供的源内容不一致、不忠实的文本。
+
+Heuristic data collection. When collecting large-scale datasets, some works heuristically select and pair real sentences or tables as the source and target [94, 207]. As a result, the target reference may contain information that cannot be supported by the source [140, 194]. For instance, when constructing WIKIBIO [94], a dataset for generating biographical notes based on the infoboxes of Wikipedia, the authors took the Wikipedia infobox as the source and the first sentence of the Wikipedia page as the target ground-truth reference. However, the first sentence of the Wikipedia article is not necessarily equivalent to the infobox in terms of the information they contain. Indeed, Dhingra et al. [30] points out that 62% of the first sentences in WIKIBIO have additional information not stated in the corresponding infobox. Such mismatch between source and target in datasets can lead to hallucination.
+
+启发式数据收集。在收集大规模数据集时，有些工作会启发式地选择并匹配真实的句子或表格作为源和目标[94,207]。因此，目标参考可能包含源无法支持的信息[140,194]。例如，在构建基于维基百科信息框的传记笔记生成数据集WIKIBIO时[94]，作者将维基百科信息框作为源，将维基百科页面的第一句话作为目标真实参考。然而，维基百科文章的第一句话并不一定在信息内容上等同于信息框。事实上，Dhingra等人[30]指出，WIKIBIO的62%第一句话中都包含未在相应信息框中说明的额外信息。这种数据集中源和目标之间的不匹配可能会导致产生幻觉。
+
+Another problematic scenario is when duplicates from the dataset are not properly filtered out. It is almost impossible to check hundreds of gigabytes of text corpora manually. Lee et al. [96] show that duplicated examples from the pretraining corpus bias the model to favor generating repeats of the memorized phrases from the duplicated examples.
+
+另一个问题场景是未能正确过滤数据集中的重复内容。手动检查数百千兆字节的文本语料库几乎是不可能的任务。Lee等人[96]指出，来自预训练语料库的重复示例会导致模型偏向于生成重复的、来自重复示例中记忆短语的输出。
+
+Innate divergence. Some NLG tasks by nature do not always have factual knowledge alignment between the source input text and the target reference, especially those that value diversity in generated output. For instance, it is acceptable for open-domain dialogue systems to respond in chit-chat style, subjective style [152], or with a relevant fact that is not necessarily present in the user input, history or provided knowledge source – this improves the engagingness and diversity of the dialogue generation. However, researchers have discovered that such dataset characteristic leads to inevitable extrinsic hallucinations.
+
+内在差异。由于某些自然语言生成任务的性质，源输入文本和目标参考之间并不总是具有事实知识的一致性，尤其是那些在生成输出中重视多样性的任务。例如，对于开放领域的对话系统，以闲聊风格、主观风格[152]或提供的知识源中不一定存在的相关事实进行回应是可以接受的——这提高了对话生成的参与度和多样性。然而，研究人员发现，这样的数据集特征不可避免地导致了外在幻觉的出现。
+
+### 3.2 Hallucination from Training and Inference
+
+As discussed in the previous subsection, source-reference divergence existing in dataset is one of the contributors of hallucination. However, Parikh et al. [140] show that hallucination problem still occurs even when there is very little divergence in dataset. This is because there is another contributor of hallucinations – training and modeling choices of neural models [85, 153, 159, 190].
+
+如前一小节所讨论的，数据集中存在的源参考差异是幻觉问题的一个因素。然而，Parikh等人[140]表明，即使数据集中几乎没有差异，幻觉问题仍然存在。这是因为神经模型的训练和建模选择是幻觉产生的另一个因素[85, 153, 159, 190]。
+
+Imperfect representation learning. The encoder has the role of comprehending and encoding input text into meaningful representations. An encoder with a defective comprehension ability could influence the degree of hallucination [140]. When encoders learn wrong correlations between different parts of the training data, it could result in erroneous generation that diverges from the input [3, 49, 103, 184].
+
+不完善的表示学习。编码器的作用是理解和将输入文本编码为有意义的表示。具有有缺陷理解能力的编码器可能会影响幻觉的程度[140]。当编码器在训练数据的不同部分之间学习到错误的相关性时，可能导致与输入不一致的错误生成结果[3, 49, 103, 184]。
+
+Erroneous decoding. The decoder takes the encoded input from the encoder and generates the final target sequence. Two aspects of decoding contribute to hallucinations. First, decoders can attend to the wrong part of the encoded input source, leading to erroneous generation [184]. Such wrong association results in generation with facts mixed up between two similar entities [41, 168]. Second, the design of the decoding strategy itself can contribute to hallucinations. Dziri et al. [41] illustrate that a decoding strategy that improves the generation diversity, such as top-k sampling, is positively correlated with increased hallucination. We conjecture that deliberately added “randomness” by sampling from the top-k samples instead of choosing the most probable token increase the unexpected nature of the generation, leading to a higher chance of containing hallucinated content.
+
+错误的解码。解码器接收编码器的编码输入并生成最终的目标序列。解码过程中的两个方面会导致幻觉的出现。首先，解码器可能会关注错误的编码输入部分，导致错误的生成结果[184]。这种错误的关联会导致生成的内容中混淆了两个相似实体之间的事实[41, 168]。其次，解码策略本身的设计也可能导致幻觉的产生。Dziri等人[41]指出，提高生成多样性的解码策略（例如top-k采样）与幻觉的增加呈正相关。我们推测，通过从top-k样本中进行采样而不是选择最有可能的令牌来增加“随机性”，增加了生成结果的意外性，从而增加了包含幻觉内容的可能性。
+
+Exposure Bias. Regardless of decoding strategy choices, the exposure bias problem [9, 151], defined as the discrepancy in decoding between training and inference time, can be another contributor to hallucination. It is common practice to train the decoder with teacher-forced maximum likelihood estimation (MLE) training, where the decoder is encouraged to predict the next token conditioned on the ground-truth prefix sequences. However, during the inference generation, the model generates the next token conditioned on the historical sequences previously generated by itself [69]. Such a discrepancy can lead to increasingly erroneous generation, especially when the target sequence gets longer.
+
+曝光偏差。无论解码策略选择如何，曝光偏差问题[9, 151]都可能是幻觉的另一个因素，它定义为训练和推理时解码之间的差异。常见的做法是使用教师强制最大似然估计（MLE）训练来训练解码器，在这种训练中，解码器被鼓励根据真实的前缀序列预测下一个令牌。然而，在推理生成过程中，模型会根据之前由自身生成的历史序列来预测下一个令牌[69]。这种差异可能导致越来越错误的生成结果，特别是当目标序列变得更长时。
+
+Parametric knowledge bias. Pre-training of models on a large corpus is known to result in the model memorizing knowledge in its parameters [121, 142, 158]. This so-called parametric knowledge helps improve the performance of downstream tasks, but also serves as another contributor to hallucinatory generation. Large pre-trained models used for downstream NLG tasks are powerful in providing generalizability and coverage, but Longpre et al. [115] have discovered that such models prioritize parametric knowledge over the provided input. In other words, models that favor generating output with their parametric knowledge instead of the information from the input source can result in the hallucination of excess information in the output.
+
+参数化知识偏差。已知在大规模语料库上对模型进行预训练会导致模型将知识存储在其参数中[121, 142, 158]。这种所谓的参数化知识有助于提高下游任务的性能，但也是导致产生幻觉的另一个因素。用于下游自然语言生成任务的大型预训练模型在提供广泛性和覆盖性方面非常强大，但Longpre等人[115]发现这样的模型更倾向于使用其参数化知识而非输入源的信息来生成输出。换句话说，偏好使用参数化知识生成输出而不是输入源信息的模型可能会导致输出中存在过多的幻觉信息。
+
+## 4 METRICS MEASURING HALLUCINATION
+
+Recently, various studies have illustrated that most conventional metrics used to measure the quality of writing are not adequate for quantifying the level of hallucination [156]. It has been shown that state-of-the-art abstractive summarization systems, evaluated with metrics such as ROUGE, BLEU, and METEOR, have hallucinated content in 25% of their generated summaries [45]. A similar phenomenon has been shown in other NLG tasks, where it has been discovered that traditional metrics have a poor correlation with human judgment in terms of the hallucination problem [30, 36, 73, 88]. Therefore, there are active research efforts to define effective metrics for quantifying hallucination. FRANK [139] surveys the faithfulness metrics for summarization and compares these metrics’ correlations with human judgments. To assess the example-level accuracy of metrics in diverse tasks, TRUE [72] reports their Area Under the ROC Curve (ROC AUC) in regard to hallucinated example detection.
+
+最近的各种研究表明，用于衡量写作质量的大多数传统度量标准无法充分量化幻觉水平[156]。已经证明，在使用ROUGE、BLEU和METEOR等度量标准评估的最先进的抽象摘要系统中，有25%的生成摘要内容是幻觉[45]。在其他自然语言生成任务中也出现了类似的现象，传统度量标准与幻觉问题方面的人类判断之间存在较差的相关性[30, 36, 73, 88]。因此，目前正在积极研究如何定义有效的度量标准来量化幻觉。FRANK [139]对摘要生成的忠实度量标准进行了调查，并比较了这些度量标准与人类判断之间的相关性。为了评估不同任务中度量标准的例子级准确性，TRUE [72]报告了它们在幻觉例子检测方面的ROC曲线下面积（ROC AUC）值。
+
+### 4.1 Statistical Metric
+
+### 4.2 Model-based Metric
+
+### 4.3 Human Evaluation
+
+## 5 HALLUCINATION MITIGATION METHODS
+
+常见的缓解方法可以根据幻觉的两个主要成因分为两类：数据相关方法和建模与推理方法。
+
+### 5.1 Data-Related Methods
+
+5.1.1 Building a Faithful Dataset. 
+
+Considering that noisy data encourage hallucinations, constructing faithful datasets manually is an intuitive method, and there are various ways to build such datasets: One way is employing annotators to write clean and faithful targets from scratch given the source [54, 204], which may lack diversity [67, 140, 143]. Another way is employing annotators to rewrite real sentences on the web [140], or targets in the existing dataset [194]. Basically, the revision strategy consists of three stages: (1) phrase trimming: removing phrases unsupported by the source in the exemplar sentence; (2) decontextualization: resolving co-references and deleting phrases dependent on context; (3) syntax modification: making the purified sentences flow smoothly. Meanwhile, other works [52, 73] leverage the model to generate data and instruct annotators to label whether these outputs contain hallucinations or not. While this approach is typically used to build diagnostic evaluation datasets, it has the potential to build faithful datasets.
+
+考虑到噪声数据会引发幻觉，手动构建忠实的数据集是一种直观的方法，而且有多种构建这样的数据集的方式：一种方式是雇用标注者根据源文本从头开始编写干净和忠实的目标文本[54, 204]，但可能缺乏多样性[67, 140, 143]。另一种方式是雇用标注者重新书写网络上的真实句子[140]或现有数据集中的目标文本[194]。基本上，修订策略包括三个阶段：（1）短语修剪：删除样例句中源文本不支持的短语；（2）去除上下文：消解共指并删除依赖于上下文的短语；（3）语法修改：使精简后的句子流畅。与此同时，其他研究[52, 73]利用模型生成数据，并指示标注者标注这些输出是否包含幻觉。虽然这种方法通常用于构建诊断评估数据集，但也有潜力构建忠实的数据集。
+
+5.1.2 Cleaning Data Automatically. 
+
+In order to alleviate semantic noise issues, another approach is
+to find information that is irrelevant or contradictory to the input from the existing parallel corpus
+and then filter or correct the data. This approach is suitable for the case where there is a low or
+moderate level of noise in the original data [50, 137].
+
+为了缓解语义噪声问题，另一种方法是从现有的平行语料中找到与输入无关或矛盾的信息，然后对数据进行过滤或修正。这种方法适用于原始数据中噪声水平较低或中等的情况[50, 137]。
+
+Some works [114, 153, 167] have dealt with the hallucination issue at the instance level by using a
+score for each source-reference pair and filtering out hallucinated ones. This corpus filtering method
+consists of several steps: (1) measuring the quality of the training samples in terms of hallucination
+utilizing the metrics described above; (2) ranking these hallucination scores in descending order;
+(3) selecting and filtering out the untrustworthy samples at the bottom. Instance-level scores can
+lead to a signal loss because divergences occur at the word level; i.e., parts of the target sentence
+are loyal to the source input, while others diverge [154].
+
+一些研究[114, 153, 167]通过对每个源-参考对应用评分并过滤出幻觉数据，从实例级别上解决了幻觉问题。这种语料过滤方法包括几个步骤：（1）使用上述描述的指标来衡量训练样本的幻觉质量；（2）按照幻觉评分降序排列；（3）选择并过滤掉底部的不可信样本。实例级别的评分可能会导致信号丢失，因为在单词级别上存在差异；即目标句子的某些部分忠于源输入，而其他部分则有所不同[154]。
+
+Considering this issue, other works [37, 137] correct paired training samples, specifically the
+input data, according to the references. This method is mainly applied in the data-to-text task
+because structured data are easier to correcte than utterances. This method consists of two steps:
+(1) utilizing a model to parse the meaning representation (MR), such as attribute-value pairs, from
+original human textual references; (2) using the MR extracted from the reference to correct the
+input MR through slot matching. This method will enhance the semantic consistency between
+input and output without abandoning a part of the dataset.
+
+考虑到这个问题，其他研究[37, 137]根据参考文本来纠正成对的训练样本，特别是输入数据。这种方法主要应用于数据到文本的任务，因为结构化数据比话语更容易进行修正。该方法包括两个步骤：（1）利用模型从原始的人类文本参考中解析出意义表示（MR），例如属性-值对；（2）通过槽位匹配，使用从参考中提取的MR来修正输入MR。这种方法将增强输入和输出之间的语义一致性，而不放弃数据集的任何一部分。
+
+5.1.3 Information Augmentation. 
+
+It is intuitive that augmenting the inputs with external information
+will obtain a better representation of the source. Because the external knowledge, explicit
+alignment, extra training data, etc., can improve the correlation between the source and target and
+help the model learn better task-related features. Consequently, a better semantic understanding
+helps alleviate the divergence from the source issue. Examples of the augmented information
+include entity information [114], extracted relation triples from source document [19, 74] obtained
+by Fact Description Extraction, pre-executed operation results [136], synthetic data generated
+through replacement or perturbation [21, 95], retrieved external knowledge [11, 46, 65, 168, 240],
+and retrieved similar training samples [12].
+
+直观上，通过使用外部信息来扩充输入将获得更好的源表示。因为外部知识、显式对齐、额外的训练数据等可以提高源和目标之间的相关性，并帮助模型学习更好的与任务相关的特征。因此，更好的语义理解有助于缓解与源的差异问题。增强信息的示例包括实体信息[114]、从源文档中提取的关系三元组[19, 74]（通过事实描述提取获得）、预执行操作结果[136]、通过替换或扰动生成的合成数据[21, 95]、检索的外部知识[11, 46, 65, 168, 240]以及检索的类似训练样本[12]。
+
+These methods enforce a stronger alignment between inputs and outputs. However, they will
+bring challenges due to the gap between the original source and augmented information, such as
+the semantic gap between an ambiguous utterance and a distinct MR of structured data, and the
+format discrepancy between the structured knowledge graph and natural language.
+
+这些方法在输入和输出之间建立了更强的对齐关系。然而，它们也会面临挑战，因为原始源和增强信息之间存在差距，比如不明确话语和结构化数据的明确MR之间的语义差距，以及结构化知识图和自然语言之间的格式差异。
+
+### 5.2 Modeling and Inference Methods
+
+5.2.1 Architecture.
+
+Encoder. 
+
+The encoder learns to encode a variable-length sequence from input text into a fixedlength
+vector representation. As we mentioned above in Section 5.1.3, hallucination appears when
+the models lack semantic interpretation over the input. Some works have modified the encoder architecture in order to make it more compatible with input and learn a better representation. For
+example, Huang et al. [74] and Cao et al. [19] propose a dual encoder, consisting of a sequential
+document encoder and a structured graph encoder to deal with the additional knowledge.
+
+编码器学习将可变长度的输入文本序列编码为固定长度的向量表示。正如我们在第5.1.3节中提到的，当模型对输入缺乏语义解释能力时，就会出现幻觉。为了使编码器更适应输入并学习到更好的表示，一些研究修改了编码器的架构。例如，Huang等人[74]和Cao等人[19]提出了双重编码器，由顺序文档编码器和结构化图编码器组成，以处理额外的知识。
+
+Attention. 
+
+The attention mechanism is an integral component in neural networks that selectively concentrates on some parts of sequences while ignoring others based on dependencies [189]. In order to encourage the generator to pay more attention to the source, Aralikatte et al. [3] introduce a short circuit from the input document to the vocabulary distribution via source-conditioned bias. Krishna et al. [88] employ sparse attention to improve the model‘s long-range dependencies in the hope of modeling more retrieved documents so as to mitigate the hallucination in the answer. Wu et al. [210] adopt inductive attention, which removes potentially uninformative attention links by injecting pre-established structural information to avoid hallucinations.
+
+注意力机制是神经网络中的一个重要组成部分，它根据依赖关系有选择地集中于序列的某些部分，忽略其他部分[189]。为了鼓励生成器更多地关注源文本，Aralikatte等人[3]通过源条件偏置引入了从输入文档到词汇分布的短路连接。Krishna等人[88]采用稀疏注意力来改进模型对长程依赖关系的建模，以期望模型能够处理更多检索到的文档，从而减轻答案中的幻觉问题。Wu等人[210]采用归纳注意力，通过注入预先建立的结构信息，去除潜在的无信息注意力链接，以避免幻觉的出现。
+
+Decoder. 
+
+The decoder is responsible for generating the final output in natural language given input representations [189]. Several work modified the decoder structures to mitigate hallucination, such as the multi-branch decoder [154], uncertainty-aware decoder [211], dual decoder, consisting of a sequential decoder and a tree-based decoder [170], and constrained decoder with lexical or structural limitations [6]. Based on the observation that the “randomness” from sampling-based decoding, especially near the end of sentences, can lead to hallucination, [98] propose to iteratively reduce the “randomness” through time. These decoders improve the possibility of faithful tokens while reducing the possibility of hallucinatory ones during inference by figuring out the implicit discrepancy and dependency between tokens or restricted by explicit constraints. Since such decoders may have more difficulty generating fluent or diverse text, there is a balance to be struck between them.
+
+解码器负责根据输入表示生成最终的自然语言输出[189]。一些研究修改了解码器结构以减轻幻觉，例如多分支解码器[154]，具有不确定性感知的解码器[211]，由顺序解码器和基于树的解码器组成的双重解码器[170]，以及具有词汇或结构限制的约束解码器[6]。基于对采样解码中“随机性”的观察，特别是在句子末尾附近，可能会导致幻觉的出现，[98]提出通过时间迭代地减少“随机性”。这些解码器通过解决标记之间的隐式差异和依赖关系，或受到明确约束的限制，提高了在推理过程中生成忠实标记的可能性，同时降低了幻觉标记的可能性。由于这些解码器可能更难生成流畅或多样化的文本，在它们之间需要找到一个平衡点。
+
+5.2.2 Training.
+
+Planning/Sketching. 
+
+Planning is a common method to control and restrict what the model generates by informing the content and its order [147]. Planning can be a separate step in a two-step generator [21, 114, 148, 174, 195], which is prone to progressive amplification of the hallucination problem. Or be injected into the end-to-end model during generation [216]. Sketching has a similar function to planning, and can also be adopted for handling hallucinations [195]. The difference is that the skeleton is treated as a part of the final generated text. While providing more controllability, such methods also need to strike a balance between faithfulness and diversity.
+
+规划是一种常见的方法，通过指定内容和顺序来控制和限制模型生成的内容[147]。规划可以是两步生成器中的一个独立步骤[21, 114, 148, 174, 195]，这种方法容易导致幻觉问题的渐进放大。或者在生成过程中注入端到端模型[216]。草图具有类似规划的功能，也可以用于处理幻觉问题[195]。不同之处在于，骨架被视为最终生成的文本的一部分。虽然这些方法提供了更多的可控性，但也需要在忠实度和多样性之间取得平衡。
+
+Reinforcement Learning (RL). 
+
+As pointed out by Ranzato et al. [151], word-level maximum likelihood training leads to the problem of exposure bias. Some works [74, 87, 108, 128, 174] adopt RL to solve the hallucination problem, which utilizes different rewards to optimize the model. The purpose of RL is for the agent to learn an optimal policy that maximizes the reward that accumulates from the environment [188].The reward function is critical to RL and, if properly designed, it can provide training signals that help the model accomplish its goal of hallucination reduction. For example, Li et al. [108] propose a slot consistency reward which is the cardinality of the difference between generated template and the slot-value pairs extracted from input dialogue act. Improving the slot consistency can help reduce the hallucination phenomenon of missing or misplacing slot values in generated templates. Mesgar et al. [128] attain persona consistency sub-reward via an NLI model to reduce the hallucinations in personal facts. Huang et al. [74] use a combination of ROUGE and the multiple-choice cloze score as the reward function to improve the faithfulness of summarization outputs. The cloze score is similar to the QA-based metric, measuring how well a QA model can address the questions by reading the generated summary (as context), where the questions are automatically constructed from the reference summary. As the above examples show, some RL reward functions for mitigating hallucination are inspired by existing automatic evaluation metrics. Although RL is challenging to learn and converge due to the extremely large search space, this method has the potential to obtain the best policy for the task without an oracle.
+
+正如Ranzato等人[151]所指出的，基于词级最大似然训练存在着曝光偏差的问题。一些研究[74, 87, 108, 128, 174]采用强化学习（RL）来解决幻觉问题，通过使用不同的奖励来优化模型。RL的目的是让智能体学习一种最优策略，以最大化从环境中累积的奖励[188]。奖励函数在RL中至关重要，如果设计得当，它可以提供训练信号，帮助模型实现减少幻觉的目标。例如，Li等人[108]提出了一种槽位一致性奖励，即生成模板与从输入对话行为中提取的槽位-值对之间的差异的基数。提高槽位一致性可以帮助减少生成模板中缺失或错误放置槽位值的幻觉现象。Mesgar等人[128]通过一个NLI模型获得个人一致性子奖励，以减少个人信息的幻觉。Huang等人[74]使用ROUGE和多选填空分数的组合作为奖励函数，以提高摘要输出的忠实度。多选填空分数类似于基于问答的评估指标，它衡量了一个问答模型在阅读生成的摘要（作为上下文）时对问题的回答能力，其中问题是从参考摘要中自动生成的。正如上述例子所示，一些用于减轻幻觉的RL奖励函数受到现有自动评估指标的启发。尽管由于搜索空间极大，RL的学习和收敛具有挑战性，但这种方法有潜力在没有预设答案的情况下获得任务的最佳策略。
+
+Multi-task Learning. 
+
+Multi-task learning is also utilized for handling hallucinations in different NLG tasks. In this training paradigm, a shared model is trained on multiple tasks simultaneously to learn the commonalities of the tasks. The hallucination problem may be derived from the reliance of the training process on a single dataset, leading to the fact that the model fails to learn the actual task features. By adding proper additional tasks along with the target task during training, the model can suffer less from the hallucination problem. For example, Weng et al. [205] and Garg et al. [55] incorporate a word alignment task into the translation model to improve the alignment accuracy between the input and output, and thus faithfulness. Li et al. [103] combine an entailment task with abstractive summarization to encourage models to generate summaries entailed by and faithful to the source. Li et al. [102] incorporate rationale extraction and the answer generation, which allows more confident and correct answers and reduces the hallucination problem. The Multi-task approach has several advantages, such as data efficiency improvement, overfitting reduction, and fast learning. It is crucial to choose which tasks should be learned jointly, and learning multiple tasks simultaneously presents new challenges of design and optimization [25].
+
+多任务学习也被用于处理不同的自然语言生成任务中的幻觉问题。在这种训练范式中，共享模型同时在多个任务上进行训练，以学习任务的共同特点。幻觉问题可能源于训练过程对单一数据集的依赖，导致模型无法学习到实际的任务特征。通过在训练过程中添加适当的额外任务与目标任务一起进行训练，模型可以减少幻觉问题的出现。例如，Weng等人[205]和Garg等人[55]将单词对齐任务融入到翻译模型中，以提高输入和输出之间的对齐准确性，从而提高忠实度。Li等人[103]将蕴涵任务与提取式摘要相结合，鼓励模型生成与源文本相符合且忠实的摘要。Li等人[102]结合了理由提取和答案生成，可以得到更有信心和正确的答案，从而减少了幻觉问题。多任务学习具有数据效率提高、减少过拟合和快速学习等优势。选择哪些任务应该联合学习是至关重要的，同时学习多个任务也带来了设计和优化方面的新挑战[25]。
+
+Controllable Generation. 
+
+Current works treat the hallucination level as a controllable attribute in order to remain the hallucination in outputs at a low level. Controllable generation techniques such as controlled re-sampling [152], control codes that can be provided manually [50, 152, 210], or predicted automatically [210] are leveraged to improve faithfulness. This method may require some annotated datasets for training. Considering that hallucination is not necessarily harmful and may bring some benefits, controllable methods can be further adapted to change the degree of hallucination to meet the demands of different real-world applications.
+
+当前的研究将幻觉水平视为一种可控属性，以保持输出中的幻觉水平较低。通过可控生成技术，如可控重采样[152]、手动提供的控制代码[50, 152, 210]或自动预测[210]，可以提高忠实度。这种方法可能需要一些带有注释的数据集进行训练。考虑到幻觉不一定是有害的，而且可能带来一些好处，可控方法可以进一步适应改变幻觉的程度，以满足不同实际应用的需求。
+
+5.2.3 Post-Processing. 
+
+Post-processing methods can correct hallucinations in the output, and this standalone task requires less training data. Especially for noisy datasets where a large proportion of the ground truth references suffer from hallucinations, modeling correction is a competitive choice to handle the hallucination problem [21]. Cao et al. [17], Chen et al. [21], Dong et al. [34], and Dziri et al. [41] follow a generate-then-refine strategy. While the post-processing correction step tends to result in ungrammatical texts, this method allows researchers to utilise SOTA models which perform best in respect of other attributes, such as fluency, and then correct the results specifically for faithfulness by using small amounts of automatically generated training data.
+
+后处理方法可以纠正输出中的幻觉，并且这种独立的任务需要较少的训练数据。特别是对于噪声数据集，其中大部分的真实参考文本都存在幻觉问题，建模纠正是处理幻觉问题的一种竞争性选择[21]。Cao等人[17]，Chen等人[21]，Dong等人[34]和Dziri等人[41]采用了先生成后修正的策略。虽然后处理纠正步骤往往会导致不符合语法规范的文本，但这种方法允许研究人员利用在其他属性（如流畅度）上表现最佳的SOTA模型，然后使用少量自动生成的训练数据特别针对忠实度进行结果修正。
