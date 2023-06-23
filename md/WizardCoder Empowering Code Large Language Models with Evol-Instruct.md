@@ -10,14 +10,8 @@ Code Large Language Models (Code LLMs), such as StarCoder, have demonstrated exc
 
 Recently, Large Language Models (LLMs) [1–9] have garnered significant attention and demonstrated impressive success. Notably, OpenAI’s ChatGPT stands out as a prominent example. Leveraging extensive pre-training on vast amounts of internet data and further fine-tuning with detailed instruction data [10], these models have achieved state-of-the-art (SOTA) zero-shot performance across diverse tasks. This trend is also observed in the domain of code understanding and generation. Numerous Code LLMs [11–18] have been proposed to tackle the challenges associated with code-related tasks. These Code LLMs undergo pre-training using substantial amounts of code data, enabling them to excel in various code-related tasks, showcasing impressive performance.
 
-In contrast to most previous Code LLMs that primarily emphasize the pre-training process, there has
-been limited exploration of fine-grained instruction tuning in the Code domain. The introduction of
-instruction tuning initially aimed to enhance the generalization capabilities of LMs across different
-tasks [ 19–25]. OpenAI’s InstructGPT [ 10], for instance, involved soliciting human annotators to
-provide explicit instructions to ensure alignment with users’ intentions. Similarly, recent works such
-as Alpaca [ 26] employed the self-instruct [ 27] method, where ChatGPT generated the instruction
-data. Vicuna [ 28] utilized user-shared conversations collected from ShareGPT.com. WizardLM [ 29]
-introduced the Evol-Instruct method, which involved evolving existing instruction data to generate
-more complex and diverse datasets. However, it is worth noting that all these approaches primarily
-focused on the general domain and lacked specific design considerations for the code domain.
-∗Equal contribution. Work done during the internship at Microsoft.
+最近，大型语言模型（LLMs）[1-9]引起了很大的关注并展示了令人印象深刻的成功。值得注意的是，OpenAI的ChatGPT作为一个突出的例子而脱颖而出。利用大量的互联网数据进行广泛的预训练，然后再使用详细的指令数据进行微调[10]，这些模型已经在各种任务中实现了最先进的零-shot表现。这一趋势也在代码理解和生成领域中观察到。已经提出了众多的代码LLMs [11-18] 来解决与代码相关任务所面临的挑战。这些代码LLMs通过使用大量的代码数据进行预训练，使它们能够在各种代码相关任务中表现出色，展示出令人印象深刻的性能。
+
+In contrast to most previous Code LLMs that primarily emphasize the pre-training process, there has been limited exploration of fine-grained instruction tuning in the Code domain. The introduction of instruction tuning initially aimed to enhance the generalization capabilities of LMs across different tasks [19–25]. OpenAI’s InstructGPT [ 10], for instance, involved soliciting human annotators to provide explicit instructions to ensure alignment with users’ intentions. Similarly, recent works such as Alpaca [ 26] employed the self-instruct [ 27] method, where ChatGPT generated the instruction data. Vicuna [ 28] utilized user-shared conversations collected from ShareGPT.com. WizardLM [ 29] introduced the Evol-Instruct method, which involved evolving existing instruction data to generate more complex and diverse datasets. However, it is worth noting that all these approaches primarily focused on the general domain and lacked specific design considerations for the code domain.
+
+与大多数先前的代码LLMs主要强调预训练过程不同，对于代码领域的细粒度指令调整的探索还很有限。引入指令调整最初旨在增强LM在不同任务之间的泛化能力[19-25]。例如，OpenAI的InstructGPT [10]利用人类标注来提供明确的指令，以确保与用户意图的一致性。类似地，最近的作品如Alpaca [26]采用了自我指导的方法[27]，其中ChatGPT生成了指令数据。Vicuna [28]利用从ShareGPT.com收集的用户共享会话。WizardLM [29]引入了Evol-Instruct方法，该方法包括演化现有的指令数据以生成更复杂和多样的数据集。但值得注意的是，所有这些方法主要关注通用领域，缺乏代码领域的具体设计考虑。
